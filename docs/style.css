@@ -1,5 +1,7 @@
+/* ===== Base Styles ===== */
 body {
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+               Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f6fb;
@@ -141,5 +143,109 @@ footer {
   text-align: center;
   font-size: 12px;
   color: #555;
+}
+
+/* ===== Team Section Cards (2x2 Grid) ===== */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.team-card {
+  background: white;
+  border: 2px solid #3AA655;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.team-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.team-card h3 {
+  margin: 0 0 10px 0;
+  color: #3AA655;
+}
+
+.team-card p {
+  margin: 6px 0;
+}
+
+.team-card a {
+  color: #2d7a3f;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.team-card a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Project Overview Styling ===== */
+.overview-card {
+  background: white;
+  border: 2px solid #3AA655;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 15px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+/* Summary block full-width */
+.summary-card {
+  margin-bottom: 25px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.summary-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* 2x2 grid for Goal, Tech Stack, Requirements, Test Plan */
+.overview-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.overview-item {
+  background: #f9fdf9;
+  border-left: 5px solid #3AA655;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.overview-item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.overview-item ul {
+  margin: 10px 0 0 15px;
+}
+
+.highlight {
+  background-color: #e9f7ef;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.overview-subheader {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: #3AA655;
+  border-bottom: 2px solid #3AA655;
+  padding-bottom: 4px;
 }
 
