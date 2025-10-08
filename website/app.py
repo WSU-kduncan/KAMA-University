@@ -21,7 +21,7 @@ def login():
         elif role == "admin":
             return redirect(url_for('admin_dashboard'))
         else:
-            return "<h3> Wrong username or password</h3><a href='/login'>Try again</a>"
+            return render_template("login.html", error="Incorrect Username or Password. Please Try Again.")
     return render_template("login.html")   
 
 @app.route('/student')

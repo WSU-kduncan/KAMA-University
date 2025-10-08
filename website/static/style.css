@@ -1,4 +1,4 @@
-/* ===== Base Styles ===== */
+/* ===== bases ===== */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
                Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -60,7 +60,7 @@ h2 {
   color: #3AA655; 
 }
 
-/* ===== Lists and Tables ===== */
+/* ===== tables and lists ===== */
 ol li, ul li {
   margin: 6px 0;
 }
@@ -84,7 +84,7 @@ table th {
   color: white;
 }
 
-/* ===== Footer ===== */
+/* ===== webpage footer ===== */
 footer {
   display: flex;
   justify-content: center;
@@ -97,7 +97,7 @@ footer {
   font-size: 14px;
 }
 
-/* ===== Degree Admin Login Page ===== */
+/* ===== degree admin and login ===== */
 .login-body {
   display: flex;
   flex-direction: column;
@@ -155,6 +155,23 @@ footer {
   color: #555;
 }
 
+.error-message {
+  color: #fff;
+  background-color: #d9534f;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 15px;
+  text-align: center;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
@@ -198,7 +215,7 @@ footer {
   text-decoration: underline;
 }
 
-/* ===== Project Overview Styling ===== */
+/* ===== overview section styling ===== */
 .overview-card {
   background: white;
   border: 2px solid #3AA655;
@@ -265,7 +282,7 @@ footer {
   padding-bottom: 4px;
 }
 
-/* ===== Utility Buttons ===== */
+/* ===== util buttons ===== */
 .btn {
   display: inline-block;
   padding: 10px 16px;
