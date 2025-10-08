@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>KAMA Team</title>
-  <!-- Flask serves static files -->
+  <!-- flask blend -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -23,7 +23,7 @@
     <section id="overview">
       <h2>Project Overview</h2>
     
-      <!-- Summary card (full width) -->
+      <!-- summary -->
       <div class="overview-card summary-card">
         <h3 class="overview-subheader">Summary</h3>
         <p>
@@ -32,12 +32,13 @@
           It provides a clear overview of majors, minors, and course requirements,
           ensuring students stay on track for graduation while also meeting their
           long-term academic goals. The system allows both students
-          and faculty to interact with requirements in a transparent
-          and milestone-oriented way.
+          and faculty to interact with the requirements for the student and 
+          System Administrators will have access to the course catalog for adding and 
+          removal of courses.
         </p>
       </div>
     
-      <!-- Reuse the same grid style as team roles -->
+      <!-- team roles -->
       <div class="overview-grid">
         <div class="overview-item">
           <h3 class="overview-subheader">🎯 Goal</h3>
@@ -49,6 +50,7 @@
           <ul>
             <li>Frontend: HTML, CSS</li>
             <li>Backend: Python (Flask)</li>
+            <li> Database: MariaDB
             <li>Version Control: GitHub + GitHub Pages</li>
           </ul>
         </div>
@@ -70,7 +72,7 @@
     </section>
     
     
-    <!-- ===== Team Section ===== -->
+    <!-- ===== team memebrs and roles ===== -->
     <section id="team">
       <h2>Team Members & Roles</h2>
       <div class="team-grid">
@@ -86,7 +88,7 @@
         </div>
         <div class="team-card">
           <h3>⚙️ Morgan H.</h3>
-          <p><strong>Algorithm Developer</strong></p>
+          <p><strong>Algorithms Developer</strong></p>
           <p><a href="mailto:Hunt.193@wright.edu">Hunt.193@wright.edu</a></p>
         </div>
         <div class="team-card">
@@ -97,7 +99,7 @@
       </div>
     </section>
 
-    <!-- ===== Reports Section ===== -->
+    <!-- ===== weekly reports ===== -->
     <section id="reports">
       <h2>Weekly Team Reports</h2>
       <table>
@@ -120,10 +122,10 @@
               <ul>
                 <li>Get list of courses for:
                   <ul>
-                    <li>Criminal Justice (major)</li>
-                    <li>Psychology (major)</li>
-                    <li>Sociology (minor)</li>
-                    <li>Forensics (minor)</li>
+                    <li>Criminal Justice (major selected)</li>
+                    <li>Psychology (major selected)</li>
+                    <li>Sociology (minor selected)</li>
+                    <li>Forensics (minor selected)</li>
                   </ul>
                 </li>
               </ul>
@@ -175,13 +177,41 @@
             <td>
               <ul>
                 <li>Finished requirements list for entire project</li>
-                <li>Continued working on front end home page and login page</li>
+                <li>Continued working on front-end home page and login page</li>
               </ul>
             </td>
             <td><ul><li>Develop authentication back end to blend with backend</li></ul></td>
           </tr>
-          <tr><td>6</td><td>9/29</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
-          <tr><td>7</td><td>10/6</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr>
+            <td>6</td>
+            <td>9/29</td>
+            <td>
+              <ul>
+                <li>Authentication has been implemented with backend and is functional on who logs in</li>
+                <li>Continued working on requirements and presentation</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>Finish Database and implement to the backend</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>10/6</td>
+            <td>
+              <ul>
+                <li>Database has been developed and added, just not functional with the rest yet</li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li>Blend database with backend</li>
+                <li>Add more to the pages for who logs in</li>
+              </ul>
+            </td>
+          </tr>
           <tr><td>8</td><td>10/13</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
           <tr><td>9</td><td>10/20</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
           <tr><td>10</td><td>10/27</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
