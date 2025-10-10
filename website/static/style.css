@@ -97,7 +97,7 @@ footer {
   font-size: 14px;
 }
 
-/* ===== degree admin and login ===== */
+/* ===== login ===== */
 .login-body {
   display: flex;
   flex-direction: column;
@@ -125,7 +125,7 @@ footer {
   width: 90%;
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   border-radius: 5px;
   font-size: 14px;
 }
@@ -148,13 +148,6 @@ footer {
   background-color: #2d7a3f;
 }
 
-.login-footer {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 12px;
-  color: #555;
-}
-
 .error-message {
   color: #fff;
   background-color: #d9534f;
@@ -172,6 +165,26 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.back-button {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: white;
+  background-color: #3AA655;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #33914c;
+  transform: scale(1.05);
+}
+
+
+
+/* ===== team member layout ===== */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr); 
@@ -298,3 +311,111 @@ footer {
   background: #2d7a3f;
 }
 
+/* ===== student dashboard ===== */
+
+.student-header {
+  background-color: #3AA655;   
+  color: white;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* left - center - right layout */
+  padding: 0 20px;
+  position: relative;
+}
+
+.header-left,
+.header-center,
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-center {
+  flex: 1;
+  justify-content: center;
+}
+
+.student-footer {
+  background-color: #3AA655;  
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.student-content {
+  padding: 20px;
+  min-height: calc(100vh - 120px); 
+  box-sizing: border-box;
+}
+
+.student-logo {
+  height: 70px;
+  display: block;
+}
+
+.student-bell {
+  position: absolute;
+  top: 50%;
+  right: 20px;      
+  transform: translateY(-50%);   
+}
+
+.bell-icon {
+  height: 60px;        
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bell-icon:hover {
+  transform: scale(1.15);
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.menu-icon span {
+  display: block;
+  height: 3px;
+  background-color: rgb(0, 0, 0);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-icon:hover span:nth-child(1) {
+  transform: translateY(1px);
+}
+
+.menu-icon:hover span:nth-child(2) {
+  opacity: 0.8;
+}
+
+.menu-icon:hover span:nth-child(3) {
+  transform: translateY(-1px);
+}
+
+.greeting {
+  margin-right: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2 ease, transform 0.2s ease;
+}
+
+.greeting:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}

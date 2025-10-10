@@ -3,27 +3,36 @@ def authenticate(username, password):
     
     # studnet auth
     if username == "jacksonv" and password == "JacksonV123!":  # Jackson Vail
-        return "student"
+        return ("student", "Jackson Vail")
+   
     elif username == "perryson" and password == "PerrySon@456":  # Perry Soni
-        return "student"
+        return ("student", "Perry Soni")
+    
     elif username == "fischerr" and password == "FischerR*909":  # Fischer Ray
-        return "student"
+        return ("student", "JFischer Ray")
+    
     elif username == "panthera" and password == "PatheraL23?":  # Panthera Leon
-        return "student"
+        return ("student", "Panthera Leon")
+   
     elif username == "elliotcr" and password == "ElliotC501!?":  # Elliot Cross
-        return "student"
+        return ("student", "Elliot Cross")
+    
     # faculty auth
     elif username == "calumous" and password == "CalumOut%10%":  # Calum Oust
-        return "faculty"
+        return ("faculty", "Calum Oust")
+    
     elif username == "milespar" and password == "Milespara11!":  # Miles Pardalis
-        return "faculty"
+        return ("faculty", "Miles Pardalis")
+   
     elif username == "oliverme" and password == "OliverMe1234@":  # Oliver Meller
-        return "faculty"
+        return ("faculty", "Oliver Meller")
+    
     # admin auth
     elif username == "lowdylkr" and password == "LowdyLake24&":  # Lowdy Laker
-        return "admin"
+        return ("admin", "Lowdy Laker")
+   
     elif username == "rowdyrdr" and password == "RowdyRad617#":  # Rowdy Raider
-        return "admin"
+        return ("admin", "Rowdy Raider")
 
     else:
-        return None
+        return (None, None)

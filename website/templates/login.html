@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KAMA University - Login</title>
-  <!-- flask will serve static files -->
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="login-body">
   <div class="login-container">
     <h1>KAMA University</h1>
+
     <!-- sends data to flask -->
     <form action="{{ url_for('login') }}" method="post">
       <input type="text" name="username" placeholder="Username" required>
@@ -17,15 +17,13 @@
       <button type="submit">Login</button>
     </form>
 
+    <a href="{{ url_for('home') }}" class="back-button">← Back to Team Website</a>
+
     <!-- error message -->
     {% if error %}
       <div class="error-message">{{ error }}</div>
     {% endif %}
   </div>
-
-  <footer class="login-footer">
-    <span>© 2025 KAMA University</span>
-  </footer>
 </body>
 </html>
 

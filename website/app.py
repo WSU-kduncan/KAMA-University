@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from authentication import authenticate
 
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'
 
 @app.route('/')
 def home():
@@ -12,30 +13,47 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        role = authenticate(username, password)
+        role, name = authenticate(username, password)
 
         if role == "student":
+            session['name'] = name
+            session['role'] = role
             return redirect(url_for('student_dashboard'))
+        
         elif role == "faculty":
+            session['name'] = name
+            session['role'] = role
             return redirect(url_for('faculty_dashboard'))
+        
         elif role == "admin":
+            session['name'] = name
+            session['role'] = role
             return redirect(url_for('admin_dashboard'))
+        
         else:
             return render_template("login.html", error="Incorrect Username or Password. Please Try Again.")
+    
     return render_template("login.html")   
 
 @app.route('/student')
 def student_dashboard():
-    return "<h1> Welcome Student!</h1>"
+    name = session.get('name', '')
+    return render_template("student.html", name=name)
 
 @app.route('/faculty')
 def faculty_dashboard():
-    return "<h1> Welcome Faculty!</h1>"
+    name = session.get('name', '')
+    return render_template("faculty.html", name=name)
 
 @app.route('/admin')
 def admin_dashboard():
-    return "<h1> Welcome Admin!</h1>"
+    name = session.get('name', '')
+    return render_template("admin.html", name=name)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
-    app.run(debug=True)
-
+    app.run(debug=True, port=5050)
