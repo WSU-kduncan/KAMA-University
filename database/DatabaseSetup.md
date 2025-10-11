@@ -6,12 +6,16 @@
 ## Step 2
 1. Install mariaDB (I used Windows, I'm not sure if its a different set up for Mac and Lunix)
    - Windows: https://mariadb.org/download/?t=mariadb&p=mariadb&r=12.0.2&os=windows&cpu=x86_64&pkg=msi&mirror=acorn
-   - Mac: 'brew install mariadb'
-          'brew services start mariadb'
-   - Linux: 'sudo apt update'
-            'sudo apt install mariadb-server'
-            'sudo systemctl start mariadb'
-            'sudo systemctl enable mariadb'
+   - Mac:
+       - 'brew install mariadb'
+       - 'brew services start mariadb'
+         
+   - Linux:
+       - 'sudo apt update'
+       - 'sudo apt install mariadb-server'
+       - 'sudo systemctl start mariadb'
+       - 'sudo systemctl enable mariadb'
+ 
 2. When setting up the server keep the generic settings
     - For the password set it to "password"
 ## Step 3
