@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>KAMA Team</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- flask blend -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header>
@@ -13,16 +14,18 @@
       <a href="#overview">Overview</a> |
       <a href="#team">Team Members</a> |
       <a href="#reports">Weekly Reports</a> |
-      <a href="login.html">Degree Admin</a>
+      <a href="{{ url_for('login') }}">Degree Admin</a>
     </nav>
   </header>
 
   <main>
+  
     <section id="overview">
       <h2>Project Overview</h2>
-
+    
+      <!-- summary -->
       <div class="overview-card summary-card">
-        <h3 class="overview-subheader">📘 Summary</h3>
+        <h3 class="overview-subheader">Summary</h3>
         <p>
           The Degree Admin project is designed to help students easily
           track, manage, and plan their academic progress.
@@ -34,30 +37,31 @@
           removal of courses.
         </p>
       </div>
-
-      <div class="overview-details">
+    
+      <!-- team roles -->
+      <div class="overview-grid">
         <div class="overview-item">
           <h3 class="overview-subheader">🎯 Goal</h3>
           <p>Create a user-friendly degree management system.</p>
         </div>
-
+    
         <div class="overview-item">
           <h3 class="overview-subheader">🛠 Tech Stack</h3>
           <ul>
             <li>Frontend: HTML, CSS</li>
-            <li>Backend: Python</li>
-            <li>Database: MariaDB</li>
+            <li>Backend: Python (Flask)</li>
+            <li> Database: MariaDB
             <li>Version Control: GitHub + GitHub Pages</li>
           </ul>
         </div>
-
+    
         <div class="overview-item">
           <h3 class="overview-subheader">📋 Requirements</h3>
           <ul>
             <li>...</li>
           </ul>
         </div>
-
+    
         <div class="overview-item">
           <h3 class="overview-subheader">🧪 Software Test Plan</h3>
           <ul>
@@ -66,7 +70,9 @@
         </div>
       </div>
     </section>
-
+    
+    
+    <!-- ===== team memebrs and roles ===== -->
     <section id="team">
       <h2>Team Members & Roles</h2>
       <div class="team-grid">
@@ -93,6 +99,7 @@
       </div>
     </section>
 
+    <!-- ===== weekly reports ===== -->
     <section id="reports">
       <h2>Weekly Team Reports</h2>
       <table>
@@ -109,18 +116,16 @@
             <td>1</td>
             <td>8/25</td>
             <td>
-              <ul>
-                <li>Chose majors and minors</li>
-              </ul>
+              <ul><li>Chose majors and minors</li></ul>
             </td>
             <td>
               <ul>
                 <li>Get list of courses for:
                   <ul>
-                    <li>Criminal Justice (major)</li>
-                    <li>Psychology (major)</li>
-                    <li>Sociology (minor)</li>
-                    <li>Forensics (minor)</li>
+                    <li>Criminal Justice (major selected)</li>
+                    <li>Psychology (major selected)</li>
+                    <li>Sociology (minor selected)</li>
+                    <li>Forensics (minor selected)</li>
                   </ul>
                 </li>
               </ul>
@@ -129,11 +134,7 @@
           <tr>
             <td>2</td>
             <td>9/1</td>
-            <td>
-              <ul>
-                <li>Got list of courses for chosen majors/minors</li>
-              </ul>
-            </td>
+            <td><ul><li>Got list of courses for chosen majors/minors</li></ul></td>
             <td>
               <ul>
                 <li>List requirements</li>
@@ -168,11 +169,7 @@
                 <li>Assigned team member roles</li>
               </ul>
             </td>
-            <td>
-              <ul>
-                <li>Start developing database and backend</li>
-              </ul>
-            </td>
+            <td><ul><li>Start developing database and backend</li></ul></td>
           </tr>
           <tr>
             <td>5</td>
@@ -183,11 +180,7 @@
                 <li>Continued working on front-end home page and login page</li>
               </ul>
             </td>
-            <td>
-              <ul>
-                <li>Develop authentication back end to blend with backend</li>
-              </ul>
-            </td>
+            <td><ul><li>Develop authentication back end to blend with backend</li></ul></td>
           </tr>
           <tr>
             <td>6</td>
@@ -219,118 +212,14 @@
               </ul>
             </td>
           </tr>
-          <tr>
-            <td>8</td>
-            <td>10/13</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>9</td>
-            <td>10/20</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>10</td>
-            <td>10/27</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>11</td>
-            <td>11/3</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>12</td>
-            <td>11/10</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>13</td>
-            <td>11/17</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>14</td>
-            <td>11/24</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td>15</td>
-            <td>12/1</td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>…</li>
-              </ul>
-            </td>
-          </tr>
+          <tr><td>8</td><td>10/13</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>9</td><td>10/20</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>10</td><td>10/27</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>11</td><td>11/3</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>12</td><td>11/10</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>13</td><td>11/17</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>14</td><td>11/24</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
+          <tr><td>15</td><td>12/1</td><td><ul><li>…</li></ul></td><td><ul><li>…</li></ul></td></tr>
         </tbody>
       </table>
     </section>
@@ -341,4 +230,3 @@
   </footer>
 </body>
 </html>
-
