@@ -357,6 +357,7 @@ footer {
 .student-logo {
   height: 70px;
   display: block;
+  margin-left: 180px;
 }
 
 .student-bell {
@@ -418,4 +419,36 @@ footer {
 .greeting:hover {
   opacity: 0.8;
   transform: scale(1.05);
+}
+
+/*scheduling placeholder*/
+
+.schedule-wrapper {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.schedule-title {
+  position: absolute;
+  top: -55px;
+  left: 20px;
+  background-color: #f4f6fb; 
+  padding: 0 10px;
+  font-size: 1.3rem;
+  color: #3AA655;
+  font-weight: bold;
+}
+
+.schedule-box {
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  padding: 50px 30px;
+  min-height: 450px;             
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
