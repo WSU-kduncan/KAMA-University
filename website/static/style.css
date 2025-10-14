@@ -341,7 +341,7 @@ footer {
   color: white;
   text-align: center;
   padding: 10px 0;
-  position: fixed;
+  position: static;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -442,13 +442,78 @@ footer {
 }
 
 .schedule-box {
+  position: relative; 
   background-color: #e0e0e0;
   border-radius: 12px;
   padding: 50px 30px;
-  min-height: 450px;             
+  min-height: 450px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-btn {
+  position: absolute;
+  bottom: -55px;  /* 👈 pushes it below the box */
+  left: 20px;     /* 👈 aligns with left edge of box */
+  background-color: #3AA655;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.schedule-btn:hover {
+  background-color: #2d7a3f;
+  transform: scale(1.05);
+}
+
+
+.arrow-buttons {
+  position: absolute;
+  bottom: -55px;     /* 👈 aligns with Make Changes button */
+  right: 20px;       /* 👈 aligns to right edge of box */
+  display: flex;
+  gap: 10px;
+}
+
+/* Base button style */
+.arrow-btn {
+  width: 0;
+  height: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Left triangle */
+.left-arrow {
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 15px solid #3AA655; /* green arrow */
+  transition: transform 0.2s ease;
+}
+
+.left-arrow:hover {
+  transform: scale(1.1);
+  border-right-color: #2d7a3f; /* darker on hover */
+}
+
+/* Right triangle */
+.right-arrow {
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 15px solid #3AA655; /* green arrow */
+  transition: transform 0.2s ease;
+}
+
+.right-arrow:hover {
+  transform: scale(1.1);
+  border-left-color: #2d7a3f;
 }
