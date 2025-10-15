@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="student-header">
+    <div class="header-left">
+      <div class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
+    </div>
+
+    <div class="header-right">
+      <a href="{{ url_for('logout') }}" class="greeting">Hello, {{ name }}</a>
+      <img src="{{ url_for('static', filename='bell.png') }}" alt="Bell Icon" class="bell-icon">
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="faculty-content">
+    <table class="faculty-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Major/Minor</th>
+                <th>Expected Graduation</th>
+                <th>Co-Op</th>
+                <th>Summer Courses</th>
+                <th>Schedule Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Student 1</td>
+                <td>Major(s)/Minor(s)</td>
+                <td>Semester 20XX</td>
+                <td>No</td>
+                <td>No</td>
+                <td>No</td>
+            </tr>
+            <tr>
+                <td>Student 2</td>
+                <td>Major(s)/Minor(s)</td>
+                <td>Semester 20XX</td>
+                <td>No</td>
+                <td>No</td>
+                <td>No</td>
+            </tr>
+        </tbody>
+    </table>
+  </main>
+
+  <!-- Footer -->
+  <footer class="student-footer">
+    <p>&copy; 2025 KAMA University.</p>
+  </footer>
+
+</body>
+</html>
+

@@ -319,7 +319,7 @@ footer {
   height: 100px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* left - center - right layout */
+  justify-content: space-between; 
   padding: 0 20px;
   position: relative;
 }
@@ -421,8 +421,7 @@ footer {
   transform: scale(1.05);
 }
 
-/*scheduling placeholder*/
-
+/* ===== schedule placeholder ===== */
 .schedule-wrapper {
   position: relative;
   max-width: 900px;
@@ -456,8 +455,8 @@ footer {
 
 .schedule-btn {
   position: absolute;
-  bottom: -55px;  /* 👈 pushes it below the box */
-  left: 20px;     /* 👈 aligns with left edge of box */
+  bottom: -55px;  
+  left: 20px;    
   background-color: #3AA655;
   color: white;
   border: none;
@@ -477,13 +476,13 @@ footer {
 
 .arrow-buttons {
   position: absolute;
-  bottom: -55px;     /* 👈 aligns with Make Changes button */
-  right: 20px;       /* 👈 aligns to right edge of box */
+  bottom: -55px;     
+  right: 20px;      
   display: flex;
   gap: 10px;
 }
 
-/* Base button style */
+/* ===== base button style ===== */
 .arrow-btn {
   width: 0;
   height: 0;
@@ -492,11 +491,11 @@ footer {
   cursor: pointer;
 }
 
-/* Left triangle */
+/* left  */
 .left-arrow {
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-  border-right: 15px solid #3AA655; /* green arrow */
+  border-right: 15px solid #3AA655; 
   transition: transform 0.2s ease;
 }
 
@@ -505,15 +504,57 @@ footer {
   border-right-color: #2d7a3f; /* darker on hover */
 }
 
-/* Right triangle */
+/* right */
 .right-arrow {
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-  border-left: 15px solid #3AA655; /* green arrow */
+  border-left: 15px solid #3AA655; 
   transition: transform 0.2s ease;
 }
 
 .right-arrow:hover {
   transform: scale(1.1);
   border-left-color: #2d7a3f;
+}
+
+
+/* ===== faculty table ===== */
+.faculty-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: calc(100vh - 150px); 
+}
+
+.faculty-table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 800px;
+  background-color: #f8f8f8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.faculty-table th,
+.faculty-table td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.faculty-table th {
+  background-color: #3AA655;
+  color: #fff;
+}
+
+.faculty-table tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+.faculty-table tr:hover {
+  background-color: #e3f0ff;
 }
