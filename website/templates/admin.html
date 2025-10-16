@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>System Administrator Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <header class="student-header">
+    <div class="header-left">
+      <div class="menu-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
+    </div>
+
+    <div class="header-right">
+      <a href="{{ url_for('logout') }}" class="greeting">Hello, {{ name }}</a>
+      <img src="{{ url_for('static', filename='bell.png') }}" alt="Bell Icon" class="bell-icon">
+    </div>
+  </header>
+
+  <main class="faculty-content">
+  </main>
+
+  <footer class="student-footer">
+    <p>&copy; 2025 KAMA University.</p>
+  </footer>
+
+</body>
+</html>
+
