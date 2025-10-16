@@ -63,15 +63,11 @@ degree-admin/
 │   ├── style.css                # Central stylesheet (used by all pages)
 │   ├── chameleon.png            # KAMA University logo
 │   ├── bell.png                 # Notification icon
-│   ├── favicon.ico              # (Optional) Browser tab icon
-│   └── scripts/                 # (Optional) Folder for JavaScript files
-│       └── dashboard.js         # Interactive elements (if added later)
 │
 ├── /venv/                       # Python virtual environment (not tracked in Git)
 │
 ├── README.md                    # Project overview and setup guide
 ├── .gitignore                   # Ignore venv, __pycache__, and other unnecessary files
-└── requirements.txt             # (Optional) List of dependencies like Flask, MariaDB
 
 ```
 
