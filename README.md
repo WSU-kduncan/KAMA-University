@@ -10,7 +10,7 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 ## Team Members
 - **Kalli Koppin**
 - **Ava M.**
-- **Morgan H.**
+- **Morgan Hunt**
 - **Austin K.**
 
 ---
