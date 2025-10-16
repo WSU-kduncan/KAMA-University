@@ -1,4 +1,4 @@
-# 🦎 KAMA University - Degree Admin
+# KAMA University - Degree Admin
 ## Overview
 **KAMA University** is a multi-role web application designed to simplify academic management for students, faculty, and administrators.  
 It provides secure login-based dashboards, enabling different users to access features tailored to their roles.
@@ -7,7 +7,7 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ---
 
-## 🧠 Team Members
+## Team Members
 - **Kalli Koppin**
 - **Ava M.**
 - **Morgan H.**
@@ -15,16 +15,16 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ---
 
-## 🧩 Features
-### 👩‍🎓 Student Dashboard
+## Features
+### Student Dashboard
 - View enrolled courses and semester information  
 - Access schedules  
 
-### 👨‍🏫 Faculty Dashboard
+### Faculty Dashboard
 - Update course details or grades  
 - Display name dynamically based on login  
 
-### 🧑‍💼 Admin Dashboard
+### Admin Dashboard
 - Manage programs, users, and course data  
 - Add, update, or remove database entries  
 - Oversee faculty and student records  
@@ -41,7 +41,7 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 ```
 degree-admin/
 │
@@ -75,19 +75,19 @@ degree-admin/
 
 ```
 
-## 🧰 Setup Instructions
+## Setup Instructions
 
-Follow these steps to set up and run the **KAMA University - Degree Admin** project locally.
+**Follow these steps to set up and run the **KAMA University - Degree Admin** project locally.**
 
 ---
 
-### 1️⃣ Clone the Repository
+### Clone the Repository
 ```bash
 git clone https://github.com/<your-username>/degree-admin.git
 cd degree-admin
 ```
 
-### 2️⃣ Create Virtual Enviorment
+### Create Virtual Enviorment
 
 **macOS/Linux**
 ```bash
@@ -101,7 +101,7 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-### 3️⃣ Install Required Dependencies
+### Install Required Dependencies
 
 Install Flask and MariaDB connector using pip.
 
@@ -110,7 +110,7 @@ pip install flask
 pip install mariadb
 ```
 
-### 4️⃣ Set Up the MariaDB Database
+### Set Up the MariaDB Database
 Ensure MariaDB is installed and running on your machine.
 
 **macOS/Linux**
@@ -124,14 +124,14 @@ sudo systemctl start mariadb
 ```
 
 
-Access MariaDB in the Terminal
+**Access MariaDB in the Terminal**
 ```bash
 mysql -u root -p
 ```
 
-Create the Database
+**Create the Database**
 
-Inside the MariaDB shell:
+**Inside the MariaDB shell:**
 
 ```sql
 CREATE DATABASE kama;
@@ -140,11 +140,11 @@ SOURCE databaseScript.sql;
 EXIT;
 ```
 
-### 5️⃣ Configure Database Connection
+### Configure Database Connection
 
-Open the `connection.py` file in your editor and ensure the credentials match your local MariaDB setup.
+**Open the `connection.py` file in your editor and ensure the credentials match your local MariaDB setup.**
 
-### 6️⃣ Run the Flask Application
+### Run the Flask Application
 
 ```bash
 python app.py
