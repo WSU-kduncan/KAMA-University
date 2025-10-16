@@ -78,9 +78,17 @@ degree-admin/
 ---
 
 ### Clone the Repository
+
+**HTTPS Cloning**
 ```bash
-git@github.com:WSU-kduncan/KAMA-University.git
-cd degree-admin
+git clone https://github.com/WSU-kduncan/KAMA-University.git
+cd KAMA-University
+```
+
+**SSH Cloning**
+```bash
+git clone git@github.com:WSU-kduncan/KAMA-University.git
+cd KAMA-University
 ```
 
 ### Create Virtual Enviorment
