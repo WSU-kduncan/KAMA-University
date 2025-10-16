@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS kama; --This is just so you can see the script. Its mad right now idk why
+-- DROP DATABASE IF EXISTS kama; --This is just so you can see the script. Its mad right now idk why
 CREATE DATABASE kama;
 USE kama;
 
@@ -46,28 +46,7 @@ CREATE TABLE Requirement_Course (
     FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
 
--- ======================
--- 5. PROGRAM PLAN
--- ======================
-CREATE TABLE Program_Plan (
-    plan_id INT PRIMARY KEY,
-    program_id INT NOT NULL,
-    semester_number INT NOT NULL,
-    semester_name VARCHAR(20),
-    year_number INT NOT NULL,
-    FOREIGN KEY (program_id) REFERENCES Program(program_id)
-);
 
--- ======================
--- 6. PLAN_COURSE
--- ======================
-CREATE TABLE Plan_Course (
-    plan_id INT NOT NULL,
-    course_id INT NOT NULL,
-    PRIMARY KEY (plan_id, course_id),
-    FOREIGN KEY (plan_id) REFERENCES Program_Plan(plan_id),
-    FOREIGN KEY (course_id) REFERENCES Course(course_id)
-);
 
 -- ======================
 -- 7. ADVISOR

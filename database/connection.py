@@ -33,4 +33,4 @@ try:
 except mariadb.Error as e:
     print(f"Error: {e}")
 
-#     conn.close()   
+conn.close()   
