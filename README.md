@@ -79,7 +79,7 @@ degree-admin/
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/degree-admin.git
+git@github.com:WSU-kduncan/KAMA-University.git
 cd degree-admin
 ```
 
