@@ -9,9 +9,9 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ## Team Members
 - **Kalli Koppin**
-- **Ava M.**
+- **Ava Mcintosh.**
 - **Morgan Hunt**
-- **Austin K.**
+- **Austin Kellough.**
 
 ---
 
@@ -31,7 +31,7 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 | Component | Technology |
 |------------|-------------|
 | **Frontend** | HTML, CSS |
