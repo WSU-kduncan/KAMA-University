@@ -59,7 +59,7 @@ def logout():
 
 @app.route('loading')
 def loading():
-    retun redirect(url_for('loading.html'))
+    retun render_template(url_for('loading.html'))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
