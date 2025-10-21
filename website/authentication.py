@@ -36,7 +36,7 @@ def authenticate(username, password):
 
     # testing auth
     elif username == "test" and password == "test":
-        return ("loading")
+        return ("loading", "test test")
 
     else:
         return (None, None)
