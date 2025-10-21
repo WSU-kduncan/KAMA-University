@@ -236,30 +236,22 @@
     }
 
     // Load and parse facts from facts.md
-    async function loadFacts() {
+        async function loadFacts() {
       try {
-        const response = await window.fs.readFile('./facts/facts.txt', { encoding: 'utf8' });
-        
-        // Split by lines and filter out empty lines and numbers
-        const lines = response.split('\n');
-        facts = lines
-          .map(line => line.trim())
-          .filter(line => line && !line.match(/^\d+\.?\s*$/))
-          .map(line => line.replace(/^\d+\.\s*/, '')); // Remove leading numbers
-        
-        // Shuffle the facts
-        shuffledFacts = shuffleArray(facts);
-        
-        // Display first fact
-        if (shuffledFacts.length > 0) {
-          displayFact();
-          setInterval(displayFact, 6000);
+        // Try using fetch first (for Flask/web server)
+        let response;
+        try {
+          response = await fetch('facts.txt');
+          if (!response.ok) throw new Error('Fetch failed');
+          response = await response.text();
+        } catch (fetchError) {
+          // Fallback to window.fs if available
+          if (window.fs && window.fs.readFile) {
+            response = await window.fs.readFile('./facts/facts.txt', { encoding: 'utf8' });
+          } else {
+            throw new Error('Unable to load facts file');
+          }
         }
-      } catch (error) {
-        console.error('Error loading facts:', error);
-        factElement.textContent = 'Loading facts...';
-      }
-    }
 
     function displayFact() {
       if (shuffledFacts.length > 0) {
