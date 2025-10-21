@@ -29,7 +29,7 @@ def login():
             session['name'] = name
             session['role'] = role
             return redirect(url_for('admin_dashboard'))
-        elif roll == "loading"
+        elif roll == "loading":
             return redirection(url_for('loading_page'))
         
         else:
