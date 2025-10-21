@@ -238,7 +238,7 @@
     // Load and parse facts from facts.md
     async function loadFacts() {
       try {
-        const response = await window.fs.readFile('/facts/facts.md', { encoding: 'utf8' });
+        const response = await window.fs.readFile('./facts/facts.md', { encoding: 'utf8' });
         
         // Split by lines and filter out empty lines and numbers
         const lines = response.split('\n');
