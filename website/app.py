@@ -30,7 +30,7 @@ def login():
             session['role'] = role
             return redirect(url_for('admin_dashboard'))
         elif roll == "loading":
-            return redirection(url_for('loading_page'))
+            return redirect(url_for('loading_page'))
         
         else:
             return render_template("login.html", error="Incorrect Username or Password. Please Try Again.")
