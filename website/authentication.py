@@ -34,5 +34,9 @@ def authenticate(username, password):
     elif username == "rowdyrdr" and password == "RowdyRad617#":  # Rowdy Raider
         return ("admin", "Rowdy Raider")
 
+    # testing auth
+    elif username == "test" and password == "test":
+        return ("loading")
+
     else:
         return (None, None)

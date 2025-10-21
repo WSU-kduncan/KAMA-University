@@ -29,6 +29,8 @@ def login():
             session['name'] = name
             session['role'] = role
             return redirect(url_for('admin_dashboard'))
+        elif roll == "loading"
+            return redirection(url_for('loading_page'))
         
         else:
             return render_template("login.html", error="Incorrect Username or Password. Please Try Again.")
@@ -54,6 +56,10 @@ def admin_dashboard():
 def logout():
     session.clear()
     return redirect(url_for('login'))
+
+@app.route('loading')
+def loading():
+    retun redirection(url_for('loading.html'))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
