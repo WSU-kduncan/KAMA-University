@@ -29,7 +29,7 @@ def login():
             session['name'] = name
             session['role'] = role
             return redirect(url_for('admin_dashboard'))
-        elif roll == "loading":
+        elif role == "loading":
             return redirect(url_for('loading_page'))
         
         else:
@@ -59,7 +59,7 @@ def logout():
 
 @app.route('loading')
 def loading():
-    retun render_template(url_for('loading.html'))
+    return render_template(url_for('loading.html'))
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
