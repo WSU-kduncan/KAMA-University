@@ -236,7 +236,7 @@
     }
 
     // Load and parse facts from facts.md
-        async function loadFacts() {
+    async function loadFacts() {
       try {
         // Try using fetch first (for Flask/web server)
         let response;
@@ -252,6 +252,27 @@
             throw new Error('Unable to load facts file');
           }
         }
+        
+        // Split by lines and filter out empty lines and numbers
+        const lines = response.split('\n');
+        facts = lines
+          .map(line => line.trim())
+          .filter(line => line && !line.match(/^\d+\.?\s*$/))
+          .map(line => line.replace(/^\d+\.\s*/, '')); // Remove leading numbers
+        
+        // Shuffle the facts
+        shuffledFacts = shuffleArray(facts);
+        
+        // Display first fact
+        if (shuffledFacts.length > 0) {
+          displayFact();
+          setInterval(displayFact, 6000);
+        }
+      } catch (error) {
+        console.error('Error loading facts:', error);
+        factElement.textContent = 'Unable to load facts file. Please check the file path.';
+      }
+    }
 
     function displayFact() {
       if (shuffledFacts.length > 0) {
