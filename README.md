@@ -43,9 +43,9 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ## Project Structure
 ```
-degree-admin/
+website/
 │
-├── app.py                      # Main Flask application (handles routes and role-based redirects)
+├── app.py                       # Main Flask application (handles routes and role-based redirects)
 ├── authentication.py            # Authenticates users and determines their roles (student, faculty, admin)
 ├── connection.py                # Handles MariaDB connection setup
 │
@@ -57,7 +57,6 @@ degree-admin/
 │   ├── student.html             # Student dashboard (dynamic name, semester info)
 │   ├── faculty.html             # Faculty dashboard (dynamic table, name display)
 │   ├── admin.html               # Admin dashboard (manage users, programs, courses)
-│   └── error.html               # (Optional) Error or 404 page
 │
 ├── /static/                     # Static frontend assets
 │   ├── style.css                # Central stylesheet (used by all pages)
