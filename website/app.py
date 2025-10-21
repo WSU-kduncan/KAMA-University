@@ -57,7 +57,7 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
-@app.route('loading')
+@app.route('/loading')
 def loading():
     return render_template(url_for('loading.html'))
 
