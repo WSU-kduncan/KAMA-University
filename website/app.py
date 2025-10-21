@@ -58,7 +58,7 @@ def logout():
     return redirect(url_for('login'))
 
 @app.route('/loading')
-def loading():
+def loading_page():
     return render_template(url_for('loading.html', ''))
 
 if __name__ == "__main__":
