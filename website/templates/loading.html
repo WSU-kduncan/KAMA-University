@@ -239,7 +239,7 @@
     async function loadFacts() {
       try {
         // For Flask: make sure facts.txt is in your static/facts/ folder
-        const response = await fetch('/facts/facts.txt');
+        const response = await fetch('./facts/facts.txt');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
