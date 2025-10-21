@@ -238,23 +238,17 @@
     // Load and parse facts from facts.md
     async function loadFacts() {
       try {
-        // Try using fetch first (for Flask/web server)
-        let response;
-        try {
-          response = await fetch('./facts/facts.txt');
-          if (!response.ok) throw new Error('Fetch failed');
-          response = await response.text();
-        } catch (fetchError) {
-          // Fallback to window.fs if available
-          if (window.fs && window.fs.readFile) {
-            response = await window.fs.readFile('./fact/facts.txt', { encoding: 'utf8' });
-          } else {
-            throw new Error('Unable to load facts file');
-          }
+        // For Flask: make sure facts.txt is in your static/facts/ folder
+        const response = await fetch('/facts/facts.txt');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         
+        const text = await response.text();
+        
         // Split by lines and filter out empty lines and numbers
-        const lines = response.split('\n');
+        const lines = text.split('\n');
         facts = lines
           .map(line => line.trim())
           .filter(line => line && !line.match(/^\d+\.?\s*$/))
@@ -267,10 +261,12 @@
         if (shuffledFacts.length > 0) {
           displayFact();
           setInterval(displayFact, 6000);
+        } else {
+          factElement.textContent = 'No facts found in file.';
         }
       } catch (error) {
         console.error('Error loading facts:', error);
-        factElement.textContent = 'Unable to load facts file. Please check the file path.';
+        factElement.textContent = `Error: ${error.message}. Check that facts.txt is in static/facts/ folder.`;
       }
     }
 
