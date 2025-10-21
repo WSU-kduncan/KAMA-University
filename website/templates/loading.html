@@ -197,7 +197,7 @@
       </div>
     </div>
     <div class="header-center">
-      <img src="chameleon.png" alt="Chameleon Logo" class="student-logo">
+      <img src="./static/chameleon.png" alt="Chameleon Logo" class="student-logo">
     </div>
     <div class="header-right">
       <a href="#" class="greeting">Hello, User</a>
@@ -207,7 +207,7 @@
 
   <main>
     <div class="loading-content">
-      <img src="loading.png" alt="Loading" class="spinner">
+      <img src="./static/loading.png" alt="Loading" class="spinner">
       
       <div class="fact-container">
         <p class="fact" id="fact"></p>
@@ -238,7 +238,7 @@
     // Load and parse facts from facts.md
     async function loadFacts() {
       try {
-        const response = await window.fs.readFile('facts.md', { encoding: 'utf8' });
+        const response = await window.fs.readFile('/facts/facts.md', { encoding: 'utf8' });
         
         // Split by lines and filter out empty lines and numbers
         const lines = response.split('\n');
