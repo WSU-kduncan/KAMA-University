@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 from authentication import authenticate
 
 app = Flask(__name__)
@@ -60,6 +60,10 @@ def logout():
 @app.route('/loading')
 def loading_page():
     return render_template('loading.html')
+
+@app.route('/facts/facts.txt')
+def serve_facts():
+    return send_from_directory('facts', 'facts.txt')
 
 if __name__ == "__main__":
     app.run(debug=True, port=5050)

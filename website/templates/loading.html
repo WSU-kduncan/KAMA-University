@@ -235,21 +235,46 @@
       return shuffled;
     }
 
-    // Load and parse facts from facts.md
-async function loadFacts() {
+    // Load and parse facts from facts.txt
+    async function loadFacts() {
       try {
-        // Try using fetch first (for Flask/web server)
         let response;
-        try {
-          response = await fetch("{{ url_for('files', filename='facts.txt') }}");
-          if (!response.ok) throw new Error('Fetch failed');
-          response = await response.text();
-        } catch (fetchError) {
-          // Fallback to window.fs if available
-          if (window.fs && window.fs.readFile) {
+        
+        // Try using window.fs first (for Claude artifacts)
+        if (window.fs && window.fs.readFile) {
+          try {
             response = await window.fs.readFile('facts.txt', { encoding: 'utf8' });
-          } else {
-            throw new Error('Unable to load facts file');
+          } catch (fsError) {
+            console.log('window.fs failed, trying fetch');
+          }
+        }
+        
+        // If window.fs didn't work, try fetch
+        if (!response) {
+          // Try different possible paths
+          const possiblePaths = [
+            '../facts/facts.txt',  // Go up from templates, into facts folder
+            '/facts/facts.txt',     // Absolute path from root
+            'facts.txt'             // Same directory (if moved)
+          ];
+          
+          let fetchSuccess = false;
+          for (const path of possiblePaths) {
+            try {
+              const fetchResponse = await fetch(path);
+              if (fetchResponse.ok) {
+                response = await fetchResponse.text();
+                fetchSuccess = true;
+                console.log(`Successfully loaded facts from: ${path}`);
+                break;
+              }
+            } catch (e) {
+              console.log(`Failed to load from ${path}`);
+            }
+          }
+          
+          if (!fetchSuccess) {
+            throw new Error('Could not find facts.txt in any expected location');
           }
         }
         
@@ -260,17 +285,21 @@ async function loadFacts() {
           .filter(line => line && !line.match(/^\d+\.?\s*$/))
           .map(line => line.replace(/^\d+\.\s*/, '')); // Remove leading numbers
         
+        if (facts.length === 0) {
+          throw new Error('No facts found in file');
+        }
+        
         // Shuffle the facts
         shuffledFacts = shuffleArray(facts);
         
         // Display first fact
-        if (shuffledFacts.length > 0) {
-          displayFact();
-          setInterval(displayFact, 6000);
-        }
+        displayFact();
+        setInterval(displayFact, 6000);
+        
       } catch (error) {
         console.error('Error loading facts:', error);
-        factElement.textContent = 'Unable to load facts file. Please check the file path.';
+        factElement.textContent = 'Did you know? Loading takes time, but learning is instant!';
+        factElement.style.opacity = '1';
       }
     }
 
