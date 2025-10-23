@@ -1,4 +1,5 @@
--- DROP DATABASE IF EXISTS kama; --This is just so you can see the script. Its mad right now idk why
+-- This script creates all the tables for the database
+-- You should only need to run this once
 CREATE DATABASE kama;
 USE kama;
 
@@ -36,7 +37,7 @@ CREATE TABLE Course (
 );
 
 -- ======================
--- 4. REQUIREMENT_COURSE
+-- 4. REQUIREMENT_COURSE: Matches what courses meet a requirement
 -- ======================
 CREATE TABLE Requirement_Course (
     requirement_id INT NOT NULL,

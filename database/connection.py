@@ -20,17 +20,17 @@ except mariadb.Error as e:
 
 
 
-cur = conn.cursor()
+# cur = conn.cursor()
 
-try:
-    cur.execute(
-        "INSERT INTO Program (program_id, program_name, degree_type) VALUES (?, ?, ?)",
-        (1, "Computer Science", "Major")
-    )
-    conn.commit()  # <-- IMPORTANT to save the change
-    print("Row inserted successfully!")
+# try:
+#     cur.execute(
+#         "INSERT INTO Program (program_id, program_name, degree_type) VALUES (?, ?, ?)",
+#         (1, "Computer Science", "Major")
+#     )
+#     conn.commit()  # <-- IMPORTANT to save the change
+#     print("Row inserted successfully!")
 
-except mariadb.Error as e:
-    print(f"Error: {e}")
+# except mariadb.Error as e:
+#     print(f"Error: {e}")
 
-conn.close()   
+# conn.close()   
