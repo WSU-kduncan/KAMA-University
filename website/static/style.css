@@ -559,16 +559,24 @@ footer {
   background-color: #e3f0ff;
 }
 
-/* ===== Loading Page (new styles only) ===== */
+/* ===== Loading Page (standalone centered version) ===== */
+
+.loading-body {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+}
 
 .loading-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
-  min-height: calc(100vh - 160px); /* allows space for header/footer */
-  text-align: center;
 }
 
 .spinner {
@@ -586,7 +594,7 @@ footer {
 
 .fact-container {
   max-width: 700px;
-  margin-top: 30px;
+  margin-top: 20px;
   min-height: 80px;
   display: flex;
   align-items: center;
@@ -598,7 +606,8 @@ footer {
   line-height: 1.6;
   opacity: 0;
   animation: fadeInOut 6s ease-in-out infinite;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #3AA655;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes fadeInOut {

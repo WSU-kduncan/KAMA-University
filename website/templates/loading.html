@@ -7,33 +7,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body class="loading-body" data-role="{{ role }}">
-  <header class="student-header">
-    <div class="header-left">
-      <div class="menu-icon">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+  <div class="loading-content">
+    <img src="{{ url_for('static', filename='loading.png') }}" alt="Loading" class="spinner">
+    <div class="fact-container">
+      <p class="fact" id="fact"></p>
     </div>
-    <div class="header-center">
-      <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
-    </div>
-    <div class="header-right">
-    </div>
-  </header>
-
-  <main>
-    <div class="loading-content">
-      <img src="{{ url_for('static', filename='loading.png') }}" alt="Loading" class="spinner">
-      <div class="fact-container">
-        <p class="fact" id="fact"></p>
-      </div>
-    </div>
-  </main>
-
-  <footer class="student-footer">
-    <p>&copy; 2025 KAMA University.</p>
-  </footer>
+  </div>
 
   <script src="{{ url_for('static', filename='loading.js') }}"></script>
 </body>
