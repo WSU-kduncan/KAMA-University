@@ -43,31 +43,27 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ## Project Structure
 ```
-website/
-│
-├── app.py                       # Main Flask application (handles routes and role-based redirects)
-├── authentication.py            # Authenticates users and determines their roles (student, faculty, admin)
-├── connection.py                # Handles MariaDB connection setup
-│
-├── databaseScript.sql           # SQL file to create and populate tables
-│
-├── /templates/                  # HTML templates rendered by Flask
-│   ├── index.html               # Homepage (team/project overview)
-│   ├── login.html               # Login page with username/password form
-│   ├── student.html             # Student dashboard (dynamic name, semester info)
-│   ├── faculty.html             # Faculty dashboard (dynamic table, name display)
-│   ├── admin.html               # Admin dashboard (manage users, programs, courses)
-│
-├── /static/                     # Static frontend assets
-│   ├── style.css                # Central stylesheet (used by all pages)
-│   ├── chameleon.png            # KAMA University logo
-│   ├── bell.png                 # Notification icon
-│
-├── /venv/                       # Python virtual environment (not tracked in Git)
-│
-├── README.md                    # Project overview and setup guide
-├── .gitignore                   # Ignore venv, __pycache__, and other unnecessary files
-
+KAMA-University/
+└── website/
+    ├── app.py
+    ├── authentication.py
+    │
+    ├── templates/
+    │   ├── index.html
+    │   ├── login.html
+    │   ├── loading.html
+    │   ├── student.html
+    │   ├── faculty.html
+    │   └── admin.html
+    │   
+    │
+    ├── static/
+    │   ├── style.css
+    │   ├── loading.js
+    │   ├── facts.txt
+    │   ├── loading.png
+    │   ├── chameleon.png
+    │   └── bell.png
 ```
 
 ## Setup Instructions
