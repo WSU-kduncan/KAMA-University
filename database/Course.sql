@@ -1,24 +1,18 @@
 -- This script will insert all data for the program info
--- Programs
--- Program Requirements
--- Course Requirements
--- You should only need to run this once
-
 -- Courses
 -- F = Fall
 -- S = Spring
 -- Q = Summer
--- 
+-- TODO: GET RID OF DEPARMENT 
 -- Department is the credit it accounts for
--- There is also the requirements table which 
 INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credits, department) VALUES
-(1, 'ENG 1100', 'FSPS', 'Academic Writing and Reading', 3, 'English Comp'),
-(2, 'ENG 2100', 'FSPS', 'Research Writing and Argumentation', 3, 'English Comp'),
-(3, 'HST 1500', 'FSPS', 'Introduction to Greek and Roman Culture', 3, 'Arts and Humanities (History)'),
-(4, 'ART 2140', 'FSPS', 'Themes in Visual Culture', 4, 'Extra Arts & Humanities'),
-(5, 'STT 1600', 'FSPS', 'Statistical Concepts', 4, 'Wright State Core Math'),
+(1, 'ENG 1100', 'FSQ', 'Academic Writing and Reading', 3, 'English Comp'),
+(2, 'ENG 2100', 'FSQ', 'Research Writing and Argumentation', 3, 'English Comp'),
+(3, 'HST 1500', 'FSQ', 'Introduction to Greek and Roman Culture', 3, 'Arts and Humanities (History)'),
+(4, 'ART 2140', 'FSQ', 'Themes in Visual Culture', 4, 'Extra Arts & Humanities'),
+(5, 'STT 1600', 'FSQ', 'Statistical Concepts', 4, 'Wright State Core Math'),
 (6, 'UVC 1010', 'FS', 'First Year Seminar', 3, 'Wright State Core FYS'),
-(7, 'LA 1020', 'FSS', 'First-Year Seminar: College of Liberal Arts', 3, 'First Year Seminar'),
+(7, 'LA 1020', 'FSQ', 'First-Year Seminar: College of Liberal Arts', 3, 'First Year Seminar'),
 (8, 'PSY 1010', 'FSS', 'Intro to Psychology', 4, 'Wright State Core Social Science'),
 (9, 'PSY 1010L', 'FSS', 'Intro to Psychology/L', 0, 'Wright State Core Social Science'),
 (10, 'EC 2900', '', 'Global Economic, Business and Social Issues', 0, 'Wright State Core Social Science'),
@@ -62,72 +56,15 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (48, 'PSY 2160', 'FSS', 'Counseling Psychology', 3, 'Department Electives'),
 (49, 'PSY 2580', 'FSS', 'Profiling and Serial Crimes', 3, 'Department Electives'),
 (50, 'SOC 2000', 'FSS', 'Introduction to Sociology', 3, ''),
-(51, 'PLS 4440', 'F', 'Methods of Crime Scene Investigation', 3, ''),
-(52, 'PSY 2520', 'FS', 'Forensic Psychology', 3, 'Department Electives');
+(51, 'PLS 4440', 'F', 'Methods of Crime Scene Investigation', 3, '');
+
+
+INSERT INTO Program(program_id, program_name, degree_type, creditHours) VALUES
+(1, 'Psychology', 'Major', 120),
+(2, 'Criminal Justice', 'Major', 120),
+(3, 'Sociology', 'Minor', 18),
+(4, 'Forensic Studies', 'Minor', 18);
 
 
 
-INSERT IGNORE INTO Program(program_id, program_name, degree_type) VALUES
-(1, 'Psychology', 'Major'),
-(2, 'Criminal Justice', 'Major'),
-(3, 'Sociology', 'Minor'),
-(4, 'Forensic Studies', 'Minor');
 
-
---Need to add Requirement Table for each Program
---Need to add PreReq for ENG 2100
---Could make requirements table for only IW, IE, GI
--- Department will handle department requirements
---Can make a search to see if string matches
--- we just need to make sure our strings match
--- 3 is a GI
--- 8 is IE, IW
--- 10 is all 3
--- could add 3 other attributes for GI, IE, IW and make them boolean
-
--- Course_Requirements: Pairs the Requirement with its Courses
-
---Program_Requirements: Pairs the Program with its requirements
-
--- Test if people can connect to my host
-
--- Requirements
-    -- Psychology Requirements : Classes you need to take for Psych
-        --UVC 1010
-        --ENG 1100
-        --STT 1600
-        --PSY 1010
-        --PSY 1010L
-        --PSY 3010/L
-        --PSY 3020/L
-    -- Sociology
-    -- Criminal Justice
-    -- Forensics
-
-    -- Core A
-        --ENG 1100
-        --ENG 2100
-    -- Core B
-        --STT 1600
-    -- Core C (ART)
-        -- ART 2140
-    -- Core C (HIS)
-        -- HST 1500
-    -- Core D 
-        --PSY 1010/L
-        --EC 2900
-    -- Core E
-        --BIO 1150/L
-        --PHY 1110/L, R
-    -- Core 
-        --MTH 2300/L, R
-
-    -- GI 
-
-    -- IE
-    -- IW
-
-
--- Requirement Course Connection
--- Core math 1 + Stats 1 = 1
--- Coure math 1 + Math 3 = 2

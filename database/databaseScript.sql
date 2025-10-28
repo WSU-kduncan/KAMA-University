@@ -1,5 +1,6 @@
 -- This script creates all the tables for the database
 -- You should only need to run this once
+DROP DATABASE IF EXISTS kama;
 CREATE DATABASE kama;
 USE kama;
 
@@ -9,7 +10,8 @@ USE kama;
 CREATE TABLE Program (
     program_id INT PRIMARY KEY,
     program_name VARCHAR(100) NOT NULL,
-    degree_type VARCHAR(20) NOT NULL /* Major or Minor */
+    degree_type VARCHAR(20) NOT NULL,
+    creditHours INT NOT NULL
 );
 
 -- ======================
@@ -17,11 +19,19 @@ CREATE TABLE Program (
 -- ======================
 CREATE TABLE Requirement (
     requirement_id INT PRIMARY KEY,
-    program_id INT NOT NULL,
     requirement_type VARCHAR(50),     
-    description VARCHAR(255),
-    min_credits INT,
-    FOREIGN KEY (program_id) REFERENCES Program(program_id)
+    min_credits INT
+);
+
+-- ======================
+-- 2. Connects all the Requirments that each Program has
+-- ======================
+CREATE TABLE Program_Requirements (
+    program_id INT NOT NULL,
+    requirement_id INT NOT NULL,
+    PRIMARY KEY (program_id, requirement_id),
+    FOREIGN KEY (program_id) REFERENCES Program(program_id),
+    FOREIGN KEY (requirement_id) REFERENCES Requirement(requirement_id)
 );
 
 -- ======================
@@ -33,8 +43,9 @@ CREATE TABLE Course (
     semester VARCHAR(20) NOT NULL,
     course_name VARCHAR(100) NOT NULL,
     credits INT NOT NULL,
-    department VARCHAR(50)
+    prereq VARCHAR(50)
 );
+
 
 -- ======================
 -- 4. REQUIREMENT_COURSE: Matches what courses meet a requirement
@@ -88,7 +99,8 @@ CREATE TABLE Admin (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE
 );
 
 -- ======================
