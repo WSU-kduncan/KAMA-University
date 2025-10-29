@@ -103,25 +103,36 @@ def get_course_by_id(course_id):
     return result
 
 
-#TODO: add prereq to courses
 # -------------------------------------------------------------
 # Prerequisites: Returns the prerequisites of a course
 # -------------------------------------------------------------
-def get_prerequisites(course_id):
+def get_prerequisite(course_id):
     conn = get_db_connection()
     if not conn:
-        return []
+        return None
 
     cur = conn.cursor()
-    query = """
-        SELECT prereq_id, prereq_course_id
-        FROM Prerequisite
-        WHERE course_id = ?;
-    """
+
+    # Step 1: get the prereq ID for this course
+    query = "SELECT prereq FROM Course WHERE course_id = ?;"
     cur.execute(query, (course_id,))
-    results = cur.fetchall()
+    prereq_row = cur.fetchone()
+
+    # If no prereq or course not found
+    if not prereq_row or prereq_row[0] is None:
+        conn.close()
+        return None
+
+    prereq_id = prereq_row[0]
+
+    # Step 2: get the id and name of the prereq course
+    query = "SELECT course_id, course_name FROM Course WHERE course_id = ?;"
+    cur.execute(query, (prereq_id,))
+    prereq_course = cur.fetchone()
+
     conn.close()
-    return results
+    return prereq_course
+
 
 
 # -------------------------------------------------------------
@@ -190,7 +201,30 @@ if __name__ == "__main__":
 #print(get_program_requirements(1))
 #print(get_requirement_courses(2))
 #print(get_course_by_id(1))
-#print(get_prerequisites(2))
-#print(get_student_data(1))
-print(get_user_data_by_username('jacksonv'))
 
+#print(get_student_data(1))
+#print(get_user_data_by_username('jacksonv'))
+
+print(get_prerequisite(2))
+
+
+# (Primary Key, Program, Type of Major, Number of Credit Hours)
+# [(2, 'Criminal Justice', 'Major', 120)]
+
+#(Primary Key, 'Requirement', Min Credit Hours)
+#(2,           'Core A',      6)
+
+#(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
+#(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
+
+#(Primary Key, 'Course Code', 'Name of Course',               Credit Hours,  'Semesters Offered')
+#(1,           'ENG 1100',    'Academic Writing and Reading', 3,             'FSQ')
+
+#(Primary Key, 'First Name', 'Last Name', Num CoOps, Num Years, Credit Hours, Summer Semester, AdvisorID)
+#(1,           'Jackson',    'Vail',      0,         4,         15,           'yes',           1)
+
+#(Primary Key, 'First Name', 'Last Name', 'email',            'username', 'password',     Num Years, Num CoOps, Summer Semester, Credit Hours, AdvisorID)
+#(1,           'Jackson',    'Vail',      'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4,         0,         'yes',           15,           1)
+
+#(PreReq Primary Key, 'Prereq Name')
+#(1,                  'Academic Writing and Reading')

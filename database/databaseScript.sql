@@ -43,7 +43,7 @@ CREATE TABLE Course (
     semester VARCHAR(20) NOT NULL,
     course_name VARCHAR(100) NOT NULL,
     credits INT NOT NULL,
-    prereq VARCHAR(50)
+    prereq INT
 );
 
 
