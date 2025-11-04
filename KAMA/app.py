@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from authentication import authenticate
-from db_functions import (
+from Functions import (
     get_student_data,
     get_student_programs,
     get_program_requirements,
