@@ -8,45 +8,67 @@
 </head>
 <body>
     
-    
-    <header class="student-header">
-        <div class="header-left">
-          <div class="menu-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      
-        <div class="header-center">
-          <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
-        </div>
-      
-        <div class="header-right">
-            <a href="{{ url_for('logout') }}" class="greeting">Hello, {{ name }}</a>
-          <img src="{{ url_for('static', filename='bell.png') }}" alt="Bell Icon" class="bell-icon">
-        </div>
-      </header>
-      
+  <!-- ====== student header ====== -->
+  <header class="student-header">
+    <div class="header-left">
+      <div class="menu-icon" id="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  
+    <div class="header-center">
+      <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
+    </div>
+  
+    <div class="header-right">
+      <a href="{{ url_for('logout') }}" class="greeting">Hello, {{ name }}</a>
+      <img src="{{ url_for('static', filename='bell.png') }}" alt="Bell Icon" class="bell-icon">
+    </div>
+  </header>
 
-      <main class="student-content">
-        <div class="schedule-wrapper">
-          <h3 class="schedule-title">Semester</h3>
-          <div class="schedule-box">
-            <p>Your class schedule will appear here.</p>
 
-            <button class="schedule-btn">Make Changes</button>
+  <!-- ====== info panel ====== -->
+  <div class="student-info-box" id="studentInfo">
+    <div class="student-info-header">Student Info</div>
 
-            <div class="arrow-buttons">
-              <button class="arrow-btn left-arrow"></button>
-              <button class="arrow-btn right-arrow"></button>
-          </div>
+    <div class="info-field"><strong>Name:</strong> {{ student[1] }} {{ student[2] }}</div>
+    <div class="info-field"><strong>Email:</strong> {{ student_email }}</div>
+    <div class="info-field"><strong>Student ID:</strong> {{ student[0] }}</div>
+    <div class="info-field"><strong>Major:</strong> {{ major_name }}</div>
+    <div class="info-field"><strong>Minor:</strong> {{ minor_name }}</div>
+    <div class="info-field"><strong>Expected Graduation Date:</strong> {{ grad_date }}</div>
+    <div class="info-field"><strong>Co-Op:</strong> {{ student[3] }}</div>
+    <div class="info-field"><strong>Summer Courses:</strong> {{ student[6] }}</div>
+
+    <button class="close-info" id="closeInfo">Close</button>
+  </div>
+
+
+  <!-- ====== main content ====== -->
+  <main class="student-content">
+    <div class="schedule-wrapper">
+      <h3 class="schedule-title">Semester</h3>
+      <div class="schedule-box">
+        <p>Your class schedule will appear here.</p>
+
+        <button class="schedule-btn">Make Changes</button>
+
+        <div class="arrow-buttons">
+          <button class="arrow-btn left-arrow"></button>
+          <button class="arrow-btn right-arrow"></button>
         </div>
-      </main>
+      </div>
+    </div>
+  </main>
 
   <footer class="student-footer">
     © 2025 KAMA University
   </footer>
+
+  <!-- Link external JS -->
+  <script src="{{ url_for('static', filename='student.js') }}"></script>
 </body>
 </html>
 
