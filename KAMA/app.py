@@ -77,19 +77,24 @@ def student_dashboard():
     # get emails
     student_email = user_data['data'][3] if len(user_data['data']) > 3 else "N/A"
 
-    # get major and minor from get_student_programs()
-    major_name = None
-    minor_name = None
+    # handle multiple majors/minors
+    major_names = []
+    minor_names = []
+
     for prog in programs:
         if prog[2].lower() == "major":
-            major_name = prog[1]
+            major_names.append(prog[1])
         elif prog[2].lower() == "minor":
-            minor_name = prog[1]
+            minor_names.append(prog[1])
 
-    # defaults
-    major_name = major_name or "N/A"
-    minor_name = minor_name or "N/A"
-    grad_date = "TBD"  # Placeholder (no schema changes)
+    # default to placeholders if empty
+    major_names = major_names or ["N/A"]
+    minor_names = minor_names or ["N/A"]
+
+    # join for template use
+    major_name = ", ".join(major_names)
+    minor_name = ", ".join(minor_names)
+    grad_date = "TBD"
 
     # get program/requirement data
     program_data = []
@@ -108,7 +113,6 @@ def student_dashboard():
             'requirements': req_list
         })
 
-    # send all data to template
     return render_template(
         "student.html",
         name=username,
