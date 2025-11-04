@@ -45,3 +45,8 @@ def edit_numSemester(student_id, numSemesters):
 
 
 
+# A schedule can have only 1 student
+# it can have many semesters
+# a semester can be in many schdeles
+# a semester can have many courses
+# a course can have many semesters
