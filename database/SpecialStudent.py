@@ -40,3 +40,8 @@ def change_program(student_id, oldProgram_id, newProgram_id):
 def remove_program(student_id, program_id):
     return 1
 
+def edit_numSemester(student_id, numSemesters):
+    return 1
+
+
+
