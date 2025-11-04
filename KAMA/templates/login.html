@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KAMA University - Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-body">
+  <div class="login-container">
+    <h1>KAMA University</h1>
+
+    <!-- sends data to flask -->
+    <form action="{{ url_for('login') }}" method="post">
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <a href="{{ url_for('home') }}" class="back-button">← Back to Team Website</a>
+
+    <!-- error message -->
+    {% if error %}
+      <div class="error-message">{{ error }}</div>
+    {% endif %}
+  </div>
+</body>
+</html>
