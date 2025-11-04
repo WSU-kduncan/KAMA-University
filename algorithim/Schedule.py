@@ -1,20 +1,21 @@
 
 from enum import Enum
 from database import Functions
-from algorithm.Schedule import Schedule, Term
+from Schedule import Schedule, Term
+from Course import Course
 
 
-class Course:
+# class Course:
     
-    #(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
+#     #(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
 
-    def __init__(self, id):
-        temp_course = Functions.get_course_by_id(id) # returns #(Primary Key, 'Course Code', 'Name of Course', Credit Hours,  'Semesters Offered')
-        self.id = id
-        self.code = temp_course[1]
-        self.name = temp_course[2]
-        self.credits = temp_course[3]
-        self.offered_terms = temp_course[4]
+#     def __init__(self, id):
+#         temp_course = Functions.get_course_by_id(id) # returns #(Primary Key, 'Course Code', 'Name of Course', Credit Hours,  'Semesters Offered')
+#         self.id = id
+#         self.code = temp_course[1]
+#         self.name = temp_course[2]
+#         self.credits = temp_course[3]
+#         self.offered_terms = temp_course[4]
 
 
 class Term(str, Enum):
@@ -33,7 +34,7 @@ class Semester:
         self.courses = []
         self.creditHourCount = 0
 
-    def add_course(self, course):
+    def add_course(self, course: Course):
         if self.creditHourCount + course.credits <= self.maxCreditHours:
             self.courses.append(course)
             self.creditHourCount += course.credits

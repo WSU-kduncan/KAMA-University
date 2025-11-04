@@ -1,11 +1,10 @@
 from database import Functions
+from Course import Course
 
 class GenerateSchedule:
     # generates on creation
-    self.semesters_per_year = 0
     MIN_CREDIT_HOURS = 120 # minimum credit hours needed to graduate
-    self.current_semester = 0
-    self.current_year = 0
+    
     
     #returns not 0 if failed
     def __init__(self, id):
@@ -21,6 +20,10 @@ class GenerateSchedule:
         self.summer_semesters = student[8] # 'yes' or 'no'
         self.credit_hours_per_semester = student[9]
         self.total_credit_hours = 0
+        self.current_semester = 0
+        self.current_year = 0
+        self.semesters_per_year = 0
+        
         if self.test_base_possibility():
             # pull programs
             # print(get_student_programs(1))
@@ -31,6 +34,7 @@ class GenerateSchedule:
         else:
             # do nothing
             # TODO last : write error messages
+            self.generate_schedule()
 
     def test_base_possibility(self):
         if self.summer_semesters == 'yes':
@@ -77,6 +81,7 @@ class GenerateSchedule:
         while (self.total_credit_hours < self.MIN_CREDIT_HOURS):
             #TODO
             #add random courses to the semeser
+            i = 0
         
         # "add" coops
         if (self.current_semester * self.current_year + self.num_coops) <= (self.semesters_per_year * self.years):
@@ -84,6 +89,7 @@ class GenerateSchedule:
             #add each coop
             #just represent as a basic course called coop.
             #filler
+            returnValue = 0
         else:
             returnValue = 1
 
@@ -94,13 +100,24 @@ class GenerateSchedule:
                         
 
     def create_courses_to_add(self, course_id):
-        #TODO
         # given a course that has a prerequisite, create a list of all the courses that you have to take to take this course in the order of how you should take them
+        temp_course = Course(course_id)
+        course_stack = []
+        while Functions.get_prerequisite(temp_course.id) is not None:
+            course_stack.append(temp_course)
+            #(PreReq Primary Key, 'Prereq Name')
+            # index 0 will be the course id for the prerequisite
+            temp_course = Course(Functions.get_prerequisite[0])
+        return course_stack
+
+        
+        
 
     #courses is a list of ids
     def add_course_to_schedule(self, courses):
         #TODO
         #decribed in flow chart
+        #courses is a stack
 
    
 
