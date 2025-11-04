@@ -44,26 +44,32 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 ## Project Structure
 ```
 KAMA-University/
-└── website/
-    ├── app.py
-    ├── authentication.py
-    │
-    ├── templates/
-    │   ├── index.html
-    │   ├── login.html
-    │   ├── loading.html
-    │   ├── student.html
-    │   ├── faculty.html
-    │   └── admin.html
-    │   
-    │
-    ├── static/
-    │   ├── style.css
-    │   ├── loading.js
-    │   ├── facts.txt
-    │   ├── loading.png
-    │   ├── chameleon.png
-    │   └── bell.png
+│
+├── app.py
+├── authentication.py
+├── Functions.py
+├── databaseScript.sql
+├── setup.sh
+│
+├── templates/
+│   ├── index.html
+│   ├── login.html
+│   ├── loading.html
+│   ├── student.html
+│   ├── faculty.html
+│   └── admin.html
+│
+├── static/
+│   ├── style.css
+│   ├── student.js
+│   ├── chameleon.png
+│   ├── bell.png
+│   └── login.js
+│
+├── venv/                      # local Python environment
+│
+└──  README.md
+
 ```
 
 ## Setup Instructions
