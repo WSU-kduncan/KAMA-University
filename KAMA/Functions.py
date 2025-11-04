@@ -1,160 +1,245 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from authentication import authenticate
-from Functions import (
-    get_student_data,
-    get_student_programs,
-    get_program_requirements,
-    get_requirement_courses,
-    get_user_data_by_username
-)
+# TODO: TURN DATA INTO OBJECTS
+# TODO: ADD PREREQS TO COURSES : THESE WILL BE THE iDS OF THE COURSE
 
-app = Flask(__name__)
-app.secret_key = 'supersecretkey'
-
+import mariadb
 
 # -------------------------------------------------------------
-# HOME ROUTE
+# Database Connection
 # -------------------------------------------------------------
-@app.route('/')
-def home():
-    return render_template("index.html")
-
-
-# -------------------------------------------------------------
-# LOGIN ROUTE
-# -------------------------------------------------------------
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        role, name = authenticate(username, password)
-
-        if role in ["student", "faculty", "admin"]:
-            session['username'] = username
-            session['name'] = name
-            session['role'] = role
-            return redirect(url_for('loading'))
-        else:
-            return render_template(
-                "login.html",
-                error="Incorrect Username or Password. Please Try Again."
+def get_db_connection():
+    try:
+        conn = mariadb.connect(
+            user="root",
+            password="password",
+            host="localhost",
+            port=3306,
+            database="kama"
+        )
+        return conn
+    
+    except mariadb.Error as e:
+        print("Primary connection failed: {e}")
+        print("Using fallback password")
+        
+        try:
+            conn = mariadb.connect(
+                user="root",
+                password="3665",
+                host="localhost",
+                port=3306,
+                database="kama"
             )
-    
-    return render_template("login.html")
+            print("Connected")
+            return conn
+        except mariadb.Error as e2:
+            print("Connection Failed")
+            return None
 
 
 # -------------------------------------------------------------
-# LOADING ROUTE
+# Student Programs: Returns a list of the Programs a student is enlisted in
 # -------------------------------------------------------------
-@app.route('/loading')
-def loading():
-    name = session.get('name', '')
-    role = session.get('role', '')
-    if not role:
-        return redirect(url_for('login'))
-    return render_template('loading.html', name=name, role=role)
+def get_student_programs(student_id):
+    conn = get_db_connection()
+    if not conn:
+        return []
 
-
-# -------------------------------------------------------------
-# STUDENT DASHBOARD
-# -------------------------------------------------------------
-@app.route('/student')
-def student_dashboard():
-    if session.get('role') != 'student':
-        return redirect(url_for('login'))
-    
-    username = session.get('name')
-    user_data = get_user_data_by_username(session.get('username'))
-    
-    if not user_data:
-        return render_template("student.html", name=username, error="Student data not found")
-    
-    student_id = user_data['data'][0]
-    student = get_student_data(student_id)
-    programs = get_student_programs(student_id)
-
-    # get emails
-    student_email = user_data['data'][3] if len(user_data['data']) > 3 else "N/A"
-
-    # get major and minor from get_student_programs()
-    major_name = None
-    minor_name = None
-    for prog in programs:
-        if prog[2].lower() == "major":
-            major_name = prog[1]
-        elif prog[2].lower() == "minor":
-            minor_name = prog[1]
-
-    # defaults
-    major_name = major_name or "N/A"
-    minor_name = minor_name or "N/A"
-    grad_date = "TBD"  # Placeholder (no schema changes)
-
-    # get program/requirement data
-    program_data = []
-    for program in programs:
-        program_id = program[0]
-        requirements = get_program_requirements(program_id)
-        req_list = []
-        for req in requirements:
-            courses = get_requirement_courses(req[0])
-            req_list.append({
-                'requirement': req,
-                'courses': courses
-            })
-        program_data.append({
-            'program': program,
-            'requirements': req_list
-        })
-
-    # send all data to template
-    return render_template(
-        "student.html",
-        name=username,
-        student=student,
-        student_email=student_email,
-        major_name=major_name,
-        minor_name=minor_name,
-        grad_date=grad_date,
-        data=program_data
-    )
+    cur = conn.cursor()
+    query = """
+        SELECT p.program_id, p.program_name, p.degree_type, p.creditHours
+        FROM StudentProgram sp
+        JOIN Program p ON sp.program_id = p.program_id
+        WHERE sp.student_id = ?;
+    """
+    cur.execute(query, (student_id,))
+    results = cur.fetchall()
+    conn.close()
+    return results
 
 
 # -------------------------------------------------------------
-# FACULTY DASHBOARD
+# Program Requirements: Returns a list of the requirements of a program
 # -------------------------------------------------------------
-@app.route('/faculty')
-def faculty_dashboard():
-    name = session.get('name', '')
-    if session.get('role') != 'faculty':
-        return redirect(url_for('login'))
-    return render_template("faculty.html", name=name)
+def get_program_requirements(program_id):
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+    query = """
+        SELECT r.requirement_id, r.requirement_type, r.min_credits
+        FROM Program_Requirements pr
+        JOIN Requirement r ON pr.requirement_id = r.requirement_id
+        WHERE pr.program_id = ?;
+    """
+    cur.execute(query, (program_id,))
+    results = cur.fetchall()
+    conn.close()
+    return results
 
 
 # -------------------------------------------------------------
-# ADMIN DASHBOARD
+# Requirement Courses: Returns all the courses that match that requirement
 # -------------------------------------------------------------
-@app.route('/admin')
-def admin_dashboard():
-    name = session.get('name', '')
-    if session.get('role') != 'admin':
-        return redirect(url_for('login'))
-    return render_template("admin.html", name=name)
+def get_requirement_courses(requirement_id):
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+    query = """
+        SELECT c.course_id, c.course_code, c.course_name, c.credits, c.semester
+        FROM Requirement_Course rc
+        JOIN Course c ON rc.course_id = c.course_id
+        WHERE rc.requirement_id = ?;
+    """
+    cur.execute(query, (requirement_id,))
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+# -------------------------------------------------------------
+# Course by ID: Returns everything except department
+# -------------------------------------------------------------
+def get_course_by_id(course_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT course_id, course_code, course_name, credits, semester
+        FROM Course
+        WHERE course_id = ?;
+    """
+    cur.execute(query, (course_id,))
+    result = cur.fetchone()
+    conn.close()
+    return result
 
 
 # -------------------------------------------------------------
-# LOGOUT
+# Prerequisites: Returns the prerequisites of a course
 # -------------------------------------------------------------
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
+def get_prerequisite(course_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+
+    # Step 1: get the prereq ID for this course
+    query = "SELECT prereq FROM Course WHERE course_id = ?;"
+    cur.execute(query, (course_id,))
+    prereq_row = cur.fetchone()
+
+    # If no prereq or course not found
+    if not prereq_row or prereq_row[0] is None:
+        conn.close()
+        return None
+
+    prereq_id = prereq_row[0]
+
+    # Step 2: get the id and name of the prereq course
+    query = "SELECT course_id, course_name FROM Course WHERE course_id = ?;"
+    cur.execute(query, (prereq_id,))
+    prereq_course = cur.fetchone()
+
+    conn.close()
+    return prereq_course
 
 
+
 # -------------------------------------------------------------
-# MAIN ENTRY POINT
+# Student Data: Returns full data about a student
+# -------------------------------------------------------------
+def get_student_data(student_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT s.student_id, s.first_name, s.last_name, s.NumcoOps, 
+            s.numYears, s.CrdtHrsPrSem, s.summerSemester, s.advisor_id
+        FROM Student s
+        WHERE s.student_id = ?;
+    """
+    cur.execute(query, (student_id,))
+    result = cur.fetchone()
+    conn.close()
+    return result
+
+# -------------------------------------------------------------
+# Returns user data based on the username
+# -------------------------------------------------------------
+def get_user_data_by_username(username):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+
+    # List of tables to search
+    tables = ["Student", "Admin", "Advisor"]
+
+    result = None
+
+    for table in tables:
+        query = f"SELECT * FROM {table} WHERE username = ?;"
+        cur.execute(query, (username,))
+        result = cur.fetchone()
+        if result:
+            # Include which table we found it in
+            result_dict = {"user_type": table, "data": result}
+            conn.close()
+            return result_dict
+
+    # Not found in any table
+    conn.close()
+    return None
+
+# -------------------------------------------------------------
+# Example usage (for testing)
 # -------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(debug=True, port=5050)
+    print("Testing database functions...\n")
 
+    # Test connection
+    conn = get_db_connection()
+    if conn:
+        print("✅ Connection successful!\n")
+        conn.close()
+
+    # Example test calls
+# print(get_student_programs(1))
+#print(get_program_requirements(1))
+#print(get_requirement_courses(2))
+#print(get_course_by_id(1))
+
+#print(get_student_data(1))
+#print(get_user_data_by_username('jacksonv'))
+
+print(get_prerequisite(2))
+
+
+# (Primary Key, Program, Type of Major, Number of Credit Hours)
+# [(2, 'Criminal Justice', 'Major', 120)]
+
+#(Primary Key, 'Requirement', Min Credit Hours)
+#(2,           'Core A',      6)
+
+#(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
+#(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
+
+#(Primary Key, 'Course Code', 'Name of Course',               Credit Hours,  'Semesters Offered')
+#(1,           'ENG 1100',    'Academic Writing and Reading', 3,             'FSQ')
+
+#(Primary Key, 'First Name', 'Last Name', Num CoOps, Num Years, Credit Hours, Summer Semester, AdvisorID)
+#(1,           'Jackson',    'Vail',      0,         4,         15,           'yes',           1)
+
+#(Primary Key, 'First Name', 'Last Name', 'email',            'username', 'password',     Num Years, Num CoOps, Summer Semester, Credit Hours, AdvisorID)
+#(1,           'Jackson',    'Vail',      'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4,         0,         'yes',           15,           1)
+
+#(PreReq Primary Key, 'Prereq Name')
+#(1,                  'Academic Writing and Reading')
