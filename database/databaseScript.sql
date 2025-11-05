@@ -69,8 +69,8 @@ CREATE TABLE Advisor (
     last_name VARCHAR(50) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    office_name VARCHAR(20),
-    office_num INT,
+    office_name VARCHAR(20) NOT NULL,
+    office_num INT NOT NULL,
     email VARCHAR(100) UNIQUE
 );
 
@@ -200,7 +200,8 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (48, 'PSY 2160', 'FSQ', 'Counseling Psychology', 3, 8),
 (49, 'PSY 2580', 'FSQ', 'Profiling and Serial Crimes', 3, 8),
 (50, 'SOC 2000', 'FSQ', 'Introduction to Sociology', 3, NULL),
-(51, 'PLS 4440', 'F', 'Methods of Crime Scene Investigation', 3, NULL);
+(51, 'PLS 4440', 'F', 'Methods of Crime Scene Investigation', 3, NULL),
+(52, 'CoOp', 'FSQ', 'CoOp', -1, NULL);
 
 
 INSERT INTO Program(program_id, program_name, degree_type, creditHours) VALUES
