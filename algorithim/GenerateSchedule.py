@@ -63,6 +63,8 @@ class GenerateSchedule:
                 #grab the courses for this requirement
                 courses = Functions.get_requirement_courses(requirement[1])
                 for course in courses:
+                    #TODO fix course logic to fit how prequisites are set
+                    #figure out how to work with terms
 
                     courses_to_add = []
                     #(Primary Key, 'Course Code', 'Name of Course', Credit Hours,  'Semesters Offered')
@@ -93,7 +95,7 @@ class GenerateSchedule:
             #filler
             returnValue = 0
         else:
-            #TODO
+            # TODO add specific numbers for error codes
             returnValue = 1
 
         #if it even gets here lol
@@ -125,6 +127,11 @@ class GenerateSchedule:
             else:
                 self.current_year += 1
                 self.current_semester = 0;
+        
+        if(self.current_year > self.years):
+            #schedule generation failure
+            # TODO add specific numbers for error codes
+            return 1
         # decribed in flow chart
         # courses is a stack
         if len(courses) == 1:
@@ -133,9 +140,15 @@ class GenerateSchedule:
         
         elif len(courses) > 1:
             i = 0
+            prereq_semester = self.current_semester
+            prereq_year = self.current_year
+            while(len(courses) > 0):
+                if
 
         else:
-            i=0
+            # somehow failed again lol
+            # TODO add specific numbers for error codes
+            return 1
 
     
 

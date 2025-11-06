@@ -8,4 +8,5 @@ class Course:
         self.code = temp_course[1]
         self.name = temp_course[2]
         self.credits = temp_course[3]
+        #TODO change how this is created to be an array of terms
         self.offered_terms = temp_course[4]
