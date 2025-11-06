@@ -1,5 +1,6 @@
 from database import Functions
 from Course import Course
+from Schedule import Schedule, Term
 
 class GenerateSchedule:
     # generates on creation
@@ -23,6 +24,7 @@ class GenerateSchedule:
         self.current_semester = 0
         self.current_year = 0
         self.semesters_per_year = 0
+        self.schedule = Schedule(student[1], self.credit_hours_per_semester)
         
         if self.test_base_possibility():
             # pull programs
@@ -69,7 +71,7 @@ class GenerateSchedule:
                         courses_to_add.append(course)
                         returnValue = self.add_course_to_schedule(courses_to_add)
                     else:
-                        courses_to_add = create_courses_to_add(course)
+                        courses_to_add = self.create_courses_to_add(course)
                         returnValue = self.add_course_to_schedule(courses_to_add)
                     
                     if returnValue != 0:
@@ -91,17 +93,16 @@ class GenerateSchedule:
             #filler
             returnValue = 0
         else:
+            #TODO
             returnValue = 1
 
         #if it even gets here lol
         return returnValue
 
-        
-                        
 
-    def create_courses_to_add(self, course_id):
+    def create_courses_to_add(self, course):
         # given a course that has a prerequisite, create a list of all the courses that you have to take to take this course in the order of how you should take them
-        temp_course = Course(course_id)
+        temp_course = course
         course_stack = []
         while Functions.get_prerequisite(temp_course.id) is not None:
             course_stack.append(temp_course)
@@ -116,8 +117,29 @@ class GenerateSchedule:
     #courses is a list of ids
     def add_course_to_schedule(self, courses):
         #TODO
-        #decribed in flow chart
-        #courses is a stack
+        # Change current year or semester if necessary
+        if self.schedule.evaluate_current_semester(self.current_semester, self.current_year, courses[0]):
+            if (self.current_semester + 1) <= self.semesters_per_year:
+                self.current_semester += 1
+                self.schedule.get_or_create_semester()
+            else:
+                self.current_year += 1
+                self.current_semester = 0;
+        # decribed in flow chart
+        # courses is a stack
+        if len(courses) == 1:
+            if self.schedule.course_in_schedule(courses[0]):
+                self.schedule.add_course(courses[0], self.current_year, self.current_semester)
+        
+        elif len(courses) > 1:
+            i = 0
+
+        else:
+            i=0
+
+    
+
+
 
    
 

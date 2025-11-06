@@ -1,7 +1,6 @@
 
 from enum import Enum
 from database import Functions
-from Schedule import Schedule, Term
 from Course import Course
 
 
@@ -50,20 +49,29 @@ class Schedule:
 
     def __init__(self, maxCreditHours):
         # self.years: dict[str, dict[Term, Semester]] = {}
-        self.years = {}
         self.maxCreditHours
+        self.course_ids
+        self.years = {}
     
-    def get_or_create_semester(self, term: Term, year: int):
+    def get_or_create_semester(self, term: int, year: int):
         if year not in self.years:
             self.years[year] = {}
         
         if term not in self.years[year]:
-            self.years[year][term] = Semester(term, self.maxCreditHours)
+            translated_term = Term.F
+            if term == 0:
+                translated_term = Term.F
+            elif term == 1:
+                translated_term = Term.S
+            else:
+                translated_term = Term.Q
+            self.years[year][term] = Semester(translated_term, self.maxCreditHours)
             
         return self.years[year][term]
 
     def add_course(self, course: Course, year: int, term: Term):
         sem = self.get_or_create_semester(term, year)
+        self.course_ids.append(course[0])
         sem.add_course(course)
 
     def list_schedule(self):
@@ -71,4 +79,19 @@ class Schedule:
             print(f"\nYear {year_index}:")
             for term, semester in terms.items():
                 semester.list_courses()
+
+    def course_in_schedule(self, course):
+        if course[0] in self.course_ids:
+            return True
+        else:
+            return False
+
+    #returns true if the current semester should be incremented
+    def evaluate_current_semester(self, current_term, current_year, course):
+        temp_semester = self.years[current_year][current_term]
+        if (temp_semester.creditHourCount + course[3]) < temp_semester.maxCreditHours:
+            return True
+        else:
+            return False
+
 
