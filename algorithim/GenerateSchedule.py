@@ -61,21 +61,25 @@ class GenerateSchedule:
             #(Primary Key, 'Requirement', Min Credit Hours)
             for requirement in requirements:
                 #grab the courses for this requirement
-                courses = Functions.get_requirement_courses(requirement[1])
+                courses = Functions.get_requirement_courses(requirement[0])
+                #(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
+                #[(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')]
                 for course in courses:
                     #TODO fix course logic to fit how prequisites are set
                     #figure out how to work with terms
+                    #Course is set up as an array (course id, prereq name)
 
                     courses_to_add = []
                     #(Primary Key, 'Course Code', 'Name of Course', Credit Hours,  'Semesters Offered')
                     #add_course will return 0 if successful and not 0 if not
                     if(Functions.get_prerequisite(course[0]) is None):
-                        courses_to_add.append(course)
+                        courses_to_add.append(Course(course[0])) #this creates a course object to add
                         returnValue = self.add_course_to_schedule(courses_to_add)
                     else:
-                        courses_to_add = self.create_courses_to_add(course)
+                        courses_to_add = self.create_courses_to_add(Course(course[0])) #creates course to start function
                         returnValue = self.add_course_to_schedule(courses_to_add)
                     
+                    # if at any point in the loop the generation fails stop loop and return.
                     if returnValue != 0:
                         return returnValue
                     
@@ -84,6 +88,7 @@ class GenerateSchedule:
         #after going through every program, consider adding random as couses until minimum credit hours are reached
         while (self.total_credit_hours < self.MIN_CREDIT_HOURS):
             #TODO
+            # I need a method to get an array of all the courses or course id's in the database.
             #add random courses to the semeser
             i = 0
         
@@ -91,6 +96,7 @@ class GenerateSchedule:
         if (self.current_semester * self.current_year + self.num_coops) <= (self.semesters_per_year * self.years):
             #TODO
             #add each coop
+            
             #just represent as a basic course called coop.
             #filler
             returnValue = 0
@@ -117,16 +123,17 @@ class GenerateSchedule:
         
 
     #courses is a list of ids
-    def add_course_to_schedule(self, courses):
+    def add_course_to_schedule(self, courses : Course):
         #TODO
         # Change current year or semester if necessary
         if self.schedule.evaluate_current_semester(self.current_semester, self.current_year, courses[0]):
             if (self.current_semester + 1) <= self.semesters_per_year:
                 self.current_semester += 1
-                self.schedule.get_or_create_semester()
+                self.schedule.get_or_create_semester(self.current_semester, self.current_year)
             else:
                 self.current_year += 1
                 self.current_semester = 0;
+                self.schedule.get_or_create_semester(self.current_semester, self.current_year)
         
         if(self.current_year > self.years):
             #schedule generation failure
@@ -135,20 +142,73 @@ class GenerateSchedule:
         # decribed in flow chart
         # courses is a stack
         if len(courses) == 1:
-            if self.schedule.course_in_schedule(courses[0]):
-                self.schedule.add_course(courses[0], self.current_year, self.current_semester)
+            if not(self.schedule.course_in_schedule(courses[0])):
+                time = self.find_available_semester(self.current_semester, self.current_year, courses[0])
+                #(semester, year)
+                if time[1] > self.years:
+                    #TODO breakpoint error codes
+                    return 1
+                self.schedule.add_course(courses[0], time[1], time[0])
+
         
         elif len(courses) > 1:
             i = 0
             prereq_semester = self.current_semester
             prereq_year = self.current_year
             while(len(courses) > 0):
-                if
+                
+                course = courses.pop()
+                if not(self.schedule.course_in_schedule(course)):
+                    time == self.find_available_semester(prereq_semester, prereq_year, course)
 
+                    if(time[1] > self.years):
+                        #TODO breakpoint error codess
+                        return 1
+                    else:
+                        prereq_semester = time[0]
+                        prereq_year = time[1]
+                        self.schedule.add_course(course, prereq_year, prereq_semester)
+                
         else:
             # somehow failed again lol
             # TODO add specific numbers for error codes
             return 1
+        
+        # if you have gone through everything and it didn't stop then it succeeded
+        return 0
+        
+    # returns array in order of  (semester, year)
+    def find_available_semester(self, current_semester, current_year, course):
+        # Course
+        #(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
+        current_term : Term
+        if current_semester == 0:
+            current_term = Term.F
+        elif current_semester == 1:
+            current_term = Term.S
+        else:
+            current_term = Term.Q
+        i = 0
+        while 1:
+            if i > 12:
+                # this failed, could not find space to put the class
+                return 1
+            # the function returns false if the current semester doesn't need to be incremented. Meaning there is room for it to be added
+            if (current_term in course[4]) and not(self.schedule.evaluate_current_semester(current_semester, current_year, course)) :
+                return [current_semester, current_year]
+            else:
+                if (current_semester + 1) <= self.semesters_per_year:
+                    current_semester += 1
+                    current_term.next
+                else:
+                    current_semester = 0
+                    current_term = Term.F
+                    current_year += 1
+            i + 1
+
+
+            
+            
 
     
 

@@ -22,6 +22,11 @@ class Term(str, Enum):
     S = "Spring"
     Q = "Summer"
 
+    def next(self):
+        order = [Term.F, Term.S, Term.Q]
+        idx = order.index(self)
+        return order[(idx + 1) % len(order)]  # wrap around
+
 
 # ---- Semester & schedule containers --------------------------------------------------------------------
 
@@ -49,8 +54,8 @@ class Schedule:
 
     def __init__(self, maxCreditHours):
         # self.years: dict[str, dict[Term, Semester]] = {}
-        self.maxCreditHours
-        self.course_ids
+        self.maxCreditHours : int
+        self.course_ids : Course
         self.years = {}
     
     def get_or_create_semester(self, term: int, year: int):
@@ -58,14 +63,14 @@ class Schedule:
             self.years[year] = {}
         
         if term not in self.years[year]:
-            translated_term = Term.F
-            if term == 0:
-                translated_term = Term.F
-            elif term == 1:
-                translated_term = Term.S
-            else:
-                translated_term = Term.Q
-            self.years[year][term] = Semester(translated_term, self.maxCreditHours)
+            # translated_term = Term.F
+            # if term == 0:
+            #     translated_term = Term.F
+            # elif term == 1:
+            #     translated_term = Term.S
+            # else:
+            #     translated_term = Term.Q
+            self.years[year][term] = Semester(term, self.maxCreditHours)
             
         return self.years[year][term]
 
@@ -88,7 +93,7 @@ class Schedule:
 
     #returns true if the current semester should be incremented
     def evaluate_current_semester(self, current_term, current_year, course):
-        temp_semester = self.years[current_year][current_term]
+        temp_semester : Semester = self.years[current_year][current_term]
         if (temp_semester.creditHourCount + course[3]) < temp_semester.maxCreditHours:
             return True
         else:
