@@ -118,6 +118,7 @@ pip install mariadb
 ### Set Up the MariaDB Database
 Ensure MariaDB is installed and running on your machine.
 
+
 **macOS/Linux**
 ```bash
 brew services start mariadb
@@ -128,19 +129,27 @@ brew services start mariadb
 sudo systemctl start mariadb
 ```
 
-
 **Access MariaDB in the Terminal**
 ```bash
-mysql -u root -p
+mysql -u root
 ```
 
-**Create the Database**
+**Create the Database Server**
+```sql
+CREATE SERVER KAMA
+FOREIGN DATA WRAPPER mariadb
+OPTIONS (
+HOST 'localhost',
+USER 'root',
+PASSWORD 'password',
+PORT '3306');
+```
+
+**Connect to the MariaDb Shell**
+```mariadb -u root```
 
 **Inside the MariaDB shell:**
-
 ```sql
-CREATE DATABASE kama;
-USE kama;
 SOURCE databaseScript.sql;
 EXIT;
 ```
