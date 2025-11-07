@@ -19,6 +19,20 @@ def get_db_connection():
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB: {e}")
         return None
+    
+def get_courses():
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+    query = """SELECT *
+    FROM COURSE"""
+    cur.execute(query)
+    results = cur.fetchall()
+    conn.close()
+    return results
+get_courses()
 
 
 # -------------------------------------------------------------
@@ -205,7 +219,8 @@ if __name__ == "__main__":
 #print(get_student_data(1))
 #print(get_user_data_by_username('jacksonv'))
 
-print(get_prerequisite(2))
+#print(get_prerequisite(2))
+print(get_courses())
 
 
 # (Primary Key, Program, Type of Major, Number of Credit Hours)
