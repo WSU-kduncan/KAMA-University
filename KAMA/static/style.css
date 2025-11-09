@@ -688,3 +688,9 @@ body {
   background-color: #2d7a3f;
 }
 
+#semesterName {
+  color: #3AA655;
+  font-weight: bold;
+  transition: opacity 0.2s ease;
+}
+
