@@ -85,8 +85,15 @@ class Schedule:
             for term, semester in terms.items():
                 semester.list_courses()
 
-    def course_in_schedule(self, course):
+    def course_in_schedule(self, course : Course):
         if course[0] in self.course_ids:
+            return True
+        else:
+            return False
+    
+    #course id
+    def course_in_schdule_id(self, course_id : int):
+        if course_id in self.course_ids:
             return True
         else:
             return False
@@ -98,5 +105,9 @@ class Schedule:
             return True
         else:
             return False
+        
+    def credit_hours_in_current_semester(self, current_term : int, current_year: int):
+        temp_semester : Semester = self.years[current_year][current_term]
+        return temp_semester.creditHourCount
 
 

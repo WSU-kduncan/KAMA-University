@@ -5,6 +5,8 @@ from Schedule import Schedule, Term
 class GenerateSchedule:
     # generates on creation
     MIN_CREDIT_HOURS = 120 # minimum credit hours needed to graduate
+    #TODO get course ID for coops from Ava <3
+    COOP_COURSE_ID = 9999 #temp until we get coop course
     
     
     #returns not 0 if failed
@@ -83,22 +85,45 @@ class GenerateSchedule:
                     if returnValue != 0:
                         return returnValue
                     
-                
-            
-        #after going through every program, consider adding random as couses until minimum credit hours are reached
-        while (self.total_credit_hours < self.MIN_CREDIT_HOURS):
-            #TODO
-            # I need a method to get an array of all the courses or course id's in the database.
-            #add random courses to the semeser
-            i = 0
+       # This is an array of all the courses in our database
+        all_courses = Functions.get_courses()
+        # we are going through each one and add courses without a prereq
+        for course in all_courses:
+            if self.total_credit_hours < self.MIN_CREDIT_HOURS:
+                if not(self.schedule.course_in_schdule_id(course[0])):
+                    #add course to schedule
+                    courses_to_add = self.create_courses_to_add(Course(course[0]))
+                    if len(courses_to_add != 1):
+                        #only add if there are no prereqs 
+                        returnValue = self.add_course_to_schedule(courses_to_add)
+
+                if returnValue == 1:
+                    return returnValue
+            else:
+                # break if we meet the min number of credit hours to graudate
+                break
         
         # "add" coops
         if (self.current_semester * self.current_year + self.num_coops) <= (self.semesters_per_year * self.years):
-            #TODO
-            #add each coop
-            
-            #just represent as a basic course called coop.
-            #filler
+            i = 0
+            while i < self.num_coops:
+                if(self.schedule.credit_hours_in_current_semester(self.current_semester, self.current_year)) == 0:
+                    #add the coop to this semester
+                    courses_to_add = self.create_courses_to_add(Course(self.COOP_COURSE_ID))
+                    self.add_course_to_schedule(courses_to_add)
+                    i += 1
+                
+                #go to next semester and year
+                if(self.current_semester == self.semesters_per_year):
+                    #move up to next year
+                    self.current_year += 1
+                    self.current_semester = 0
+                else:
+                    self.current_semester += 1
+
+                if(self.current_year > self.years):
+                    # TODO add error codes
+                    return 1
             returnValue = 0
         else:
             # TODO add specific numbers for error codes
@@ -108,7 +133,7 @@ class GenerateSchedule:
         return returnValue
 
 
-    def create_courses_to_add(self, course):
+    def create_courses_to_add(self, course : Course):
         # given a course that has a prerequisite, create a list of all the courses that you have to take to take this course in the order of how you should take them
         temp_course = course
         course_stack = []
@@ -117,11 +142,11 @@ class GenerateSchedule:
             #(PreReq Primary Key, 'Prereq Name')
             # index 0 will be the course id for the prerequisite
             temp_course = Course(Functions.get_prerequisite[0])
+        #add the last course
+        course_stack.append(temp_course)
         return course_stack
 
         
-        
-
     #courses is a list of ids
     def add_course_to_schedule(self, courses : Course):
         #TODO
@@ -149,6 +174,7 @@ class GenerateSchedule:
                     #TODO breakpoint error codes
                     return 1
                 self.schedule.add_course(courses[0], time[1], time[0])
+                self.total_credit_hours += courses[0][3] # adds credits from course to total
 
         
         elif len(courses) > 1:
