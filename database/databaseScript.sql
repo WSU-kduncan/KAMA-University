@@ -159,7 +159,7 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (7, 'LA 1020', 'FSQ', 'First-Year Seminar: College of Liberal Arts', 3, NULL),
 (8, 'PSY 1010', 'FSQ', 'Intro to Psychology', 4, NULL),
 (9, 'PSY 1010L', 'FSQ', 'Intro to Psychology/L', 0, 8),
-(10, 'EC 2900', 'FSQ', 'Global Economic, Business and Social Issues', 0, NULL),
+(10, 'EC 2900', 'FSQ', 'Global Economic, Business and Social Issues', 3, NULL),
 (11, 'BIO 1150/L', 'FSQ', 'Biology of Food', 4, NULL),
 (12, 'PHY 1110/L,R', 'FSQ', 'Principles of Physics', 5, NULL),
 (13, 'PHY 2400', 'FSQ', 'General Physics 1', 4, 16),
@@ -415,11 +415,11 @@ INSERT INTO Advisor (advisor_id, first_name, last_name, email, username, passwor
 
 -- Students
 INSERT INTO Student (student_id, first_name, last_name, email, username, password, NumYears, NumCoOps, SummerSemester, CrdtHrsPrSem, advisor_id) VALUES
-(1, 'Jackson', 'Vail', 'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4, 0, 'no', 15, 1),
-(2, 'Perry', 'Soni', 'PSoni.1@KAMA.edu', 'perryson', 'PerrySon@456', 4, 0, 'no', 15, 1),
-(3, 'Fischer', 'Ray', 'FRay.1@KAMA.edu', 'fischerr', 'FischerR*909', 4, 0, 'no', 15, 2),
-(4, 'Panthera', 'Leon', 'PLeon.1@KAMA.edu', 'panthera', 'PantheraL23?', 4, 0, 'no', 15, 2),
-(5, 'Elliot', 'Cross', 'ECross.1@KAMA.edu', 'elliotcr', 'ElliotC501!?', 4, 0, 'no', 15, 2),
+(1, 'Jackson', 'Vail', 'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4, 0, 'no', 18, 1),
+(2, 'Perry', 'Soni', 'PSoni.1@KAMA.edu', 'perryson', 'PerrySon@456', 4, 0, 'no', 18, 1),
+(3, 'Fischer', 'Ray', 'FRay.1@KAMA.edu', 'fischerr', 'FischerR*909', 4, 0, 'no', 18, 2),
+(4, 'Panthera', 'Leon', 'PLeon.1@KAMA.edu', 'panthera', 'PantheraL23?', 4, 0, 'no', 18, 2),
+(5, 'Elliot', 'Cross', 'ECross.1@KAMA.edu', 'elliotcr', 'ElliotC501!?', 4, 0, 'no', 18, 2),
 (6, 'Hue', 'Varin', 'HVarin@KAMA.edu', 'huevarin', 'HueVarin#890', NULL, NULL, NULL, NULL, 3);
 
 INSERT INTO studentprogram(student_id, program_id)VALUES
