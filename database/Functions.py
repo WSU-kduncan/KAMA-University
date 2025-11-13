@@ -189,7 +189,9 @@ def get_user_data_by_username(username):
         cur.execute(query, (username,))
         result = cur.fetchone()
         if result:
-            # Include which table we found it in
+            # Replace None values with a space
+            result = tuple(" " if value is None else value for value in result)
+
             result_dict = {"user_type": table, "data": result}
             conn.close()
             return result_dict
@@ -197,6 +199,7 @@ def get_user_data_by_username(username):
     # Not found in any table
     conn.close()
     return None
+
 
 # -------------------------------------------------------------
 # Example usage (for testing)
@@ -220,7 +223,7 @@ if __name__ == "__main__":
 #print(get_user_data_by_username('jacksonv'))
 
 #print(get_prerequisite(2))
-print(get_courses())
+#print(get_courses())
 
 
 # (Primary Key, Program, Type of Major, Number of Credit Hours)
