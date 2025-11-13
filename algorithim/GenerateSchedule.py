@@ -285,10 +285,6 @@ value = student5.begin_generation()
 print(value)
 student5.schedule.to_string()
 
-print("Student 6")
-student6 = GenerateSchedule(6)
-value = student6.begin_generation()
-print(value)
-student6.schedule.to_string
+
 
 
