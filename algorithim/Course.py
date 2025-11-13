@@ -1,5 +1,5 @@
-from Functions import Functions
-from Schedule import Term
+import Functions
+from Term import Term
 
 class Course:
     #(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')

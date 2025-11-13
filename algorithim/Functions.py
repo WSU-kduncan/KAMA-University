@@ -220,7 +220,7 @@ if __name__ == "__main__":
 #print(get_user_data_by_username('jacksonv'))
 
 #print(get_prerequisite(2))
-print(get_courses())
+# print(get_courses())
 
 
 # (Primary Key, Program, Type of Major, Number of Credit Hours)
