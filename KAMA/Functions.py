@@ -199,6 +199,22 @@ def get_user_data_by_username(username):
     conn.close()
     return None
 
+def getRequirement(reqID):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT * FROM Requirement WHERE requirement_id = ?;
+    """
+    cur.execute(query, (reqID,))
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+print(getRequirement(16))
+
 # -------------------------------------------------------------
 # Example usage (for testing)
 # -------------------------------------------------------------
