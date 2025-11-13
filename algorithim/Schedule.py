@@ -1,6 +1,6 @@
 
 from enum import Enum
-from database import Functions
+from Functions import Functions
 from Course import Course
 
 

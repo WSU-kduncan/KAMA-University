@@ -1,12 +1,11 @@
-from database import Functions
+from Functions import Functions
 from Course import Course
 from Schedule import Schedule, Term
 
 class GenerateSchedule:
     # generates on creation
     MIN_CREDIT_HOURS = 120 # minimum credit hours needed to graduate
-    #TODO get course ID for coops from Ava <3
-    COOP_COURSE_ID = 9999 #temp until we get coop course
+    COOP_COURSE_ID = 52 # grabbed from th database
     
     
     #returns not 0 if failed
@@ -38,7 +37,20 @@ class GenerateSchedule:
         else:
             # do nothing
             # TODO last : write error messages
-            self.generate_schedule()
+            return 1
+        
+    def begin_generation(self):
+        if self.test_base_possibility():
+            # pull programs
+            # print(get_student_programs(1))
+            # (Primary Key, Program, Type of Major, Number of Credit Hours)
+            # [(2, 'Criminal Justice', 'Major', 120)]
+            self.programs = Functions.get_student_programs(self.id)
+            return self.generate_schedule()
+        else:
+            # do nothing
+            # TODO last : write error messages
+            return 1
 
     def test_base_possibility(self):
         if self.summer_semesters == 'yes':

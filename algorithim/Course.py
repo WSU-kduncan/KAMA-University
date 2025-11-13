@@ -1,4 +1,4 @@
-from database import Functions
+from Functions import Functions
 from Schedule import Term
 
 class Course:
