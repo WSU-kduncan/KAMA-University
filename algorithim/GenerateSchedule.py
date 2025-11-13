@@ -7,6 +7,7 @@ class GenerateSchedule:
     # generates on creation
     MIN_CREDIT_HOURS = 120 # minimum credit hours needed to graduate
     COOP_COURSE_ID = 52 # grabbed from th database
+    ASL_REQUIREMENT_ID = 16
     
     
     #returns not 0 if failed
@@ -69,6 +70,16 @@ class GenerateSchedule:
         # program is also an array
         # it looks like this (Primary Key, Program, Type of Major, Number of Credit Hours)
         returnValue = 0
+        # fuck you you're taking ASL
+        asl_requirment = Functions.get_reqiurement(self.ASL_REQUIREMENT_ID)
+        asl_courses = Functions.get_requirement_courses(asl_requirment[0])
+        
+        courses_to_add = []
+        for asl_course in asl_courses:
+            courses_to_add.append(Course(asl_course[0]))
+        
+        returnValue = self.add_course_to_schedule(courses_to_add)
+
         for program in self.programs:
             #list of lists again
             requirements = Functions.get_program_requirements(program[0])
