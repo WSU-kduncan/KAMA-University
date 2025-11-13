@@ -69,8 +69,8 @@ CREATE TABLE Advisor (
     last_name VARCHAR(50) NOT NULL,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    office_name VARCHAR(20),
-    office_num INT,
+    office_name VARCHAR(20) NOT NULL,
+    office_num INT NOT NULL,
     email VARCHAR(100) UNIQUE
 );
 
@@ -159,7 +159,7 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (7, 'LA 1020', 'FSQ', 'First-Year Seminar: College of Liberal Arts', 3, NULL),
 (8, 'PSY 1010', 'FSQ', 'Intro to Psychology', 4, NULL),
 (9, 'PSY 1010L', 'FSQ', 'Intro to Psychology/L', 0, 8),
-(10, 'EC 2900', 'FSQ', 'Global Economic, Business and Social Issues', 0, NULL),
+(10, 'EC 2900', 'FSQ', 'Global Economic, Business and Social Issues', 3, NULL),
 (11, 'BIO 1150/L', 'FSQ', 'Biology of Food', 4, NULL),
 (12, 'PHY 1110/L,R', 'FSQ', 'Principles of Physics', 5, NULL),
 (13, 'PHY 2400', 'FSQ', 'General Physics 1', 4, 16),
@@ -200,7 +200,8 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (48, 'PSY 2160', 'FSQ', 'Counseling Psychology', 3, 8),
 (49, 'PSY 2580', 'FSQ', 'Profiling and Serial Crimes', 3, 8),
 (50, 'SOC 2000', 'FSQ', 'Introduction to Sociology', 3, NULL),
-(51, 'PLS 4440', 'F', 'Methods of Crime Scene Investigation', 3, NULL);
+(51, 'PLS 4440', 'F', 'Methods of Crime Scene Investigation', 3, NULL),
+(52, 'CoOp', 'FSQ', 'CoOp', -1, NULL);
 
 
 INSERT INTO Program(program_id, program_name, degree_type, creditHours) VALUES
@@ -226,7 +227,7 @@ INSERT IGNORE INTO Requirement (requirement_id, requirement_type, min_credits) V
 (13, 'PSY-Core 3', 6),
 (14, 'PSY-Seminar', 6),
 (15, 'PSY-Electives', 14),
-(17, 'NonPSY-Electives', 19),
+
 (18, 'CJ-Core', 15),
 (19, 'FA 1', 6),
 (20, 'FA 2', 6),
@@ -296,41 +297,7 @@ INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
 (15, 22);
 
 
-INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)
-VALUES
-(17, 1),
-(17, 2),
-(17, 3),
-(17, 4),
-(17, 5),
-(17, 6),
-(17, 7),
-(17, 10),
-(17, 11),
-(17, 12),
-(17, 13),
-(17, 14),
-(17, 15),
-(17, 16),
-(17, 17),
-(17, 18),
-(17, 19),
-(17, 20),
-(17, 21),
-(17, 23),
-(17, 25),
-(17, 26),
-(17, 27),
-(17, 28),
-(17, 31),
-(17, 32),
-(17, 33),
-(17, 34),
-(17, 35),
-(17, 36),
-(17, 37),
-(17, 50),
-(17, 51);
+
 
 
 INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
@@ -448,11 +415,11 @@ INSERT INTO Advisor (advisor_id, first_name, last_name, email, username, passwor
 
 -- Students
 INSERT INTO Student (student_id, first_name, last_name, email, username, password, NumYears, NumCoOps, SummerSemester, CrdtHrsPrSem, advisor_id) VALUES
-(1, 'Jackson', 'Vail', 'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4, 0, 'no', 15, 1),
-(2, 'Perry', 'Soni', 'PSoni.1@KAMA.edu', 'perryson', 'PerrySon@456', 4, 0, 'no', 15, 1),
-(3, 'Fischer', 'Ray', 'FRay.1@KAMA.edu', 'fischerr', 'FischerR*909', 4, 0, 'no', 15, 2),
-(4, 'Panthera', 'Leon', 'PLeon.1@KAMA.edu', 'panthera', 'PantheraL23?', 4, 0, 'no', 15, 2),
-(5, 'Elliot', 'Cross', 'ECross.1@KAMA.edu', 'elliotcr', 'ElliotC501!?', 4, 0, 'no', 15, 2),
+(1, 'Jackson', 'Vail', 'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4, 0, 'no', 18, 1),
+(2, 'Perry', 'Soni', 'PSoni.1@KAMA.edu', 'perryson', 'PerrySon@456', 4, 0, 'no', 18, 1),
+(3, 'Fischer', 'Ray', 'FRay.1@KAMA.edu', 'fischerr', 'FischerR*909', 4, 0, 'no', 18, 2),
+(4, 'Panthera', 'Leon', 'PLeon.1@KAMA.edu', 'panthera', 'PantheraL23?', 4, 0, 'no', 18, 2),
+(5, 'Elliot', 'Cross', 'ECross.1@KAMA.edu', 'elliotcr', 'ElliotC501!?', 4, 0, 'no', 18, 2),
 (6, 'Hue', 'Varin', 'HVarin@KAMA.edu', 'huevarin', 'HueVarin#890', NULL, NULL, NULL, NULL, 3);
 
 INSERT INTO studentprogram(student_id, program_id)VALUES
@@ -475,3 +442,10 @@ INSERT INTO studentprogram(student_id, program_id)VALUES
 (5, 2),
 (5, 3),
 (5, 4);
+
+
+
+
+
+
+
