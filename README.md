@@ -3,7 +3,7 @@
 **KAMA University** is a multi-role web application designed to simplify academic management for students, faculty, and administrators.  
 It provides secure login-based dashboards, enabling different users to access features tailored to their roles.
 
-Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, and **MariaDB** for database management, this project demonstrates full-stack integration and modular development principles.
+Built with **Flask (Python)** and **Javascript** for the backend, **HTML/CSS** for the frontend, and **MariaDB** for database management, this project demonstrates full-stack integration and modular development principles.
 
 ---
 
@@ -17,17 +17,11 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 
 ## Features
 ### Student Dashboard
-- View enrolled courses and semester information  
-- Access schedules  
+- View enrolled courses and semester information for major(s) and/or minor (s) 
+- Access student information
 
 ### Faculty Dashboard
-- Update course details or grades  
-- Display name dynamically based on login  
-
-### Admin Dashboard
-- Manage programs, users, and course data  
-- Add, update, or remove database entries  
-- Oversee faculty and student records  
+- Approve or deny student requests based on schedules or co-op/summer courses
 
 ---
 
@@ -35,7 +29,7 @@ Built with **Flask (Python)** for the backend, **HTML/CSS** for the frontend, an
 | Component | Technology |
 |------------|-------------|
 | **Frontend** | HTML, CSS |
-| **Backend** | Python (Flask) |
+| **Backend** | Python (Flask), Javascript |
 | **Database** | MariaDB |
 | **Version Control & Deployment** | GitHub + GitHub Pages |
 
@@ -92,7 +86,7 @@ git clone git@github.com:WSU-kduncan/KAMA-University.git
 cd KAMA-University
 ```
 
-### Create Virtual Enviorment
+### Create Virtual Python Enviorment
 
 **macOS/Linux**
 ```bash
@@ -159,6 +153,8 @@ EXIT;
 **Open the `connection.py` file in your editor and ensure the credentials match your local MariaDB setup.**
 
 ### Run the Flask Application
+
+**Staying in the main directory where app.py is, run the application**
 
 ```bash
 python app.py
