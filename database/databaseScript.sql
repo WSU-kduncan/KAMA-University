@@ -227,7 +227,7 @@ INSERT IGNORE INTO Requirement (requirement_id, requirement_type, min_credits) V
 (13, 'PSY-Core 3', 6),
 (14, 'PSY-Seminar', 6),
 (15, 'PSY-Electives', 14),
-(17, 'NonPSY-Electives', 19),
+
 (18, 'CJ-Core', 15),
 (19, 'FA 1', 6),
 (20, 'FA 2', 6),
@@ -297,41 +297,7 @@ INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
 (15, 22);
 
 
-INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)
-VALUES
-(17, 1),
-(17, 2),
-(17, 3),
-(17, 4),
-(17, 5),
-(17, 6),
-(17, 7),
-(17, 10),
-(17, 11),
-(17, 12),
-(17, 13),
-(17, 14),
-(17, 15),
-(17, 16),
-(17, 17),
-(17, 18),
-(17, 19),
-(17, 20),
-(17, 21),
-(17, 23),
-(17, 25),
-(17, 26),
-(17, 27),
-(17, 28),
-(17, 31),
-(17, 32),
-(17, 33),
-(17, 34),
-(17, 35),
-(17, 36),
-(17, 37),
-(17, 50),
-(17, 51);
+
 
 
 INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
