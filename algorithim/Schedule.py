@@ -101,8 +101,16 @@ class Schedule:
     def to_string(self) -> str:
         for year, terms in self.years.items():
             for term, semester in terms.items():
-                print(f"Year {year}, Term {term}:")
+                print(f"Year {year}, Semester {term}:")
                 for course in semester.courses:
                     print(f"    {course.code} ({course.credits} credits)")
 
+    #returns [year, semester]
+    def find_course_in_schedule(self, current_term, current_year, course: Course):
+        for year, terms in self.years.items():
+            for term, semester in terms.items():
+                for temp_course in semester.courses:
+                    if temp_course.id == course.id:
+                        return [year, term]
+        return [1]
 

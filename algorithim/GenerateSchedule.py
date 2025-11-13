@@ -102,9 +102,14 @@ class GenerateSchedule:
        # This is an array of all the courses in our database
         all_courses = Functions.get_courses()
         # we are going through each one and add courses without a prereq
+        #the general
         for course in all_courses:
+           
             if self.total_credit_hours < self.MIN_CREDIT_HOURS:
                 if not(self.schedule.course_in_schdule_id(course[0])):
+                     # I'm forcing the return value to be zero here
+                     #If somehow the loop ends with a return value of 1 then we should be concerned. Otherwise, it's fine
+                    returnValue = 0
                     #add course to schedule
                     courses_to_add = self.create_courses_to_add(Course(course[0]))
                     if len(courses_to_add) == 1:
@@ -114,11 +119,13 @@ class GenerateSchedule:
                             # DO NOT ADD COOPS RANDOMLY
                             returnValue = self.add_course_to_schedule(courses_to_add)
 
-                if returnValue == 1:
-                    return returnValue
             else:
                 # break if we meet the min number of credit hours to graudate
                 break
+
+        if(returnValue != 0):
+            # end generation
+            returnValue
         
         # "add" coops
         if (self.current_semester * self.current_year + self.num_coops) <= (self.semesters_per_year * self.years):
@@ -138,7 +145,7 @@ class GenerateSchedule:
                 else:
                     self.current_semester += 1
 
-                if(self.current_year > self.years):
+                if(self.current_year > (self.years - 1)):
                     # TODO add error codes
                     return 1
             returnValue = 0
@@ -177,17 +184,20 @@ class GenerateSchedule:
                 self.current_semester = 0;
                 self.schedule.get_or_create_semester(self.current_semester, self.current_year)
         
-        if(self.current_year > self.years):
+        if(self.current_year > (self.years - 1)):
             #schedule generation failure
             # TODO add specific numbers for error codes
             return 1
         # decribed in flow chart
         # courses is a stack
+
+        #TODO if the course you are adding has a prereq in the same semester, add it to the next semester
+        # actually let's just simplify this and do it in the find_available semester
         if len(courses) == 1:
             if not(self.schedule.course_in_schedule(courses[0])):
                 time = self.find_available_semester(self.current_semester, self.current_year, courses[0])
                 #(semester, year)
-                if time[1] > self.years:
+                if time[1] > (self.years - 1):
                     #TODO breakpoint error codes
                     return 1
                 self.schedule.add_course(courses[0], time[1], time[0])
@@ -205,7 +215,7 @@ class GenerateSchedule:
                 if not(self.schedule.course_in_schedule(course)):
                     time = self.find_available_semester(prereq_semester, prereq_year, course)
 
-                    if((isinstance(time, int)) or time[1] > self.years):
+                    if((isinstance(time, int)) or time[1] > (self.years - 1)):
                         #TODO breakpoint error codess
                         return 1
                     else:
@@ -226,6 +236,22 @@ class GenerateSchedule:
     def find_available_semester(self, current_semester, current_year, course: Course):
         # Course
         #(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
+        # does the course have a prereq that is in the current smeester
+        if Functions.get_prerequisite(course.id) != None:
+            #has prereq
+            prereq = Course(Functions.get_prerequisite(course.id)[0])
+            if len(self.schedule.find_course_in_schedule(current_semester, current_year, prereq)) == 2:
+                #if it return a semester and year, make the current semester and year the semester after
+                time = self.schedule.find_course_in_schedule(current_semester, current_year, prereq)
+                # [year, semester]
+                if time[1] < (self.semesters_per_year - 1):
+                    current_semester += time[1]
+                    current_year = time[0]
+                else:
+                    current_semester = 0
+                    current_year = time[0] + 1
+                
+        
         current_term : Term
         if current_semester == 0:
             current_term = Term.F
@@ -235,6 +261,7 @@ class GenerateSchedule:
             current_term = Term.Q
         i = 0
         while 1:
+            self.schedule.get_or_create_semester(current_semester, current_year)
             if i > 12:
                 # this failed, could not find space to put the class
                 return 1
@@ -250,40 +277,39 @@ class GenerateSchedule:
                     current_term = Term.F
                     current_year += 1
             #create a new semester
-            self.schedule.get_or_create_semester(current_semester, current_year)
             i += 1
 
 
 #test values for student
+print("Student 1")
 student1 = GenerateSchedule(1)
 value = student1.begin_generation()
-print("Student 1")
 print(value)
 student1.schedule.to_string()
 
-print("Student 2")
-student2 = GenerateSchedule(2)
-value = student2.begin_generation()
-print(value)
-student2.schedule.to_string()
+# print("Student 2")
+# student2 = GenerateSchedule(2)
+# value = student2.begin_generation()
+# print(value)
+# student2.schedule.to_string()
 
-print("Student 3")
-student3 = GenerateSchedule(3)
-value = student3.begin_generation()
-print(value)
-student3.schedule.to_string()
+# print("Student 3")
+# student3 = GenerateSchedule(3)
+# value = student3.begin_generation()==
+# print(value)
+# student3.schedule.to_string()
 
-print("Student 4")
-student4 = GenerateSchedule(4)
-value = student4.begin_generation()
-print(value)
-student4.schedule.to_string()
+# print("Student 4")
+# student4 = GenerateSchedule(4)
+# value = student4.begin_generation()
+# print(value)
+# student4.schedule.to_string()
 
-print("Student 5")
-student5 = GenerateSchedule(5)
-value = student5.begin_generation()
-print(value)
-student5.schedule.to_string()
+# print("Student 5")
+# student5 = GenerateSchedule(5)
+# value = student5.begin_generation()
+# print(value)
+# student5.schedule.to_string()
 
 
 
