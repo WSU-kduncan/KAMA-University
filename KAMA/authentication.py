@@ -16,6 +16,9 @@ def authenticate(username, password):
    
     elif username == "elliotcr" and password == "ElliotC501!?":  # Elliot Cross
         return ("student", "Elliot Cross")
+
+    elif username == "huevarin" and password == "HueVarin#890":
+        return ("student", "Hue Varian")
     
     # faculty auth
     elif username == "calumous" and password == "CalumOut%10%":  # Calum Oust
