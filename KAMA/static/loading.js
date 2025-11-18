@@ -23,7 +23,7 @@ async function loadFacts() {
     facts = lines
       .map(line => line.trim())
       .filter(line => line && !line.match(/^\d+\.?\s*$/))
-      .map(line => line.replace(/^\d+\.\s*/, "")); // Remove "1.", "2.", etc.
+      .map(line => line.replace(/^\d+\.\s*/, "")); // Remove numbering
 
     if (facts.length === 0) throw new Error("No facts found");
 
@@ -48,9 +48,18 @@ function displayFact() {
 document.addEventListener("DOMContentLoaded", () => {
   loadFacts();
 
+  const audio = new Audio("/static/KAMA Chameleon.mp3");
+  audio.volume = 0.6; // adjust volume (0.0–1.0)
+  audio.loop = false; // no looping unless you want it
+  audio.play().catch(err => console.warn("Autoplay blocked:", err));
+
   const userRole = document.body.dataset.role;
 
   setTimeout(() => {
+    // Stop the music before redirect
+    audio.pause();
+    audio.currentTime = 0;
+
     if (userRole === "faculty") {
       window.location.href = "/faculty";
     } else if (userRole === "admin") {
@@ -58,5 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       window.location.href = "/student";
     }
-  }, 8000);
+  }, 7000);
 });
+
