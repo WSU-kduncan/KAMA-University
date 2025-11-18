@@ -6,7 +6,7 @@ from Functions import (
     get_program_requirements,
     get_requirement_courses,
     get_user_data_by_username,
-    get_courses
+    get_courses_for_display
 )
 
 app = Flask(__name__)
@@ -157,7 +157,7 @@ def all_courses():
     if 'role' not in session:
         return redirect(url_for('login'))
 
-    courses = get_courses()
+    courses = get_courses_for_display()
     return render_template("allCourses.html", courses=courses)
 
 
@@ -175,4 +175,3 @@ def logout():
 # -------------------------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
-
