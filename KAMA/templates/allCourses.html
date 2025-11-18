@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Courses | KAMA University</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ====== HEADER (Dashboard Style) ====== -->
+    <header class="student-header">
+
+        <!-- Left: menu icon -->
+        <div class="header-left">
+            <div class="menu-icon" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- Center: Chameleon Logo -->
+        <div class="header-center">
+            <img src="{{ url_for('static', filename='chameleon.png') }}"
+                 alt="Chameleon Logo" class="student-logo">
+        </div>
+
+        <!-- Right: Back button + Bell icon -->
+        <div class="header-right">
+
+            {% if session['role'] == 'student' %}
+                <a href="{{ url_for('student_dashboard') }}" class="greeting">← Back</a>
+
+            {% elif session['role'] == 'faculty' %}
+                <a href="{{ url_for('faculty_dashboard') }}" class="greeting">← Back</a>
+
+            {% elif session['role'] == 'admin' %}
+                <a href="{{ url_for('admin_dashboard') }}" class="greeting">← Back</a>
+            {% endif %}
+
+            <img src="{{ url_for('static', filename='bell.png') }}"
+                 alt="Bell Icon" class="bell-icon">
+        </div>
+    </header>
+
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="student-content">
+
+        <h2>All Courses Offered</h2>
+
+        <!-- ====== FILTERS ====== -->
+        <div style="margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+
+            <!-- Search -->
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search courses..." 
+                style="padding: 8px; width: 250px; border: 1px solid #ccc; border-radius: 6px;"
+            >
+
+            <!-- Department Filter -->
+            <select id="deptFilter" style="padding: 8px; border-radius: 6px;">
+                <option value="">All Departments</option>
+                <option value="ENG">ENG</option>
+                <option value="HST">HST</option>
+                <option value="ART">ART</option>
+                <option value="STT">STT</option>
+                <option value="UVC">UVC</option>
+                <option value="LA">LA</option>
+                <option value="PSY">PSY</option>
+                <option value="EC">EC</option>
+                <option value="BIO">BIO</option>
+                <option value="PHY">PHY</option>
+                <option value="MTH">MTH</option>
+                <option value="SOC">SOC</option>
+                <option value="URS">URS</option>
+                <option value="PLS">PLS</option>
+                <option value="ASL">ASL</option>
+                <option value="PHL">PHL</option>
+                <option value="CoOp">CoOp</option>
+            </select>
+
+            <!-- Semester Filter -->
+            <select id="semesterFilter" style="padding: 8px; border-radius: 6px;">
+                <option value="">All Semesters</option>
+                <option value="F">Fall</option>
+                <option value="S">Spring</option>
+                <option value="Q">Summer</option>
+            </select>
+
+            <!-- Credits Filter -->
+            <select id="creditFilter" style="padding: 8px; border-radius: 6px;">
+                <option value="">All Credits</option>
+                <option value="1">1 Credit</option>
+                <option value="2">2 Credits</option>
+                <option value="3">3 Credits</option>
+                <option value="4">4 Credits</option>
+                <option value="5">5 Credits</option>
+            </select>
+
+        </div>
+
+
+        <!-- ====== COURSES TABLE ====== -->
+        <table>
+            <tr>
+                <th>Course Code</th>
+                <th>Name</th>
+                <th>Credits</th>
+                <th>Semesters Offered</th>
+                <th>Prerequisite</th>
+            </tr>
+
+            {% for course in courses %}
+            <tr>
+                <td>{{ course[1] }}</td>
+                <td>{{ course[2] }}</td>
+                <td>{{ course[3] }}</td>
+                <td>{{ course[4] }}</td>
+                <td>
+                    {% if course[5] %}
+                        {{ course[5] }}
+                    {% else %}
+                        None
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </main>
+
+    <footer class="student-footer">
+        KAMA University • Course Catalog
+    </footer>
+    <script src="{{ url_for('static', filename='allCourses.js') }}"></script>
+
+</body>
+</html>
+

@@ -62,11 +62,28 @@
       <strong>Expected Graduation Date:</strong> {{ grad_date }}
     </div>
 
-    <button class="close-info" id="closeInfo">Close</button>
+    <!-- ===== Buttons inside the Info Panel ===== -->
+    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+
+      <!-- View All Courses -->
+      <a href="{{ url_for('all_courses') }}" 
+         class="btn"
+         style="width: 100%; text-align: center; padding: 10px 0;">
+        View All Courses
+      </a>
+
+      <!-- Close Panel -->
+      <button class="close-info" id="closeInfo" style="width: 100%;">
+        Close
+      </button>
+
+    </div>
   </div>
 
 
+  <!-- ====== main dashboard ====== -->
   <main class="student-content">
+
     <div class="schedule-wrapper">
       <h3 class="schedule-title">
         Semester: <span id="semesterName">Fall 2026</span>
@@ -75,14 +92,13 @@
       <div class="schedule-box">
         <p>Your class schedule will appear here.</p>
 
-        <button class="schedule-btn">Make Changes</button>
-
         <div class="arrow-buttons">
           <button class="arrow-btn left-arrow"></button>
           <button class="arrow-btn right-arrow"></button>
         </div>
       </div>
     </div>
+
   </main>
 
   <footer class="student-footer">
@@ -96,4 +112,3 @@
   <script src="{{ url_for('static', filename='student.js') }}"></script>
 </body>
 </html>
-
