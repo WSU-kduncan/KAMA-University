@@ -5,7 +5,8 @@ from Functions import (
     get_student_programs,
     get_program_requirements,
     get_requirement_courses,
-    get_user_data_by_username
+    get_user_data_by_username,
+    get_courses
 )
 
 app = Flask(__name__)
@@ -28,6 +29,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
         role, name = authenticate(username, password)
 
         if role in ["student", "faculty", "admin"]:
@@ -40,7 +42,7 @@ def login():
                 "login.html",
                 error="Incorrect Username or Password. Please Try Again."
             )
-    
+
     return render_template("login.html")
 
 
@@ -51,8 +53,10 @@ def login():
 def loading():
     name = session.get('name', '')
     role = session.get('role', '')
+
     if not role:
         return redirect(url_for('login'))
+
     return render_template('loading.html', name=name, role=role)
 
 
@@ -63,21 +67,21 @@ def loading():
 def student_dashboard():
     if session.get('role') != 'student':
         return redirect(url_for('login'))
-    
+
     username = session.get('name')
     user_data = get_user_data_by_username(session.get('username'))
-    
+
     if not user_data:
         return render_template("student.html", name=username, error="Student data not found")
-    
+
     student_id = user_data['data'][0]
     student = get_student_data(student_id)
     programs = get_student_programs(student_id)
 
-    # get emails
+    # email
     student_email = user_data['data'][3] if len(user_data['data']) > 3 else "N/A"
 
-    # handle multiple majors/minors
+    # majors & minors
     major_names = []
     minor_names = []
 
@@ -87,16 +91,14 @@ def student_dashboard():
         elif prog[2].lower() == "minor":
             minor_names.append(prog[1])
 
-    # default to placeholders if empty
     major_names = major_names or ["N/A"]
     minor_names = minor_names or ["N/A"]
 
-    # join for template use
     major_name = ", ".join(major_names)
     minor_name = ", ".join(minor_names)
     grad_date = "TBD"
 
-    # get program/requirement data
+    # requirements + courses
     program_data = []
     for program in programs:
         program_id = program[0]
@@ -130,9 +132,9 @@ def student_dashboard():
 # -------------------------------------------------------------
 @app.route('/faculty')
 def faculty_dashboard():
-    name = session.get('name', '')
     if session.get('role') != 'faculty':
         return redirect(url_for('login'))
+    name = session.get('name', '')
     return render_template("faculty.html", name=name)
 
 
@@ -141,10 +143,22 @@ def faculty_dashboard():
 # -------------------------------------------------------------
 @app.route('/admin')
 def admin_dashboard():
-    name = session.get('name', '')
     if session.get('role') != 'admin':
         return redirect(url_for('login'))
+    name = session.get('name', '')
     return render_template("admin.html", name=name)
+
+
+# -------------------------------------------------------------
+# ALL COURSES PAGE
+# -------------------------------------------------------------
+@app.route('/all-courses')
+def all_courses():
+    if 'role' not in session:
+        return redirect(url_for('login'))
+
+    courses = get_courses()
+    return render_template("allCourses.html", courses=courses)
 
 
 # -------------------------------------------------------------

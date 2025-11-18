@@ -35,6 +35,30 @@ def get_db_connection():
             print("Connection Failed")
             return None
 
+# -------------------------------------------------------------
+# Get ALL courses in database
+# -------------------------------------------------------------
+def get_courses():
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+
+    query = (
+        "SELECT course_id, course_code, course_name, credits, semester, prereq "
+        "FROM Course "
+        "ORDER BY "
+        "SUBSTRING_INDEX(course_code, ' ', 1), "
+        "CAST(SUBSTRING_INDEX(course_code, ' ', -1) AS UNSIGNED);"
+    )
+
+    cur.execute(query)
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+
 
 # -------------------------------------------------------------
 # Student Programs: Returns a list of the Programs a student is enlisted in
