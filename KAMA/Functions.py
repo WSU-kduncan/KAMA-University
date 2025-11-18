@@ -38,7 +38,7 @@ def get_db_connection():
 # -------------------------------------------------------------
 # Get ALL courses in database
 # -------------------------------------------------------------
-def get_courses():
+def get_courses_for_display():
     conn = get_db_connection()
     if not conn:
         return []
@@ -57,7 +57,6 @@ def get_courses():
     results = cur.fetchall()
     conn.close()
     return results
-
 
 
 # -------------------------------------------------------------
