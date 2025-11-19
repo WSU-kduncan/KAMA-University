@@ -134,8 +134,27 @@ def student_dashboard():
 def faculty_dashboard():
     if session.get('role') != 'faculty':
         return redirect(url_for('login'))
-    name = session.get('name', '')
-    return render_template("faculty.html", name=name)
+
+    username = session.get('username')
+    name = session.get('name')
+
+    user_data = get_user_data_by_username(username)
+
+    if not user_data:
+        return render_template("faculty.html", name=name, error="Advisor data not found")
+
+    advisor_record = user_data['data']
+
+    advisor = {
+        "id": advisor_record[0],
+        "first": advisor_record[1],
+        "last": advisor_record[2],
+        "email": advisor_record[7],
+        "office_name": advisor_record[5],
+        "office_num": advisor_record[6]
+    }
+
+    return render_template("faculty.html", name=name, advisor=advisor)
 
 
 # -------------------------------------------------------------
@@ -175,3 +194,4 @@ def logout():
 # -------------------------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
+

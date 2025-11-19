@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +6,32 @@
   <title>Faculty Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
 
-  <!-- Header -->
+<body>
+  <!-- ADVISOR INFO PANEL (SLIDE-IN) -->
+  <div id="advisorInfo" class="student-info-box">
+    <div class="student-info-header">Advisor Info</div>
+
+    <div class="info-field">
+      <strong>Name:</strong> {{ advisor.first }} {{ advisor.last }}
+    </div>
+
+    <div class="info-field">
+      <strong>Email:</strong> {{ advisor.email }}
+    </div>
+
+    <div class="info-field">
+      <strong>Faculty ID:</strong> {{ advisor.id }}
+    </div>
+
+    <div class="info-field">
+      <strong>Office:</strong> {{ advisor.office_num }} {{ advisor.office_name }}
+    </div>
+
+    <button id="closeAdvisorInfo" class="close-info">Close</button>
+  </div>
+
+  <!-- FACULTY HEADER -->
   <header class="student-header">
     <div class="header-left">
       <div class="menu-icon">
@@ -20,7 +42,9 @@
     </div>
 
     <div class="header-center">
-      <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
+      <img src="{{ url_for('static', filename='chameleon.png') }}"
+           alt="Chameleon Logo"
+           class="student-logo">
     </div>
 
     <div class="header-right">
@@ -29,44 +53,47 @@
     </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- FACULTY MAIN CONTENT -->
   <main class="faculty-content">
     <table class="faculty-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Major/Minor</th>
-                <th>Expected Graduation</th>
-                <th>Co-Op</th>
-                <th>Summer Courses</th>
-                <th>Schedule Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Student 1</td>
-                <td>Major(s)/Minor(s)</td>
-                <td>Semester 20XX</td>
-                <td>No</td>
-                <td>No</td>
-                <td>No</td>
-            </tr>
-            <tr>
-                <td>Student 2</td>
-                <td>Major(s)/Minor(s)</td>
-                <td>Semester 20XX</td>
-                <td>No</td>
-                <td>No</td>
-                <td>No</td>
-            </tr>
-        </tbody>
+      <thead>
+          <tr>
+              <th>Name</th>
+              <th>Major/Minor</th>
+              <th>Expected Graduation</th>
+              <th>Co-Op</th>
+              <th>Summer Courses</th>
+              <th>Schedule Status</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>Student 1</td>
+              <td>Major(s)/Minor(s)</td>
+              <td>Semester 20XX</td>
+              <td>No</td>
+              <td>No</td>
+              <td>No</td>
+          </tr>
+          <tr>
+              <td>Student 2</td>
+              <td>Major(s)/Minor(s)</td>
+              <td>Semester 20XX</td>
+              <td>No</td>
+              <td>No</td>
+              <td>No</td>
+          </tr>
+      </tbody>
     </table>
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer class="student-footer">
     <p>&copy; 2025 KAMA University.</p>
   </footer>
+
+  <!-- JS FILE -->
+  <script src="{{ url_for('static', filename='faculty.js') }}"></script>
 
 </body>
 </html>
