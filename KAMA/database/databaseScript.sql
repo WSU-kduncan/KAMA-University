@@ -117,28 +117,34 @@ CREATE TABLE StudentProgram (
     FOREIGN KEY (program_id) REFERENCES Program(program_id)
 );
 
--- ======================
--- 11. STUDENT_SCHEDULE
--- ======================
+-- STUDENT SCHEDULE
 CREATE TABLE Student_Schedule (
     schedule_id INT PRIMARY KEY AUTO_INCREMENT,
     student_id INT NOT NULL,
-    semester_number INT NOT NULL,
-    semester_name VARCHAR(20),
-    year_number INT NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(student_id)
 );
 
--- ======================
--- 12. STUDENT_SCHEDULE_COURSE
--- ======================
-CREATE TABLE Student_Schedule_Course (
+
+
+
+-- Semesters that go into a specific schedule
+CREATE TABLE Schedule_Semesters (
+    semester_id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (schedule_id) REFERENCES Student_Schedule(schedule_id)
+);
+
+-- Courses that go into a specific semester inside of a schedule
+CREATE TABLE Semester_Courses (
+    semester_id INT NOT NULL,
     course_id INT NOT NULL,
-    PRIMARY KEY (schedule_id, course_id),
-    FOREIGN KEY (schedule_id) REFERENCES Student_Schedule(schedule_id),
+    PRIMARY KEY (semester_id, course_id),
+    FOREIGN KEY (semester_id)
+        REFERENCES Schedule_Semesters(semester_id),
     FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
+
 
 
 -- This script will insert all data for the program info
@@ -163,7 +169,7 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (11, 'BIO 1150/L', 'FSQ', 'Biology of Food', 4, NULL),
 (12, 'PHY 1110/L,R', 'FSQ', 'Principles of Physics', 5, NULL),
 (13, 'PHY 2400', 'FSQ', 'General Physics 1', 4, 16),
-(14, 'PHY 2400L', 'FSQ', 'General Physics Lab', 1, 13),
+(14, 'PHY 2400L', 'FSQ', 'General Physics Lab', 0, 13),
 (15, 'PHY 2400R', 'FSQ', 'General Physics Recitation', 0, 13),
 (16, 'MTH 2300', 'FSQ', 'Calculus I', 4, NULL),
 (17, 'SOC 3410', 'FQ', 'Research Methods', 3, NULL),

@@ -117,28 +117,34 @@ CREATE TABLE StudentProgram (
     FOREIGN KEY (program_id) REFERENCES Program(program_id)
 );
 
--- ======================
--- 11. STUDENT_SCHEDULE
--- ======================
+-- STUDENT SCHEDULE
 CREATE TABLE Student_Schedule (
     schedule_id INT PRIMARY KEY AUTO_INCREMENT,
     student_id INT NOT NULL,
-    semester_number INT NOT NULL,
-    semester_name VARCHAR(20),
-    year_number INT NOT NULL,
     FOREIGN KEY (student_id) REFERENCES Student(student_id)
 );
 
--- ======================
--- 12. STUDENT_SCHEDULE_COURSE
--- ======================
-CREATE TABLE Student_Schedule_Course (
+
+
+
+-- Semesters that go into a specific schedule
+CREATE TABLE Schedule_Semesters (
+    semester_id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (schedule_id) REFERENCES Student_Schedule(schedule_id)
+);
+
+-- Courses that go into a specific semester inside of a schedule
+CREATE TABLE Semester_Courses (
+    semester_id INT NOT NULL,
     course_id INT NOT NULL,
-    PRIMARY KEY (schedule_id, course_id),
-    FOREIGN KEY (schedule_id) REFERENCES Student_Schedule(schedule_id),
+    PRIMARY KEY (semester_id, course_id),
+    FOREIGN KEY (semester_id)
+        REFERENCES Schedule_Semesters(semester_id),
     FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
+
 
 
 -- This script will insert all data for the program info
@@ -163,7 +169,7 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (11, 'BIO 1150/L', 'FSQ', 'Biology of Food', 4, NULL),
 (12, 'PHY 1110/L,R', 'FSQ', 'Principles of Physics', 5, NULL),
 (13, 'PHY 2400', 'FSQ', 'General Physics 1', 4, 16),
-(14, 'PHY 2400L', 'FSQ', 'General Physics Lab', 1, 13),
+(14, 'PHY 2400L', 'FSQ', 'General Physics Lab', 0, 13),
 (15, 'PHY 2400R', 'FSQ', 'General Physics Recitation', 0, 13),
 (16, 'MTH 2300', 'FSQ', 'Calculus I', 4, NULL),
 (17, 'SOC 3410', 'FQ', 'Research Methods', 3, NULL),
@@ -227,14 +233,14 @@ INSERT IGNORE INTO Requirement (requirement_id, requirement_type, min_credits) V
 (13, 'PSY-Core 3', 6),
 (14, 'PSY-Seminar', 6),
 (15, 'PSY-Electives', 14),
-
+(16, 'Foreign Language', 12),
 (18, 'CJ-Core', 15),
 (19, 'FA 1', 6),
 (20, 'FA 2', 6),
 (21, 'FA 3', 3),
 (22, 'FA 4', 6),
 (23, 'ADV', 9),
-(24, 'Foreign Language', 12),
+
 (25, 'CJ Classes', 13),
 (26, 'PSY Classes', 22),
 (28, 'SOC Core', 3),
@@ -316,10 +322,10 @@ INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
 (23, 29),
 (23, 30),
 (23, 31),
-(24, 32),
-(24, 33),
-(24, 34),
-(24, 35),
+(16, 32),
+(16, 33),
+(16, 34),
+(16, 35),
 (25, 7),
 (25, 5),
 (25, 36),
