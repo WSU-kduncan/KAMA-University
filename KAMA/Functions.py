@@ -185,7 +185,7 @@ def get_student_data(student_id):
     result = cur.fetchone()
     conn.close()
     return result
-print(get_student_data(1))
+
 
 
 # -------------------------------------------------------------
@@ -207,7 +207,7 @@ def get_advisor_data(advisor_id):
     conn.close()
     return result
 
-print(get_advisor_data(1))
+
 
 # -------------------------------------------------------------
 # Returns user data based on the username
@@ -252,7 +252,6 @@ def getRequirement(reqID):
     conn.close()
     return results
 
-print(getRequirement(16))
 
 
 # -------------------------------------------------------------
@@ -344,35 +343,3 @@ if __name__ == "__main__":
 
 
 
-    # Example test calls
-# print(get_student_programs(1))
-#print(get_program_requirements(1))
-#print(get_requirement_courses(2))
-#print(get_course_by_id(1))
-
-#print(get_student_data(1))
-#print(get_user_data_by_username('jacksonv'))
-
-print(get_prerequisite(2))
-
-
-# (Primary Key, Program, Type of Major, Number of Credit Hours)
-# [(2, 'Criminal Justice', 'Major', 120)]
-
-#(Primary Key, 'Requirement', Min Credit Hours)
-#(2,           'Core A',      6)
-
-#(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
-#(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
-
-#(Primary Key, 'Course Code', 'Name of Course',               Credit Hours,  'Semesters Offered')
-#(1,           'ENG 1100',    'Academic Writing and Reading', 3,             'FSQ')
-
-#(Primary Key, 'First Name', 'Last Name', Num CoOps, Num Years, Credit Hours, Summer Semester, AdvisorID)
-#(1,           'Jackson',    'Vail',      0,         4,         15,           'yes',           1)
-
-#(Primary Key, 'First Name', 'Last Name', 'email',            'username', 'password',     Num Years, Num CoOps, Summer Semester, Credit Hours, AdvisorID)
-#(1,           'Jackson',    'Vail',      'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4,         0,         'yes',           15,           1)
-
-#(PreReq Primary Key, 'Prereq Name')
-#(1,                  'Academic Writing and Reading')
