@@ -30,17 +30,6 @@ class GenerateSchedule:
         self.schedule = Schedule(self.credit_hours_per_semester)
         self.schedule.get_or_create_semester(self.current_semester, self.current_year)
         
-        if self.test_base_possibility():
-            # pull programs
-            # print(get_student_programs(1))
-            # (Primary Key, Program, Type of Major, Number of Credit Hours)
-            # [(2, 'Criminal Justice', 'Major', 120)]
-            self.programs = Functions.get_student_programs(self.id)
-            self.generate_schedule()
-        else:
-            # do nothing
-            # TODO last : write error messages
-            return 1
         
     def begin_generation(self):
         if self.test_base_possibility():
@@ -71,12 +60,11 @@ class GenerateSchedule:
         # it looks like this (Primary Key, Program, Type of Major, Number of Credit Hours)
         returnValue = 0
         # fuck you you're taking ASL
-        asl_requirment = Functions.get_reqiurement(self.ASL_REQUIREMENT_ID)
-        asl_courses = Functions.get_requirement_courses(asl_requirment[0])
+        asl_courses = Functions.get_requirement_courses(self.ASL_REQUIREMENT_ID)
         
         courses_to_add = []
         for asl_course in asl_courses:
-            courses_to_add.append(Course(asl_course[0]))
+            courses_to_add.insert(0, Course(asl_course[0]))
         
         returnValue = self.add_course_to_schedule(courses_to_add)
 
@@ -89,6 +77,10 @@ class GenerateSchedule:
             for requirement in requirements:
                 #grab the courses for this requirement
                 courses = Functions.get_requirement_courses(requirement[0])
+
+                #Running into a problem where too many courses are added
+                # lets set credit hours per requirement to keep track if it is going over
+                credit_hours_per_requirement = 0
                 #(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
                 #[(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')]
                 for course in courses:
@@ -109,6 +101,14 @@ class GenerateSchedule:
                     # if at any point in the loop the generation fails stop loop and return.
                     if returnValue != 0:
                         return returnValue
+                    else:
+                        # 3 is the index of the # of credit hours for a class
+                        credit_hours_per_requirement += course[3]
+                    
+                    # 2 is the index of the min credit hours for a requiremnt
+                    if credit_hours_per_requirement >= requirement[2]:
+                        #break the loop if we have reached the max credit hours for a requirement
+                        break
                     
        # This is an array of all the courses in our database
         all_courses = Functions.get_courses()
@@ -256,7 +256,7 @@ class GenerateSchedule:
                 time = self.schedule.find_course_in_schedule(current_semester, current_year, prereq)
                 # [year, semester]
                 if time[1] < (self.semesters_per_year - 1):
-                    current_semester += time[1]
+                    current_semester = time[1] + 1
                     current_year = time[0]
                 else:
                     current_semester = 0
@@ -292,30 +292,40 @@ class GenerateSchedule:
 
 
 #test values for student
+#1 major 1 minor
+#not generating
 print("Student 1")
 student1 = GenerateSchedule(1)
 value = student1.begin_generation()
 print(value)
 student1.schedule.to_string()
 
+#1 major 2 minors
+# not generating
 print("Student 2")
 student2 = GenerateSchedule(2)
 value = student2.begin_generation()
 print(value)
 student2.schedule.to_string()
 
+#2 majors 1 minor
+# not generating
 print("Student 3")
 student3 = GenerateSchedule(3)
 value = student3.begin_generation()
 print(value)
 student3.schedule.to_string()
 
+#2 majors
+# not generating
 print("Student 4")
 student4 = GenerateSchedule(4)
 value = student4.begin_generation()
 print(value)
 student4.schedule.to_string()
 
+# 2 majors 2 minors
+# not generating
 print("Student 5")
 student5 = GenerateSchedule(5)
 value = student5.begin_generation()

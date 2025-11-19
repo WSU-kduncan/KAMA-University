@@ -16,23 +16,24 @@ def get_db_connection():
             database="kama"
         )
         return conn
-    except mariadb.Error as e:
-        print(f"Error connecting to MariaDB: {e}")
-        return None
     
-def get_courses():
-    conn = get_db_connection()
-    if not conn:
-        return []
-
-    cur = conn.cursor()
-    query = """SELECT *
-    FROM COURSE"""
-    cur.execute(query)
-    results = cur.fetchall()
-    conn.close()
-    return results
-get_courses()
+    except mariadb.Error as e:
+        print("Primary connection failed: {e}")
+        print("Using fallback password")
+        
+        try:
+            conn = mariadb.connect(
+                user="root",
+                password="3665",
+                host="localhost",
+                port=3306,
+                database="kama"
+            )
+            print("Connected")
+            return conn
+        except mariadb.Error as e2:
+            print("Connection Failed")
+            return None
 
 
 # -------------------------------------------------------------
@@ -198,9 +199,41 @@ def get_user_data_by_username(username):
     conn.close()
     return None
 
+def getRequirement(reqID):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT * FROM Requirement WHERE requirement_id = ?;
+    """
+    cur.execute(query, (reqID,))
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+# print(getRequirement(16))
+
 # -------------------------------------------------------------
 # Example usage (for testing)
 # -------------------------------------------------------------
+
+# adding in getcourses to this
+def get_courses():
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+    query = """SELECT *
+    FROM COURSE"""
+    cur.execute(query)
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+
 if __name__ == "__main__":
     print("Testing database functions...\n")
 
@@ -219,8 +252,7 @@ if __name__ == "__main__":
 #print(get_student_data(1))
 #print(get_user_data_by_username('jacksonv'))
 
-#print(get_prerequisite(2))
-# print(get_courses())
+# print(get_prerequisite(2))
 
 
 # (Primary Key, Program, Type of Major, Number of Credit Hours)
