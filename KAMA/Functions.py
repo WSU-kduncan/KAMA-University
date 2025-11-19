@@ -1,5 +1,5 @@
 # TODO: TURN DATA INTO OBJECTS
-# TODO: ADD PREREQS TO COURSES : THESE WILL BE THE iDS OF THE COURSE
+
 
 import mariadb
 
@@ -34,6 +34,22 @@ def get_db_connection():
         except mariadb.Error as e2:
             print("Connection Failed")
             return None
+        
+# -------------------------------------------------------------
+# Get All Courses
+# -------------------------------------------------------------
+def get_courses():
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+    query = """SELECT *
+    FROM COURSE"""
+    cur.execute(query)
+    results = cur.fetchall()
+    conn.close()
+    return results
 
 # -------------------------------------------------------------
 # Get ALL courses in database
@@ -184,7 +200,7 @@ def get_student_data(student_id):
     cur = conn.cursor()
     query = """
         SELECT s.student_id, s.first_name, s.last_name, s.NumcoOps, 
-            s.numYears, s.CrdtHrsPrSem, s.summerSemester, s.advisor_id
+            s.numYears, s.CrdtHrsPrSem, s.summerSemester, s.advisor_id, s.username, s.password
         FROM Student s
         WHERE s.student_id = ?;
     """
@@ -192,6 +208,29 @@ def get_student_data(student_id):
     result = cur.fetchone()
     conn.close()
     return result
+
+
+
+# -------------------------------------------------------------
+# Advisor Data: Returns full data about a student
+# -------------------------------------------------------------
+def get_advisor_data(advisor_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT *
+        FROM Advisor 
+        WHERE advisor_id = ?;
+    """
+    cur.execute(query, (advisor_id,))
+    result = cur.fetchone()
+    conn.close()
+    return result
+
+
 
 # -------------------------------------------------------------
 # Returns user data based on the username
@@ -236,7 +275,82 @@ def getRequirement(reqID):
     conn.close()
     return results
 
-print(getRequirement(16))
+
+
+# -------------------------------------------------------------
+# Adding Students Schedule to database
+# -------------------------------------------------------------
+
+# Inserting Schedule for Student
+def add_student_schedule(student_id):
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+
+    # Get next schedule_id
+    cur.execute("SELECT MAX(schedule_id) FROM Student_Schedule;")
+    result = cur.fetchone()
+    next_id = (result[0] + 1) if result[0] is not None else 1
+
+    # Insert schedule
+    query = """
+        INSERT INTO Student_Schedule (schedule_id, student_id)
+        VALUES (?, ?);
+    """
+    cur.execute(query, (next_id, student_id))
+
+    conn.commit()
+    conn.close()
+    return next_id     # return schedule_id
+
+# Inserting the each semester into the schedule
+def add_schedule_semester(schedule_id, name):
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+
+    # Get next semester_id
+    cur.execute("SELECT MAX(semester_id) FROM Schedule_Semesters;")
+    result = cur.fetchone()
+    next_id = (result[0] + 1) if result[0] is not None else 1
+
+    # Insert semester
+    query = """
+        INSERT INTO Schedule_Semesters (semester_id, schedule_id, name)
+        VALUES (?, ?, ?);
+    """
+    cur.execute(query, (next_id, schedule_id, name))
+
+    conn.commit()
+    conn.close()
+    return next_id     # return semester_id
+
+# Inserting the courses into the semesters
+def add_semester_course(semester_id, course_id):
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+
+    query = """
+        INSERT INTO Semester_Courses (semester_id, course_id)
+        VALUES (?, ?);
+    """
+    try:
+        cur.execute(query, (semester_id, course_id))
+    except Exception as e:
+        conn.close()
+        return f"Error: {e}"
+
+    conn.commit()
+    conn.close()
+    return 1     # success
+
 
 # -------------------------------------------------------------
 # Example usage (for testing)
@@ -250,35 +364,5 @@ if __name__ == "__main__":
         print("✅ Connection successful!\n")
         conn.close()
 
-    # Example test calls
-# print(get_student_programs(1))
-#print(get_program_requirements(1))
-#print(get_requirement_courses(2))
-#print(get_course_by_id(1))
-
-#print(get_student_data(1))
-#print(get_user_data_by_username('jacksonv'))
-
-print(get_prerequisite(2))
 
 
-# (Primary Key, Program, Type of Major, Number of Credit Hours)
-# [(2, 'Criminal Justice', 'Major', 120)]
-
-#(Primary Key, 'Requirement', Min Credit Hours)
-#(2,           'Core A',      6)
-
-#(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
-#(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
-
-#(Primary Key, 'Course Code', 'Name of Course',               Credit Hours,  'Semesters Offered')
-#(1,           'ENG 1100',    'Academic Writing and Reading', 3,             'FSQ')
-
-#(Primary Key, 'First Name', 'Last Name', Num CoOps, Num Years, Credit Hours, Summer Semester, AdvisorID)
-#(1,           'Jackson',    'Vail',      0,         4,         15,           'yes',           1)
-
-#(Primary Key, 'First Name', 'Last Name', 'email',            'username', 'password',     Num Years, Num CoOps, Summer Semester, Credit Hours, AdvisorID)
-#(1,           'Jackson',    'Vail',      'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4,         0,         'yes',           15,           1)
-
-#(PreReq Primary Key, 'Prereq Name')
-#(1,                  'Academic Writing and Reading')
