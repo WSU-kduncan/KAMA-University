@@ -40,11 +40,12 @@ class Semester:
 # Schedule ------------------------------------------------------------------------------------------------
 class Schedule:
 
-    def __init__(self, maxCreditHours):
+    def __init__(self, maxCreditHours, student_id):
         # self.years: dict[str, dict[Term, Semester]] = {}
         self.maxCreditHours : int = maxCreditHours
         self.course_ids : Course = []
         self.years = {}
+        self.student_id = student_id
     
     def get_or_create_semester(self, term: int, year: int):
         if year not in self.years:
@@ -114,3 +115,17 @@ class Schedule:
                         return [year, term]
         return [1]
 
+    # def add_student_schedule(student_id): returns schedule id
+    # def add_schedule_semester(schedule_id, name): returns semsterid
+    # def add_semester_course(semester_id, course_id): return not really notable
+    def add_schedule_to_database(self):
+        schedule_id = Functions.add_student_schedule(self.student_id)
+        for year, terms in self.years.items():
+            for term, semester in terms.items():
+                semester_name = "Year " + str(year + 1) + " - " + Term.int_to_Term(term)
+                if(len(semester.courses) != 0):
+                    semester_id = Functions.add_schedule_semester(schedule_id, semester_name)
+                for temp_course in semester.courses:
+                    Functions.add_semester_course(semester_id, temp_course.id)
+                    
+       

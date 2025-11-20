@@ -27,7 +27,7 @@ class GenerateSchedule:
         self.current_semester = 0
         self.current_year = 0
         self.semesters_per_year = 0
-        self.schedule = Schedule(self.credit_hours_per_semester)
+        self.schedule = Schedule(self.credit_hours_per_semester, self.id)
         self.schedule.get_or_create_semester(self.current_semester, self.current_year)
         
         
@@ -295,42 +295,44 @@ class GenerateSchedule:
 #1 major 1 minor
 #not generating
 print("Student 1")
+# when creating students create them as a generation object. TRust
 student1 = GenerateSchedule(1)
 value = student1.begin_generation()
 print(value)
 student1.schedule.to_string()
+student1.schedule.add_schedule_to_database()
 
 #1 major 2 minors
 # not generating
-print("Student 2")
-student2 = GenerateSchedule(2)
-value = student2.begin_generation()
-print(value)
-student2.schedule.to_string()
+# print("Student 2")
+# student2 = GenerateSchedule(2)
+# value = student2.begin_generation()
+# print(value)
+# student2.schedule.to_string()
 
-#2 majors 1 minor
-# not generating
-print("Student 3")
-student3 = GenerateSchedule(3)
-value = student3.begin_generation()
-print(value)
-student3.schedule.to_string()
+# #2 majors 1 minor
+# # not generating
+# print("Student 3")
+# student3 = GenerateSchedule(3)
+# value = student3.begin_generation()
+# print(value)
+# student3.schedule.to_string()
 
-#2 majors
-# not generating
-print("Student 4")
-student4 = GenerateSchedule(4)
-value = student4.begin_generation()
-print(value)
-student4.schedule.to_string()
+# #2 majors
+# # not generating
+# print("Student 4")
+# student4 = GenerateSchedule(4)
+# value = student4.begin_generation()
+# print(value)
+# student4.schedule.to_string()
 
-# 2 majors 2 minors
-# not generating
-print("Student 5")
-student5 = GenerateSchedule(5)
-value = student5.begin_generation()
-print(value)
-student5.schedule.to_string()
+# # 2 majors 2 minors
+# # not generating
+# print("Student 5")
+# student5 = GenerateSchedule(5)
+# value = student5.begin_generation()
+# print(value)
+# student5.schedule.to_string()
 
 
 
