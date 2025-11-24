@@ -132,7 +132,7 @@ CREATE TABLE Schedule_Semesters (
     semester_id INT PRIMARY KEY AUTO_INCREMENT,
     schedule_id INT NOT NULL,
     name VARCHAR(50) NOT NULL,
-    FOREIGN KEY (schedule_id) REFERENCES Student_Schedule(schedule_id)
+    FOREIGN KEY (schedule_id) REFERENCES Student_Schedule(schedule_id) ON DELETE CASCADE
 );
 
 -- Courses that go into a specific semester inside of a schedule
@@ -140,8 +140,7 @@ CREATE TABLE Semester_Courses (
     semester_id INT NOT NULL,
     course_id INT NOT NULL,
     PRIMARY KEY (semester_id, course_id),
-    FOREIGN KEY (semester_id)
-        REFERENCES Schedule_Semesters(semester_id),
+    FOREIGN KEY (semester_id) REFERENCES Schedule_Semesters(semester_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
 

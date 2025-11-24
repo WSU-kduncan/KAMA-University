@@ -185,7 +185,7 @@ def get_student_data(student_id):
     result = cur.fetchone()
     conn.close()
     return result
-print(get_student_data(1))
+
 
 
 # -------------------------------------------------------------
@@ -207,7 +207,7 @@ def get_advisor_data(advisor_id):
     conn.close()
     return result
 
-print(get_advisor_data(1))
+
 
 # -------------------------------------------------------------
 # Returns user data based on the username
@@ -252,7 +252,6 @@ def getRequirement(reqID):
     conn.close()
     return results
 
-print(getRequirement(16))
 
 
 # -------------------------------------------------------------
@@ -281,7 +280,9 @@ def add_student_schedule(student_id):
 
     conn.commit()
     conn.close()
+    print(next_id)
     return next_id     # return schedule_id
+#add_student_schedule(1)
 
 # Inserting the each semester into the schedule
 def add_schedule_semester(schedule_id, name):
@@ -305,7 +306,9 @@ def add_schedule_semester(schedule_id, name):
 
     conn.commit()
     conn.close()
+    print(next_id)
     return next_id     # return semester_id
+# add_schedule_semester(1, "Fall 2025")
 
 # Inserting the courses into the semesters
 def add_semester_course(semester_id, course_id):
@@ -328,7 +331,53 @@ def add_semester_course(semester_id, course_id):
     conn.commit()
     conn.close()
     return 1     # success
+# add_semester_course(1, 2)
+# add_semester_course(1, 5)
+# add_semester_course(1, 21)
+# add_semester_course(1, 40)
 
+# -------------------------------------------------------------
+# Return Schedule id based on student id
+# -------------------------------------------------------------
+def get_student_schedule(student_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT schedule_id FROM Student_Schedule WHERE student_id = ?;
+    """
+    cur.execute(query, (student_id,))
+    results = cur.fetchall()
+    conn.close()
+    return results
+#get_student_schedule(1)
+
+# -------------------------------------------------------------
+# Delete students schedule based on schedule id
+# -------------------------------------------------------------
+def delete_schedule(schedule_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+
+    query = """ SELECT semester_id FROM Schedule_Semesters WHERE schedule_id = ?;"""
+    cur.execute(query, (schedule_id,))
+    semesters = cur.fetchall()
+    for semester_id in semesters:
+        query2 = """ DELETE FROM Semester_Courses WHERE semester_id = ?;"""
+        cur.execute(query2, (semester_id,))
+    query1 = """
+        DELETE FROM Student_Schedule WHERE schedule_id = ?;
+    """
+    cur.execute(query1, (schedule_id,))
+    conn.commit()
+    conn.close()
+    return 1
+delete_schedule(1)
 
 # -------------------------------------------------------------
 # Example usage (for testing)
@@ -344,35 +393,3 @@ if __name__ == "__main__":
 
 
 
-    # Example test calls
-# print(get_student_programs(1))
-#print(get_program_requirements(1))
-#print(get_requirement_courses(2))
-#print(get_course_by_id(1))
-
-#print(get_student_data(1))
-#print(get_user_data_by_username('jacksonv'))
-
-print(get_prerequisite(2))
-
-
-# (Primary Key, Program, Type of Major, Number of Credit Hours)
-# [(2, 'Criminal Justice', 'Major', 120)]
-
-#(Primary Key, 'Requirement', Min Credit Hours)
-#(2,           'Core A',      6)
-
-#(Primary Key, 'Course Code', 'Name of Course',                Credit Hours,  'Semesters Offered')
-#(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
-
-#(Primary Key, 'Course Code', 'Name of Course',               Credit Hours,  'Semesters Offered')
-#(1,           'ENG 1100',    'Academic Writing and Reading', 3,             'FSQ')
-
-#(Primary Key, 'First Name', 'Last Name', Num CoOps, Num Years, Credit Hours, Summer Semester, AdvisorID)
-#(1,           'Jackson',    'Vail',      0,         4,         15,           'yes',           1)
-
-#(Primary Key, 'First Name', 'Last Name', 'email',            'username', 'password',     Num Years, Num CoOps, Summer Semester, Credit Hours, AdvisorID)
-#(1,           'Jackson',    'Vail',      'JVail.1@KAMA.edu', 'jacksonv', 'JacksonV123!', 4,         0,         'yes',           15,           1)
-
-#(PreReq Primary Key, 'Prereq Name')
-#(1,                  'Academic Writing and Reading')

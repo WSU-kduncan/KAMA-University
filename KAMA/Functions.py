@@ -303,7 +303,9 @@ def add_student_schedule(student_id):
 
     conn.commit()
     conn.close()
+    print(next_id)
     return next_id     # return schedule_id
+#add_student_schedule(1)
 
 # Inserting the each semester into the schedule
 def add_schedule_semester(schedule_id, name):
@@ -327,7 +329,9 @@ def add_schedule_semester(schedule_id, name):
 
     conn.commit()
     conn.close()
+    print(next_id)
     return next_id     # return semester_id
+# add_schedule_semester(1, "Fall 2025")
 
 # Inserting the courses into the semesters
 def add_semester_course(semester_id, course_id):
@@ -350,7 +354,53 @@ def add_semester_course(semester_id, course_id):
     conn.commit()
     conn.close()
     return 1     # success
+# add_semester_course(1, 2)
+# add_semester_course(1, 5)
+# add_semester_course(1, 21)
+# add_semester_course(1, 40)
 
+# -------------------------------------------------------------
+# Return Schedule id based on student id
+# -------------------------------------------------------------
+def get_student_schedule(student_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+    query = """
+        SELECT schedule_id FROM Student_Schedule WHERE student_id = ?;
+    """
+    cur.execute(query, (student_id,))
+    results = cur.fetchall()
+    conn.close()
+    return results
+#get_student_schedule(1)
+
+# -------------------------------------------------------------
+# Delete students schedule based on schedule id
+# -------------------------------------------------------------
+def delete_schedule(schedule_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+
+    query = """ SELECT semester_id FROM Schedule_Semesters WHERE schedule_id = ?;"""
+    cur.execute(query, (schedule_id,))
+    semesters = cur.fetchall()
+    for semester_id in semesters:
+        query2 = """ DELETE FROM Semester_Courses WHERE semester_id = ?;"""
+        cur.execute(query2, (semester_id,))
+    query1 = """
+        DELETE FROM Student_Schedule WHERE schedule_id = ?;
+    """
+    cur.execute(query1, (schedule_id,))
+    conn.commit()
+    conn.close()
+    return 1
+delete_schedule(1)
 
 # -------------------------------------------------------------
 # Example usage (for testing)
