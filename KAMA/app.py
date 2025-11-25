@@ -197,10 +197,28 @@ def faculty_dashboard():
         "office_num": advisor_record[6]
     }
 
-    # NEW: get students assigned to this advisor
     students = get_students_for_advisor(advisor["id"])
 
     return render_template("faculty.html", name=name, advisor=advisor, students=students)
+
+@app.route('/faculty/student/<int:student_id>/schedule')
+def faculty_view_schedule(student_id):
+    if session.get('role') != 'faculty':
+        return redirect(url_for('login'))
+
+    # Get basic student info
+    schedule = get_student_full_schedule(student_id)   # already imported
+    user = get_student_data(student_id)
+
+    if not schedule:
+        return render_template("faculty_schedule.html",
+                               student=user,
+                               schedule=None,
+                               message="No schedule exists for this student yet.")
+
+    return render_template("faculty_schedule.html",
+                           student=user,
+                           schedule=schedule)
 
 
 # -------------------------------------------------------------
