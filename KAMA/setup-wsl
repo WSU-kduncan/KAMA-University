@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo "===== Updating system ====="
+sudo apt update -y
+sudo apt upgrade -y
+
+echo "===== Installing MariaDB ====="
+sudo apt install mariadb-server -y
+
+echo "===== Starting MariaDB service ====="
+# systemd may not exist, so use service
+sudo service mariadb start
+
+echo "===== Running MariaDB secure installation ====="
+# If root already secured, this will skip automatically
+sudo mysql_secure_installation
+
+echo "===== Creating Python virtual environment ====="
+python3 -m venv venv
+
+echo "===== Activating virtual environment ====="
+source venv/bin/activate
+
+echo "===== Installing Python dependencies ====="
+pip install flask mariadb
+
+echo "===== Running app.py ====="
+python3 app.py
+
