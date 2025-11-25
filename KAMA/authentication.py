@@ -9,7 +9,7 @@ def authenticate(username, password):
         return ("student", "Perry Soni")
     
     elif username == "fischerr" and password == "FischerR*909":  # Fischer Ray
-        return ("student", "JFischer Ray")
+        return ("student", "Fischer Ray")
     
     elif username == "panthera" and password == "PatheraL23?":  # Panthera Leon
         return ("student", "Panthera Leon")
