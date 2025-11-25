@@ -8,7 +8,8 @@
 </head>
 
 <body>
-  <!-- ADVISOR INFO PANEL (SLIDE-IN) -->
+
+  <!-- ========== ADVISOR INFO PANEL ========== -->
   <div id="advisorInfo" class="student-info-box">
     <div class="student-info-header">Advisor Info</div>
 
@@ -31,7 +32,7 @@
     <button id="closeAdvisorInfo" class="close-info">Close</button>
   </div>
 
-  <!-- FACULTY HEADER -->
+  <!-- ========== FACULTY HEADER ========== -->
   <header class="student-header">
     <div class="header-left">
       <div class="menu-icon">
@@ -53,36 +54,57 @@
     </div>
   </header>
 
-  <!-- FACULTY MAIN CONTENT -->
+  <!-- ========== FACULTY MAIN CONTENT ========== -->
   <main class="faculty-content">
     <table class="faculty-table">
       <thead>
-          <tr>
-              <th>Name</th>
-              <th>Major/Minor</th>
-              <th>Expected Graduation</th>
-              <th>Co-Op</th>
-              <th>Summer Courses</th>
-              <th>Schedule Status</th>
-          </tr>
+        <tr>
+          <th>Name</th>
+          <th>Major/Minor</th>
+          <th>Expected Graduation</th>
+          <th>Co-Op</th>
+          <th>Summer Courses</th>
+          <th>Schedule Status</th>
+        </tr>
       </thead>
+
       <tbody>
+        {% if students %}
+          {% for s in students %}
           <tr>
-              <td>Student 1</td>
-              <td>Major(s)/Minor(s)</td>
-              <td>Semester 20XX</td>
-              <td>No</td>
-              <td>No</td>
-              <td>No</td>
+            <td>{{ s.first }} {{ s.last }}</td>
+
+            <td>
+              {% if s.programs %}
+                {% for program_name, program_type in s.programs %}
+                  {{ program_type }}: {{ program_name }}<br>
+                {% endfor %}
+              {% else %}
+                N/A
+              {% endif %}
+            </td>
+
+            <td>{{ s.expected_grad or "TBD" }}</td>
+
+            <td>{{ "Yes" if (s.coops or 0) > 0 else "No" }}</td>
+
+
+            <td>{{ "Yes" if s.summer == "yes" else "No" }}</td>
+
+            <td>
+              {% if s.has_schedule %}
+                <span style="color: green; font-weight: bold;">✔ Exists</span>
+              {% else %}
+                <span style="color: red; font-weight: bold;">✘ None</span>
+              {% endif %}
+            </td>
           </tr>
-          <tr>
-              <td>Student 2</td>
-              <td>Major(s)/Minor(s)</td>
-              <td>Semester 20XX</td>
-              <td>No</td>
-              <td>No</td>
-              <td>No</td>
-          </tr>
+          {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="6">No assigned students found.</td>
+        </tr>
+        {% endif %}
       </tbody>
     </table>
   </main>
@@ -92,7 +114,7 @@
     <p>&copy; 2025 KAMA University.</p>
   </footer>
 
-  <!-- JS FILE -->
+  <!-- JS -->
   <script src="{{ url_for('static', filename='faculty.js') }}"></script>
 
 </body>
