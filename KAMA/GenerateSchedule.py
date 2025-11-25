@@ -33,7 +33,11 @@ class GenerateSchedule:
 
         if self.test_base_possibility():
             self.programs = Functions.get_student_programs(self.id)
-            return self.generate_schedule()
+            returnValue =  self.generate_schedule()
+            if returnValue == 0:
+                self.schedule.add_schedule_to_database()
+            return returnValue
+            
         else:
             return 1
 
