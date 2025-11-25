@@ -403,6 +403,56 @@ def delete_schedule(schedule_id):
 delete_schedule(1)
 
 # -------------------------------------------------------------
+# Get full schedule with semesters + courses for a student
+# -------------------------------------------------------------
+def get_student_full_schedule(student_id):
+    conn = get_db_connection()
+    if not conn:
+        return None
+
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT schedule_id FROM Student_Schedule WHERE student_id = ?;",
+        (student_id,)
+    )
+    schedule = cur.fetchone()
+    if not schedule:
+        conn.close()
+        return None
+
+    schedule_id = schedule[0]
+
+    cur.execute(
+        "SELECT semester_id, name FROM Schedule_Semesters WHERE schedule_id = ?;",
+        (schedule_id,)
+    )
+    semesters_raw = cur.fetchall()
+
+    if not semesters_raw:
+        conn.close()
+        return None
+
+    schedule_data = []
+
+    for sem_id, sem_name in semesters_raw:
+        cur.execute("""
+            SELECT c.course_code, c.course_name, c.credits
+            FROM Semester_Courses sc
+            JOIN Course c ON sc.course_id = c.course_id
+            WHERE sc.semester_id = ?;
+        """, (sem_id,))
+        courses = cur.fetchall()
+
+        schedule_data.append({
+            "name": sem_name,
+            "courses": courses
+        })
+
+    conn.close()
+    return schedule_data
+
+# -------------------------------------------------------------
 # Example usage (for testing)
 # -------------------------------------------------------------
 if __name__ == "__main__":
@@ -413,6 +463,3 @@ if __name__ == "__main__":
     if conn:
         print("✅ Connection successful!\n")
         conn.close()
-
-
-

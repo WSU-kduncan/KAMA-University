@@ -1,23 +1,6 @@
-
 import Functions
 from Course import Course
 from Term import Term
-
-
-# class Course:
-    
-#     #(1,           'ENG 1100',    'Academic Writing and Reading',  3,             'FSQ')
-
-#     def __init__(self, id):
-#         temp_course = Functions.get_course_by_id(id) # returns #(Primary Key, 'Course Code', 'Name of Course', Credit Hours,  'Semesters Offered')
-#         self.id = id
-#         self.code = temp_course[1]
-#         self.name = temp_course[2]
-#         self.credits = temp_course[3]
-#         self.offered_terms = temp_course[4]
-
-
-# ---- Semester & schedule containers --------------------------------------------------------------------
 
 class Semester:
 
@@ -31,17 +14,17 @@ class Semester:
             self.courses.append(course)
             self.creditHourCount += course.credits
         else:
-            print(f"Cannot add {course.code}: exceeds {self.maxCreditHours}")
+            #print(f"Cannot add {course.code}: exceeds {self.maxCreditHours}")
+            pass
 
     def list_courses(self):
         for c in self.courses:
-            print(f"{c.code}")
+            #print(f"{c.code}")
+            pass
 
-# Schedule ------------------------------------------------------------------------------------------------
 class Schedule:
 
     def __init__(self, maxCreditHours, student_id):
-        # self.years: dict[str, dict[Term, Semester]] = {}
         self.maxCreditHours : int = maxCreditHours
         self.course_ids : Course = []
         self.years = {}
@@ -52,13 +35,6 @@ class Schedule:
             self.years[year] = {}
         
         if term not in self.years[year]:
-            # translated_term = Term.F
-            # if term == 0:
-            #     translated_term = Term.F
-            # elif term == 1:
-            #     translated_term = Term.S
-            # else:
-            #     translated_term = Term.Q
             self.years[year][term] = Semester(self.maxCreditHours)
             
         return self.years[year][term]
@@ -70,43 +46,31 @@ class Schedule:
 
     def list_schedule(self):
         for year_index, terms in self.years.items():
-            print(f"\nYear {year_index}:")
+            #print(f"\nYear {year_index}:")
             for term, semester in terms.items():
                 semester.list_courses()
 
     def course_in_schedule(self, course : Course):
-        if course.id in self.course_ids:
-            return True
-        else:
-            return False
+        return course.id in self.course_ids
     
-    #course id
     def course_in_schdule_id(self, course_id : int):
-        if course_id in self.course_ids:
-            return True
-        else:
-            return False
+        return course_id in self.course_ids
 
-    #returns true if the current semester should be incremented
     def evaluate_current_semester(self, current_term, current_year, course: Course):
         temp_semester : Semester = self.years[current_year][current_term]
-        if (temp_semester.creditHourCount + course.credits) > temp_semester.maxCreditHours:
-            return True
-        else:
-            return False
+        return (temp_semester.creditHourCount + course.credits) > temp_semester.maxCreditHours
         
     def credit_hours_in_current_semester(self, current_term : int, current_year: int):
         temp_semester : Semester = self.years[current_year][current_term]
         return temp_semester.creditHourCount
     
-    def to_string(self) -> str:
-        for year, terms in self.years.items():
-            for term, semester in terms.items():
-                print(f"Year {year}, Semester {term}:")
-                for course in semester.courses:
-                    print(f"    {course.code} ({course.credits} credits)")
+    # def to_string(self) -> str:
+    #     for year, terms in self.years.items():
+    #         for term, semester in terms.items():
+    #             print(f"Year {year}, Semester {term}:")
+    #             for course in semester.courses:
+    #                 print(f"    {course.code} ({course.credits} credits)")
 
-    #returns [year, semester]
     def find_course_in_schedule(self, current_term, current_year, course: Course):
         for year, terms in self.years.items():
             for term, semester in terms.items():
@@ -115,9 +79,6 @@ class Schedule:
                         return [year, term]
         return [1]
 
-    # def add_student_schedule(student_id): returns schedule id
-    # def add_schedule_semester(schedule_id, name): returns semsterid
-    # def add_semester_course(semester_id, course_id): return not really notable
     def add_schedule_to_database(self):
         schedule_id = Functions.add_student_schedule(self.student_id)
         for year, terms in self.years.items():
@@ -127,5 +88,4 @@ class Schedule:
                     semester_id = Functions.add_schedule_semester(schedule_id, semester_name)
                 for temp_course in semester.courses:
                     Functions.add_semester_course(semester_id, temp_course.id)
-                    
-       
+

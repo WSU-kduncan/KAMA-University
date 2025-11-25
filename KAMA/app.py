@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from authentication import authenticate
+from GenerateSchedule import GenerateSchedule
 from Functions import (
     get_student_data,
     get_student_programs,
     get_program_requirements,
     get_requirement_courses,
     get_user_data_by_username,
-    get_courses_for_display
+    get_courses_for_display,
+    get_student_schedule,
+    get_student_full_schedule
 )
 
 app = Flask(__name__)
@@ -74,14 +77,17 @@ def student_dashboard():
     if not user_data:
         return render_template("student.html", name=username, error="Student data not found")
 
+    # Student ID
     student_id = user_data['data'][0]
+
+    # Student core data
     student = get_student_data(student_id)
     programs = get_student_programs(student_id)
 
-    # email
+    # Email
     student_email = user_data['data'][3] if len(user_data['data']) > 3 else "N/A"
 
-    # majors & minors
+    # Majors & minors
     major_names = []
     minor_names = []
 
@@ -91,18 +97,17 @@ def student_dashboard():
         elif prog[2].lower() == "minor":
             minor_names.append(prog[1])
 
-    major_names = major_names or ["N/A"]
-    minor_names = minor_names or ["N/A"]
+    major_name = ", ".join(major_names) if major_names else "N/A"
+    minor_name = ", ".join(minor_names) if minor_names else "N/A"
 
-    major_name = ", ".join(major_names)
-    minor_name = ", ".join(minor_names)
     grad_date = "TBD"
 
-    # requirements + courses
+    # Requirements + course lists
     program_data = []
     for program in programs:
         program_id = program[0]
         requirements = get_program_requirements(program_id)
+
         req_list = []
         for req in requirements:
             courses = get_requirement_courses(req[0])
@@ -110,10 +115,13 @@ def student_dashboard():
                 'requirement': req,
                 'courses': courses
             })
+
         program_data.append({
             'program': program,
             'requirements': req_list
         })
+
+    schedule_data = get_student_full_schedule(student_id)
 
     return render_template(
         "student.html",
@@ -123,8 +131,41 @@ def student_dashboard():
         major_name=major_name,
         minor_name=minor_name,
         grad_date=grad_date,
-        data=program_data
+        data=program_data,
+        schedule=schedule_data
     )
+
+# -------------------------------------------------------------
+# GENERATE SCHEDULE FOR STUDENT
+# -------------------------------------------------------------
+@app.route('/generate-schedule', methods=['POST'])
+def generate_schedule():
+    if session.get('role') != 'student':
+        return redirect(url_for('login'))
+
+    user_data = get_user_data_by_username(session.get('username'))
+    student_id = user_data['data'][0]
+
+    # 1. Look for existing schedule
+    existing = get_student_schedule(student_id)
+
+    if existing:
+        schedule_id = existing[0][0]
+        from Functions import delete_schedule
+        delete_schedule(schedule_id)
+
+    # 2. Generate new schedule
+    scheduler = GenerateSchedule(student_id)
+    result = scheduler.begin_generation()
+
+    if result != 0:
+        return "Schedule generation failed", 500
+
+    # 3. Save new schedule to DB
+    scheduler.schedule.add_schedule_to_database()
+
+    return redirect(url_for('student_dashboard'))
+
 
 
 # -------------------------------------------------------------
@@ -194,4 +235,3 @@ def logout():
 # -------------------------------------------------------------
 if __name__ == "__main__":
     app.run(debug=True, port=5050)
-
