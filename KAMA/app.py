@@ -9,7 +9,8 @@ from Functions import (
     get_user_data_by_username,
     get_courses_for_display,
     get_student_schedule,
-    get_student_full_schedule
+    get_student_full_schedule,
+    get_students_for_advisor
 )
 
 app = Flask(__name__)
@@ -196,7 +197,10 @@ def faculty_dashboard():
         "office_num": advisor_record[6]
     }
 
-    return render_template("faculty.html", name=name, advisor=advisor)
+    # NEW: get students assigned to this advisor
+    students = get_students_for_advisor(advisor["id"])
+
+    return render_template("faculty.html", name=name, advisor=advisor, students=students)
 
 
 # -------------------------------------------------------------

@@ -462,6 +462,71 @@ def get_student_full_schedule(student_id):
     conn.close()
     return schedule_data
 
+def get_students_for_advisor(advisor_id):
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+
+    query = """
+        SELECT 
+            s.student_id,
+            s.first_name,
+            s.last_name,
+            s.NumCoOps,
+            s.NumYears,
+            s.CrdtHrsPrSem,
+            s.SummerSemester,
+            NULL AS expected_grad,
+
+            -- Program Information
+            p.program_name,
+            p.degree_type,
+
+            -- Schedule check
+            CASE WHEN ss.schedule_id IS NOT NULL THEN 1 ELSE 0 END AS has_schedule
+
+        FROM Student s
+        LEFT JOIN StudentProgram sp ON s.student_id = sp.student_id
+        LEFT JOIN Program p ON sp.program_id = p.program_id
+        LEFT JOIN Student_Schedule ss ON ss.student_id = s.student_id
+        WHERE s.advisor_id = ?
+        ORDER BY s.last_name, s.first_name;
+    """
+
+    cur.execute(query, (advisor_id,))
+    rows = cur.fetchall()
+    conn.close()
+
+    students = {}
+
+    for row in rows:
+        sid = row[0]
+
+        if sid not in students:
+            students[sid] = {
+                "student_id": sid,
+                "first": row[1],
+                "last": row[2],
+                "coops": row[3],
+                "years": row[4],
+                "credits": row[5],
+                "summer": row[6],
+                "expected_grad": row[7],
+                "programs": [],
+                "has_schedule": row[10]
+            }
+
+        program_name = row[8]
+        degree_type = row[9]
+
+        if program_name:
+            students[sid]["programs"].append((program_name, degree_type))
+
+    return list(students.values())
+    
+
 # -------------------------------------------------------------
 # Example usage (for testing)
 # -------------------------------------------------------------
