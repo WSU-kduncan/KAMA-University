@@ -86,16 +86,35 @@
 
     <div class="schedule-wrapper">
       <h3 class="schedule-title">
-        Semester: <span id="semesterName">Fall 2026</span>
+        Semester: <span id="semesterName"></span>
       </h3>
 
+      <!-- ====== UPDATED SCHEDULE BOX ====== -->
       <div class="schedule-box">
-        <p>Your class schedule will appear here.</p>
 
-        <!-- Make Changes Button (RESTORED) -->
-        <button class="schedule-btn" style="margin-top: 15px;">
-          Make Changes
+        {% if schedule %}
+            <div id="scheduleDisplay"></div>
+        {% else %}
+            <p>No schedule yet — please generate one.</p>
+        {% endif %}
+        
+        {% if schedule %}
+    <!-- REGENERATE BUTTON -->
+    <form action="{{ url_for('generate_schedule') }}" method="POST"
+          onsubmit="return confirm('This will overwrite your existing schedule. Continue?');">
+        <button class="schedule-btn generate-btn" style="margin-top: 10px;">
+            Regenerate Schedule
         </button>
+    </form>
+{% else %}
+    <!-- GENERATE BUTTON -->
+    <form action="{{ url_for('generate_schedule') }}" method="POST">
+        <button class="schedule-btn generate-btn" style="margin-top: 10px;">
+            Generate Schedule
+        </button>
+    </form>
+{% endif %}
+
 
         <div class="arrow-buttons">
           <button class="arrow-btn left-arrow"></button>
@@ -110,11 +129,18 @@
     © 2025 KAMA University
   </footer>
 
+  <!-- Summer flag for JS -->
   <script>
     const hasSummer = "{{ student[6]|lower }}" === "yes";
   </script>
 
+  <!-- Schedule JSON injected for JS -->
+  <script>
+    const scheduleData = {{ schedule|tojson }};
+  </script>
+
+  <!-- Main JS -->
   <script src="{{ url_for('static', filename='student.js') }}"></script>
+
 </body>
 </html>
-
