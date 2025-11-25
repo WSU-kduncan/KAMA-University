@@ -694,3 +694,56 @@ body {
   transition: opacity 0.2s ease;
 }
 
+.generate-btn {
+  background-color: #3AA655; /* Clean medium green */
+  color: white;
+  border: none;
+  padding: 8px 14px; 
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  width: auto; /* Keeps it small */
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.generate-btn:hover {
+  background-color: #2c7c40; /* Darker green hover */
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.schedule-table th {
+  background-color: #3AA655; /* same green as your button */
+  color: white;
+  padding: 10px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.schedule-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
+}
+
+.schedule-table tr:last-child td {
+  border-bottom: none;
+}
+
+.schedule-table tr:hover {
+  background-color: #f4f4f4;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 12px;
+}
+
