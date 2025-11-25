@@ -6,7 +6,6 @@
   <title>Faculty Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
   <!-- ========== ADVISOR INFO PANEL ========== -->
@@ -65,6 +64,7 @@
           <th>Co-Op</th>
           <th>Summer Courses</th>
           <th>Schedule Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -72,8 +72,10 @@
         {% if students %}
           {% for s in students %}
           <tr>
+            <!-- Student Name -->
             <td>{{ s.first }} {{ s.last }}</td>
 
+            <!-- Majors & Minors -->
             <td>
               {% if s.programs %}
                 {% for program_name, program_type in s.programs %}
@@ -84,13 +86,16 @@
               {% endif %}
             </td>
 
+            <!-- Expected Grad -->
             <td>{{ s.expected_grad or "TBD" }}</td>
 
+            <!-- Co-op -->
             <td>{{ "Yes" if (s.coops or 0) > 0 else "No" }}</td>
 
-
+            <!-- Summer -->
             <td>{{ "Yes" if s.summer == "yes" else "No" }}</td>
 
+            <!-- Schedule Exists -->
             <td>
               {% if s.has_schedule %}
                 <span style="color: green; font-weight: bold;">✔ Exists</span>
@@ -98,11 +103,24 @@
                 <span style="color: red; font-weight: bold;">✘ None</span>
               {% endif %}
             </td>
+
+            <!-- Actions -->
+            <td>
+              {% if s.has_schedule %}
+                <a href="{{ url_for('faculty_view_schedule', student_id=s.student_id) }}"
+                   class="btn"
+                   style="font-size: 0.85rem;">
+                  View Schedule
+                </a>
+              {% else %}
+                <span style="color: gray;">—</span>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         {% else %}
         <tr>
-          <td colspan="6">No assigned students found.</td>
+          <td colspan="7">No assigned students found.</td>
         </tr>
         {% endif %}
       </tbody>
@@ -119,4 +137,3 @@
 
 </body>
 </html>
-

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ student[1] }} {{ student[2] }} – Schedule</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="student-header">
+    <div class="header-left"></div>
+
+    <div class="header-right">
+      <a href="{{ url_for('faculty_dashboard') }}" class="greeting">
+        ← Back to Faculty Dashboard
+      </a>
+      <img src="{{ url_for('static', filename='bell.png') }}" class="bell-icon" alt="Bell">
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main style="padding: 20px; max-width: 900px; margin: auto;">
+
+    <h2 style="color:#3AA655;">
+      {{ student[1] }} {{ student[2] }}'s Full Schedule
+    </h2>
+
+    {% if not schedule %}
+      <p style="font-size: 1.1rem; color:red; margin-top:20px;">
+        No schedule exists for this student.
+      </p>
+    {% else %}
+
+      {% for sem in schedule %}
+      <div class="overview-card" style="margin-bottom: 25px;">
+
+        <h3 style="color:#3AA655; margin-bottom:10px;">
+          {{ sem.name }}
+        </h3>
+
+        <table class="schedule-table" style="width:100%;">
+          <thead>
+            <tr>
+              <th>Course Code</th>
+              <th>Course Name</th>
+              <th>Credits</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for c in sem.courses %}
+            <tr>
+              <td>{{ c[0] }}</td>
+              <td>{{ c[1] }}</td>
+              <td>{{ c[2] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+      </div>
+      {% endfor %}
+
+    {% endif %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="student-footer">
+    <p>&copy; 2025 KAMA University.</p>
+  </footer>
+
+</body>
+</html>
