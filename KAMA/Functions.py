@@ -410,7 +410,7 @@ def delete_schedule(schedule_id):
     conn.commit()
     conn.close()
     return 1
-delete_schedule(1)
+
 
 # -------------------------------------------------------------
 # Get full schedule with semesters + courses for a student
