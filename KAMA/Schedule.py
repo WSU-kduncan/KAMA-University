@@ -80,12 +80,14 @@ class Schedule:
         return [1]
 
     def add_schedule_to_database(self):
-        schedule_id = Functions.add_student_schedule(self.student_id)
-        for year, terms in self.years.items():
-            for term, semester in terms.items():
-                semester_name = "Year " + str(year + 1) + " - " + Term.int_to_Term(term)
-                if(len(semester.courses) != 0):
-                    semester_id = Functions.add_schedule_semester(schedule_id, semester_name)
-                for temp_course in semester.courses:
-                    Functions.add_semester_course(semester_id, temp_course.id)
+        #only generate if a schedule does not exist
+        if not Functions.get_student_schedule(self.student_id):
+            schedule_id = Functions.add_student_schedule(self.student_id)
+            for year, terms in self.years.items():
+                for term, semester in terms.items():
+                    semester_name = "Year " + str(year + 1) + " - " + Term.int_to_Term(term)
+                    if(len(semester.courses) != 0):
+                        semester_id = Functions.add_schedule_semester(schedule_id, semester_name)
+                    for temp_course in semester.courses:
+                        Functions.add_semester_course(semester_id, temp_course.id)
 

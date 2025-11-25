@@ -66,6 +66,20 @@ class GenerateSchedule:
         for asl_course in asl_courses:
             courses_to_add.insert(0, Course(asl_course[0]))
 
+        
+        for program in self.programs:
+
+            seminars = []
+            if program[0] == 1:
+                 # first year seminar for pysch
+                seminars.insert(0, Course(6))
+            if program[0] == 2:
+                # first year seminar for criminal justice
+                seminars.insert(0, Course(7))
+            returnValue = self.add_course_to_schedule(seminars)
+
+
+
         returnValue = self.add_course_to_schedule(courses_to_add)
 
         # --- Requirements per program ---
@@ -248,3 +262,10 @@ class GenerateSchedule:
                 return 1
 
             i += 1
+
+# # not generating
+# print("Student 4")
+# student4 = GenerateSchedule(4)
+# value = student4.begin_generation()
+# print(value)
+# student4.schedule.to_string()
