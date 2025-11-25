@@ -198,18 +198,28 @@ def get_student_data(student_id):
         return None
 
     cur = conn.cursor()
+
+    # FIXED: column order now matches what GenerateSchedule expects
     query = """
-        SELECT s.student_id, s.first_name, s.last_name, s.NumcoOps, 
-            s.numYears, s.CrdtHrsPrSem, s.summerSemester, s.advisor_id, s.username, s.password
-        FROM Student s
-        WHERE s.student_id = ?;
+        SELECT 
+            student_id,
+            first_name,
+            last_name,
+            NumCoOps,
+            NumYears,
+            CrdtHrsPrSem,
+            SummerSemester,
+            advisor_id,
+            username,
+            password
+        FROM Student
+        WHERE student_id = ?;
     """
+
     cur.execute(query, (student_id,))
     result = cur.fetchone()
     conn.close()
     return result
-
-
 
 # -------------------------------------------------------------
 # Advisor Data: Returns full data about a student

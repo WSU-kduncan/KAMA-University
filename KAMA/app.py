@@ -143,25 +143,26 @@ def generate_schedule():
     if session.get('role') != 'student':
         return redirect(url_for('login'))
 
+    # Get student ID from session username
     user_data = get_user_data_by_username(session.get('username'))
     student_id = user_data['data'][0]
 
-    # 1. Look for existing schedule
+    # 1. Check if a schedule already exists and delete it
     existing = get_student_schedule(student_id)
-
     if existing:
         schedule_id = existing[0][0]
         from Functions import delete_schedule
         delete_schedule(schedule_id)
 
-    # 2. Generate new schedule
+    # 2. Generate new schedule (THIS RUNS your debug-enabled GenerateSchedule.py)
     scheduler = GenerateSchedule(student_id)
     result = scheduler.begin_generation()
 
+    # 3. If generation failed, report it
     if result != 0:
         return "Schedule generation failed", 500
 
-    # 3. Save new schedule to DB
+    # 4. Save to the database
     scheduler.schedule.add_schedule_to_database()
 
     return redirect(url_for('student_dashboard'))
