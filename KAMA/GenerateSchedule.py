@@ -167,35 +167,41 @@ class GenerateSchedule:
         stack.append(temp)
         return stack
 
-
     def add_course_to_schedule(self, courses):
 
+        # SAFETY CHECK — prevent IndexError on empty list
+        if not courses:
+            print("[DEBUG] add_course_to_schedule() received EMPTY course list → skipping")
+            return 0
+
+        # Check if adding the first course would overflow current semester
         if self.schedule.evaluate_current_semester(self.current_semester, self.current_year, courses[0]):
             if self.current_semester + 1 <= self.semesters_per_year - 1:
                 self.current_semester += 1
             else:
                 self.current_year += 1
                 self.current_semester = 0
+
             self.schedule.get_or_create_semester(self.current_semester, self.current_year)
 
-        # overflow year allowed
+        # Overflow year not allowed beyond max_year
         if self.current_year > self.max_year:
             return 1
 
-        # Single course add
         if len(courses) == 1:
             course = courses[0]
+
             if not self.schedule.course_in_schedule(course):
                 time = self.find_available_semester(self.current_semester, self.current_year, course)
 
-                # overflow allowed
+                # Overflow check
                 if isinstance(time, int) or time[1] > self.max_year:
                     return 1
 
+                # Add course
                 self.schedule.add_course(course, time[1], time[0])
                 self.total_credit_hours += course.credits
 
-        # Prereq chain add
         elif len(courses) > 1:
             prereq_sem = self.current_semester
             prereq_year = self.current_year
@@ -206,19 +212,22 @@ class GenerateSchedule:
                 if not self.schedule.course_in_schedule(course):
                     time = self.find_available_semester(prereq_sem, prereq_year, course)
 
-                    # overflow allowed
+                    # Overflow check
                     if isinstance(time, int) or time[1] > self.max_year:
                         return 1
 
                     prereq_sem, prereq_year = time
+
+                    # Add course
                     self.schedule.add_course(course, prereq_year, prereq_sem)
                     self.total_credit_hours += course.credits
 
+        # Should never happen
         else:
+            print("[ERROR] add_course_to_schedule(): Unexpected empty course chain.")
             return 1
 
         return 0
-
 
     def find_available_semester(self, current_semester, current_year, course):
 
