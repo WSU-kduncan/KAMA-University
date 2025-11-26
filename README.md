@@ -42,8 +42,11 @@ KAMA-University/
 ├── app.py
 ├── authentication.py
 ├── Functions.py
-├── databaseScript.sql
-├── setup.sh
+├── Course.py
+├── GenerateScheduke.py
+├── Schedule.py
+├── Term.py
+├── setup.sh                     # setup script <3
 │
 ├── templates/
 │   ├── index.html
@@ -53,12 +56,22 @@ KAMA-University/
 │   ├── faculty.html
 │   └── admin.html
 │
+├── database/
+│   ├── databaseScript.sql
+│
 ├── static/
-│   ├── style.css
-│   ├── student.js
-│   ├── chameleon.png
 │   ├── bell.png
-│   └── login.js
+│   ├── chameleon.png
+│   ├── loading.png
+│   ├── KAMA Chameleon.mp3
+│   ├── facts.txt
+│   ├── loading.js
+│   ├── student.js
+│   ├── allCourses.js
+│   ├── faculty.js
+│   ├── admin.js
+│   ├── manageCourses.js
+│   ├── style.css
 │
 ├── venv/                      # local Python environment
 │
