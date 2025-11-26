@@ -1,17 +1,59 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>System Administrator Dashboard</title>
+  <title>Admin Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
+  <!-- ========== ADMIN INFO PANEL ========== -->
+  <div id="adminInfo" class="student-info-box">
+    <div class="student-info-header">Admin Info</div>
+
+    <div class="info-field">
+      <strong>Name:</strong> {{ admin.first }} {{ admin.last }}
+    </div>
+
+    <div class="info-field">
+      <strong>Email:</strong> {{ admin.email }}
+    </div>
+
+    <div class="info-field">
+      <strong>Admin ID:</strong> {{ admin.id }}
+    </div>
+
+    <div class="info-field">
+      <strong>Office Name:</strong> {{ admin.office_name }}
+    </div>
+
+    <div class="info-field">
+      <strong>Office Number:</strong> {{ admin.office_num }}
+    </div>
+
+    <hr class="info-divider">
+
+    <!-- ===== GREEN BUTTON (like faculty/students) ===== -->
+    <a href="{{ url_for('all_courses') }}" 
+      class="btn"
+      style="width: 100%; text-align: center; padding: 10px 0;">
+      View All Courses
+    </a>
+
+    <a href="{{ url_for('manage_courses') }}" 
+      class="btn"
+      style="width: 100%; text-align: center; padding: 10px 0; margin-top: 10px;">
+      Manage Courses
+</a>
+
+    <button id="closeAdminInfo" class="close-info">Close</button>
+  </div>
+
+  <!-- ========== ADMIN HEADER ========== -->
   <header class="student-header">
     <div class="header-left">
-      <div class="menu-icon">
+      <div class="menu-icon" id="menu-toggle">
         <span></span>
         <span></span>
         <span></span>
@@ -19,7 +61,9 @@
     </div>
 
     <div class="header-center">
-      <img src="{{ url_for('static', filename='chameleon.png') }}" alt="Chameleon Logo" class="student-logo">
+      <img src="{{ url_for('static', filename='chameleon.png') }}"
+           alt="Chameleon Logo"
+           class="student-logo">
     </div>
 
     <div class="header-right">
@@ -28,13 +72,16 @@
     </div>
   </header>
 
+  <!-- ========== MAIN ADMIN CONTENT (EMPTY FOR NOW) ========== -->
   <main class="faculty-content">
+    <!-- intentionally blank -->
   </main>
 
+  <!-- FOOTER -->
   <footer class="student-footer">
-    <p>&copy; 2025 KAMA University.</p>
+    <p>&copy; 2025 KAMA University</p>
   </footer>
 
+  <script src="{{ url_for('static', filename='admin.js') }}"></script>
 </body>
 </html>
-

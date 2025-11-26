@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Courses | KAMA University</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ====== HEADER ====== -->
+    <header class="student-header">
+
+        <!-- Left: Back Button -->
+        <div class="header-left">
+            <a href="{{ url_for('admin_dashboard') }}" class="greeting">← Back</a>
+        </div>
+
+        <!-- Center: Logo -->
+        <div class="header-center">
+            <img src="{{ url_for('static', filename='chameleon.png') }}"
+                 alt="Chameleon Logo" class="student-logo">
+        </div>
+
+        <!-- Right: Bell -->
+        <div class="header-right">
+            <img src="{{ url_for('static', filename='bell.png') }}"
+                 alt="Bell Icon" class="bell-icon">
+        </div>
+    </header>
+
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="student-content">
+
+        <h2>Manage Courses</h2>
+
+        <!-- ====== FILTERS + ADD COURSE ====== -->
+        <div style="margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+
+            <!-- Search -->
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Search courses..." 
+                style="padding: 8px; width: 250px; border: 1px solid #ccc; border-radius: 6px;"
+            >
+
+            <!-- Department Filter -->
+            <select id="deptFilter" style="padding: 8px; border-radius: 6px;">
+                <option value="">All Departments</option>
+                <option value="ENG">ENG</option>
+                <option value="HST">HST</option>
+                <option value="ART">ART</option>
+                <option value="STT">STT</option>
+                <option value="UVC">UVC</option>
+                <option value="LA">LA</option>
+                <option value="PSY">PSY</option>
+                <option value="EC">EC</option>
+                <option value="BIO">BIO</option>
+                <option value="PHY">PHY</option>
+                <option value="MTH">MTH</option>
+                <option value="SOC">SOC</option>
+                <option value="URS">URS</option>
+                <option value="PLS">PLS</option>
+                <option value="ASL">ASL</option>
+                <option value="PHL">PHL</option>
+                <option value="CoOp">CoOp</option>
+            </select>
+
+            <!-- Semester Filter -->
+            <select id="semesterFilter" style="padding: 8px; border-radius: 6px;">
+                <option value="">All Semesters</option>
+                <option value="F">Fall</option>
+                <option value="S">Spring</option>
+                <option value="Q">Summer</option>
+            </select>
+
+            <!-- Credits Filter -->
+            <select id="creditFilter" style="padding: 8px; border-radius: 6px;">
+                <option value="">All Credits</option>
+                <option value="1">1 Credit</option>
+                <option value="2">2 Credits</option>
+                <option value="3">3 Credits</option>
+                <option value="4">4 Credits</option>
+                <option value="5">5 Credits</option>
+            </select>
+
+            <!-- ADD COURSE BUTTON -->
+            <button id="openAddCourseModal" class="btn" 
+                    style="padding: 8px 14px; background-color: #3AA655;">
+                + Add Course
+            </button>
+
+        </div>
+
+
+        <!-- ====== COURSE TABLE ====== -->
+        <table>
+            <tr>
+                <th>Course ID</th>
+                <th>Semester</th>
+                <th>Course Code</th>
+                <th>Name</th>
+                <th>Credits</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for course in courses %}
+            <tr data-course-id="{{ course[0] }}">
+                <td>{{ course[0] }}</td>
+                <td>{{ course[1] }}</td>
+                <td>{{ course[2] }}</td>
+                <td>{{ course[3] }}</td>
+                <td>{{ course[4] }}</td>
+                <td>
+                    <button class="btn deleteCourseBtn" 
+                            style="background-color:#c62828; padding:5px 10px;">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </main>
+
+   <!-- ========== ADD COURSE MODAL ========== -->
+<div id="addCourseModal" class="modal hidden">
+    <div class="modal-content">
+
+        <h3 style="text-align:center;">Add New Course</h3>
+
+        <label>Course ID (required)</label>
+        <input type="number" id="newCourseID">
+
+        <label>Semester (required)</label>
+        <input type="text" id="newCourseSemester" placeholder="FSQ, SSQ, etc">
+
+        <label>Course Code (required)</label>
+        <input type="text" id="newCourseCode" placeholder="e.g., CS 1180">
+
+        <label>Course Name (required)</label>
+        <input type="text" id="newCourseName">
+
+        <label>Credits (required)</label>
+        <input type="number" min="1" max="6" id="newCourseCredits">
+
+        <div class="modal-buttons">
+            <button class="btn" id="saveCourseBtn">Save</button>
+            <button class="btn" id="closeModalBtn" style="background: gray;">Cancel</button>
+        </div>
+
+    </div>
+</div>
+
+
+    <footer class="student-footer">
+        KAMA University • Course Management
+    </footer>
+
+    <script src="{{ url_for('static', filename='manageCourses.js') }}"></script>
+
+</body>
+</html>
