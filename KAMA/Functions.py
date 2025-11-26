@@ -1,8 +1,5 @@
 # TODO: TURN DATA INTO OBJECTS
-
-
 import mariadb
-
 # -------------------------------------------------------------
 # Database Connection
 # -------------------------------------------------------------
@@ -50,6 +47,77 @@ def get_courses():
     results = cur.fetchall()
     conn.close()
     return results
+
+# -------------------------------------------------------------
+# Get All Courses For Manage
+# -------------------------------------------------------------
+def get_all_courses():
+    conn = get_db_connection()
+    if not conn:
+        return []
+
+    cur = conn.cursor()
+    query = """
+    SELECT 
+        course_id, 
+        semester, 
+        course_code, 
+        course_name, 
+        credits
+    FROM Course
+    ORDER BY course_id;
+"""
+    cur.execute(query)
+    rows = cur.fetchall()
+    conn.close()
+
+    return rows
+
+
+# -------------------------------------------------------------
+#  ADD Courses
+# -------------------------------------------------------------
+def add_course(course_id, semester, course_code, course_name, credits):
+    conn = get_db_connection()
+    if not conn:
+        return False
+
+    cur = conn.cursor()
+
+    query = """
+        INSERT INTO Course (course_id, course_code, semester, course_name, credits, prereq)
+        VALUES (?, ?, ?, ?, ?, NULL);
+    """
+
+    try:
+        cur.execute(query, (course_id, course_code, semester, course_name, credits))
+        conn.commit()
+        return True
+    except Exception as e:
+        print("Error adding course:", e)
+        return False
+    finally:
+        conn.close()
+
+# -------------------------------------------------------------
+# Delete Courses
+# -------------------------------------------------------------
+def delete_course(course_id):
+    conn = get_db_connection()
+    if not conn:
+        return False
+
+    cur = conn.cursor()
+
+    try:
+        cur.execute("DELETE FROM Course WHERE course_id = ?;", (course_id,))
+        conn.commit()
+        return True
+    except Exception as e:
+        print("Error deleting course:", e)
+        return False
+    finally:
+        conn.close()
 
 # -------------------------------------------------------------
 # Get ALL courses in database

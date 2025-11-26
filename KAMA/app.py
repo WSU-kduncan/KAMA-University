@@ -228,9 +228,76 @@ def faculty_view_schedule(student_id):
 def admin_dashboard():
     if session.get('role') != 'admin':
         return redirect(url_for('login'))
-    name = session.get('name', '')
-    return render_template("admin.html", name=name)
 
+    username = session.get('username')
+    name = session.get('name')
+
+    user_data = get_user_data_by_username(username)
+
+    if not user_data:
+        return render_template("admin.html", name=name, error="Admin data not found")
+
+    rec = user_data['data']
+
+    admin = {
+        "id": rec[0],          # admin_id
+        "first": rec[1],
+        "last": rec[2],
+        "email": rec[7],
+        "office_name": rec[5],
+        "office_num": rec[6]
+    }
+
+    return render_template("admin.html", name=name, admin=admin)
+
+# -------------------------------------------------------------
+# MANAGE COURSES PAGE
+# -------------------------------------------------------------
+@app.route('/manage-courses')
+def manage_courses():
+    if session.get('role') != 'admin':
+        return redirect(url_for('login'))
+
+    from Functions import get_all_courses
+    courses = get_all_courses()
+
+    return render_template("manageCourses.html", courses=courses)
+
+# -------------------------------------------------------------
+# MANAGE COURSES PAGE (ADD)
+# -------------------------------------------------------------
+@app.route('/add-course', methods=['POST'])
+def add_course_route():
+    if session.get('role') != 'admin':
+        return {"success": False, "error": "Unauthorized"}, 403
+
+    from Functions import add_course
+
+    data = request.json
+    course_id = data.get("id")
+    semester = data.get("semester")
+    course_code = data.get("code")
+    course_name = data.get("name")
+    credits = data.get("credits")
+
+    success = add_course(course_id, semester, course_code, course_name, credits)
+    return {"success": success}
+
+# -------------------------------------------------------------
+# MANAGE COURSES PAGE (DELETE)
+# -------------------------------------------------------------
+@app.route('/delete-course', methods=['POST'])
+def delete_course_route():
+    if session.get('role') != 'admin':
+        return {"success": False, "error": "Unauthorized"}, 403
+
+    from Functions import delete_course
+
+    data = request.json
+    course_id = data.get("course_id")
+
+    success = delete_course(course_id)
+    return {"success": success}
 
 # -------------------------------------------------------------
 # ALL COURSES PAGE
