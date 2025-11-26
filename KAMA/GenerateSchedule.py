@@ -35,7 +35,8 @@ class GenerateSchedule:
             self.programs = Functions.get_student_programs(self.id)
             returnValue =  self.generate_schedule()
             if returnValue == 0:
-                self.schedule.add_schedule_to_database()
+                #self.schedule.add_schedule_to_database()
+                print("Adding schedule to database")
             return returnValue
             
         else:

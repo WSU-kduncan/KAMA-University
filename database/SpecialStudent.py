@@ -250,11 +250,42 @@ def remove_advisor(advisor_id):
     return 1
 remove_advisor(4)
 
+def add_course(course_code, semester, course_name, credits, prereq=None):
+    conn = get_db_connection()
+    if not conn:
+        return[]
+    cur = conn.cursor()
+    query1 = """SELECT MAX(course_id)
+                FROM Course"""
+    
+    cur.execute(query1)
+    result = cur.fetchone()
+    course_id = result[0] + 1
+    
+    query2 = """INSERT INTO Course (course_id, course_code, semester, course_name, credits, prereq)
+            VALUES (?, ?, ?, ?, ?, ?)"""
+
+
+    cur.execute(query2, (course_id, course_code, semester, course_name, credits, prereq))
+    conn.commit()
+    conn.close()
+    return 1
+#add_course('CEG 2300', 'FSQ', 'Intro to Software Engineering', 3)
+
+def remove_course(course_id):
+    conn = get_db_connection()
+    if not conn:
+        return[]
+    cur = conn.cursor()
+    query = """DELETE FROM Course
+    WHERE course_id = ?;"""
+    cur.execute(query, (course_id,))
+    conn.commit()
+    conn.close()
+    return 1
+#remove_course(53)
 
 
 
-# A schedule can have only 1 student
-# it can have many semesters
-# a semester can be in many schdeles
-# a semester can have many courses
-# a course can have many semesters
+
+
