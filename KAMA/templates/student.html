@@ -62,21 +62,16 @@
       <strong>Expected Graduation Date:</strong> {{ grad_date }}
     </div>
 
-    <!-- ===== Buttons inside the Info Panel ===== -->
     <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-
-      <!-- View All Courses -->
       <a href="{{ url_for('all_courses') }}" 
          class="btn"
          style="width: 100%; text-align: center; padding: 10px 0;">
         View All Courses
       </a>
 
-      <!-- Close Panel -->
       <button class="close-info" id="closeInfo" style="width: 100%;">
         Close
       </button>
-
     </div>
   </div>
 
@@ -85,11 +80,11 @@
   <main class="student-content">
 
     <div class="schedule-wrapper">
+
       <h3 class="schedule-title">
         Semester: <span id="semesterName"></span>
       </h3>
 
-      <!-- ====== UPDATED SCHEDULE BOX ====== -->
       <div class="schedule-box">
 
         {% if schedule %}
@@ -97,29 +92,41 @@
         {% else %}
             <p>No schedule yet — please generate one.</p>
         {% endif %}
-        
-        {% if schedule %}
-    <!-- REGENERATE BUTTON -->
-    <form action="{{ url_for('generate_schedule') }}" method="POST"
-          onsubmit="return confirm('This will overwrite your existing schedule. Continue?');">
-        <button class="schedule-btn generate-btn" style="margin-top: 10px;">
-            Regenerate Schedule
-        </button>
-    </form>
-{% else %}
-    <!-- GENERATE BUTTON -->
-    <form action="{{ url_for('generate_schedule') }}" method="POST">
-        <button class="schedule-btn generate-btn" style="margin-top: 10px;">
-            Generate Schedule
-        </button>
-    </form>
-{% endif %}
 
+        <div style="display:flex; justify-content:flex-start; align-items:center; gap:15px; margin-top:15px;">
+
+          {% if schedule %}
+              <!-- Regenerate button -->
+              <form action="{{ url_for('generate_schedule') }}" method="POST"
+                    style="display:inline-block;"
+                    onsubmit="return confirm('This will overwrite your existing schedule. Continue?');">
+                  <button class="schedule-btn generate-btn">
+                      Regenerate Schedule
+                  </button>
+              </form>
+          {% else %}
+              <!-- Generate button -->
+              <form action="{{ url_for('generate_schedule') }}" method="POST"
+                    style="display:inline-block;">
+                  <button class="schedule-btn generate-btn">
+                      Generate Schedule
+                  </button>
+              </form>
+          {% endif %}
+
+          <!--Edit Preferences Button -->
+          <button id="open-pref-modal" class="schedule-btn"
+              style="background:#3AA655; color:white; margin-left:200px;">
+            Edit Preferences
+          </button>
+
+        </div>
 
         <div class="arrow-buttons">
           <button class="arrow-btn left-arrow"></button>
           <button class="arrow-btn right-arrow"></button>
         </div>
+
       </div>
     </div>
 
@@ -128,6 +135,8 @@
   <footer class="student-footer">
     © 2025 KAMA University
   </footer>
+
+
 
   <!-- Summer flag for JS -->
   <script>
@@ -138,6 +147,34 @@
   <script>
     const scheduleData = {{ schedule|tojson }};
   </script>
+
+
+  <!--PREFERENCES MODAL-->
+  <div id="preferences-modal" class="modal hidden">
+    <div class="modal-content">
+
+      <h2 style="color:#3AA655; margin-top:0;">Edit Preferences</h2>
+      <p style="margin-bottom: 15px;">What would you like to change?</p>
+
+      <label><strong>Take Summer Semesters?</strong></label>
+      <select id="modal-summer-select" style="width: 100%; padding: 8px; margin-bottom: 15px;">
+        <option value="yes" {% if student[6] == 'yes' %}selected{% endif %}>Yes</option>
+        <option value="no" {% if student[6] == 'no' %}selected{% endif %}>No</option>
+      </select>
+
+      <label><strong>Number of Co-Ops (0–3)</strong></label>
+      <input id="modal-coop-input" type="number" min="0" max="3"
+            value="{{ student[3] }}"
+            style="width: 100%; padding: 8px; margin-bottom: 20px;">
+
+      <div style="display:flex; justify-content: space-between; gap:10px;">
+        <button id="save-pref-modal" class="btn" style="flex:1;">Save</button>
+        <button id="close-pref-modal" class="btn" style="flex:1; background-color:#888;">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+
 
   <!-- Main JS -->
   <script src="{{ url_for('static', filename='student.js') }}"></script>
