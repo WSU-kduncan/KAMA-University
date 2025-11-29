@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import Functions
 from authentication import authenticate
 from GenerateSchedule import GenerateSchedule
 from Functions import (
@@ -137,6 +138,67 @@ def student_dashboard():
     )
 
 # -------------------------------------------------------------
+# UPDATE SUMMER SEMESTER PREFERENCE
+# -------------------------------------------------------------
+@app.route('/student/update_summer', methods=['POST'])
+def update_summer():
+    if session.get('role') != 'student':
+        return {"status": "error", "message": "Unauthorized"}, 403
+
+    user = get_user_data_by_username(session.get('username'))
+    student_id = user['data'][0]
+
+    data = request.get_json()
+    summer_value = data.get("summer", "no")
+
+    conn = Functions.get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE Student
+        SET SummerSemester = ?
+        WHERE student_id = ?;
+    """, (summer_value, student_id))
+
+    conn.commit()
+    conn.close()
+
+    return {"status": "success"}
+
+# -------------------------------------------------------------
+# UPDATE NUMBER OF COOPS
+# -------------------------------------------------------------
+@app.route('/student/update_coops', methods=['POST'])
+def update_coops():
+    if session.get('role') != 'student':
+        return {"status": "error", "message": "Unauthorized"}, 403
+
+    user = get_user_data_by_username(session.get('username'))
+    student_id = user['data'][0]
+
+    data = request.get_json()
+    coops = int(data.get("coops", 0))
+
+    if coops < 0 or coops > 3:
+        return {"status": "error", "message": "Invalid range"}, 400
+
+    conn = Functions.get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE Student
+        SET NumCoOps = ?
+        WHERE student_id = ?;
+    """, (coops, student_id))
+
+    conn.commit()
+    conn.close()
+
+    return {"status": "success"}
+
+
+
+# -------------------------------------------------------------
 # GENERATE SCHEDULE FOR STUDENT
 # -------------------------------------------------------------
 @app.route('/generate-schedule', methods=['POST'])
@@ -240,7 +302,7 @@ def admin_dashboard():
     rec = user_data['data']
 
     admin = {
-        "id": rec[0],          # admin_id
+        "id": rec[0],
         "first": rec[1],
         "last": rec[2],
         "email": rec[7],
