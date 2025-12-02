@@ -98,7 +98,10 @@ def student_dashboard():
     major_name = ", ".join(major_names) if major_names else "N/A"
     minor_name = ", ".join(minor_names) if minor_names else "N/A"
 
-    grad_date = "TBD"
+    years_remaining = student[4]
+    
+    grad_year = 2026 + years_remaining
+    grad_date = str(grad_year)
 
     # Requirements + course lists
     program_data = []
