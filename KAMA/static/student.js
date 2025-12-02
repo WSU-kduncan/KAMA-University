@@ -148,4 +148,37 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+/* ============================================================
+GENERATE SCHEDULE WITH POPUP ON FAILURE
+============================================================ */
+
+const generateBtn = document.querySelector(".generate-btn");
+
+if (generateBtn) {
+    generateBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const res = await fetch("/generate-schedule", {
+            method: "POST"
+        });
+
+        if (!res.ok) {
+            // Show failure popup
+            document.getElementById("genFailModal").classList.remove("hidden");
+            return;
+        }
+
+        // Success → reload dashboard
+        location.reload();
+    });
+}
+
+// Close popup
+const closeFail = document.getElementById("closeGenFail");
+if (closeFail) {
+    closeFail.addEventListener("click", () => {
+        document.getElementById("genFailModal").classList.add("hidden");
+    });
+}
+
 });
