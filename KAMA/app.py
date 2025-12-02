@@ -17,14 +17,12 @@ from Functions import (
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-
 # -------------------------------------------------------------
 # HOME ROUTE
 # -------------------------------------------------------------
 @app.route('/')
 def home():
     return render_template("index.html")
-
 
 # -------------------------------------------------------------
 # LOGIN ROUTE
@@ -50,7 +48,6 @@ def login():
 
     return render_template("login.html")
 
-
 # -------------------------------------------------------------
 # LOADING ROUTE
 # -------------------------------------------------------------
@@ -63,7 +60,6 @@ def loading():
         return redirect(url_for('login'))
 
     return render_template('loading.html', name=name, role=role)
-
 
 # -------------------------------------------------------------
 # STUDENT DASHBOARD
@@ -196,41 +192,36 @@ def update_coops():
 
     return {"status": "success"}
 
-
-
 # -------------------------------------------------------------
 # GENERATE SCHEDULE FOR STUDENT
 # -------------------------------------------------------------
 @app.route('/generate-schedule', methods=['POST'])
 def generate_schedule():
     if session.get('role') != 'student':
-        return redirect(url_for('login'))
+        return {"status": "error", "message": "Unauthorized"}, 403
 
-    # Get student ID from session username
+    # Get student ID
     user_data = get_user_data_by_username(session.get('username'))
     student_id = user_data['data'][0]
 
-    # 1. Check if a schedule already exists and delete it
+    # Delete existing schedule
     existing = get_student_schedule(student_id)
     if existing:
         schedule_id = existing[0][0]
         from Functions import delete_schedule
         delete_schedule(schedule_id)
 
-    # 2. Generate new schedule (THIS RUNS your debug-enabled GenerateSchedule.py)
+    # Run generator
     scheduler = GenerateSchedule(student_id)
     result = scheduler.begin_generation()
 
-    # 3. If generation failed, report it
+    # FAIL
     if result != 0:
-        return "Schedule generation failed", 500
+        return {"status": "failed"}, 500
 
-    # 4. Save to the database
+    # SUCCESS
     scheduler.schedule.add_schedule_to_database()
-
-    return redirect(url_for('student_dashboard'))
-
-
+    return {"status": "success"}, 200
 
 # -------------------------------------------------------------
 # FACULTY DASHBOARD
@@ -281,7 +272,6 @@ def faculty_view_schedule(student_id):
     return render_template("faculty_schedule.html",
                            student=user,
                            schedule=schedule)
-
 
 # -------------------------------------------------------------
 # ADMIN DASHBOARD
@@ -372,7 +362,6 @@ def all_courses():
     courses = get_courses_for_display()
     return render_template("allCourses.html", courses=courses)
 
-
 # -------------------------------------------------------------
 # LOGOUT
 # -------------------------------------------------------------
@@ -380,7 +369,6 @@ def all_courses():
 def logout():
     session.clear()
     return redirect(url_for('login'))
-
 
 # -------------------------------------------------------------
 # MAIN ENTRY POINT
