@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         semesterDisplay.textContent = "No Schedule";
     }
   
-  
     /* ============================================================
        PREFERENCES MODAL
     ============================================================ */
@@ -114,6 +113,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const summer = document.getElementById("modal-summer-select").value;
             const coops = parseInt(document.getElementById("modal-coop-input").value);
+            const years = parseInt(document.getElementById("modal-years-input").value);
+
+            if (years < 1 || years > 10) {
+                alert("Years must be between 1 and 10.");
+                return;
+            }
+
 
             if (coops < 0 || coops > 3) {
                 alert("Co-Ops must be between 0 and 3.");
@@ -132,6 +138,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ coops })
+            });
+
+            // Update years until graduation
+            await fetch("/student/update_years", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ years })
             });
 
             alert("Preferences saved! Please regenerate your schedule.");

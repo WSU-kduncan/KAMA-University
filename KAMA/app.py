@@ -193,6 +193,37 @@ def update_coops():
     return {"status": "success"}
 
 # -------------------------------------------------------------
+# UPDATE YEARS UNTIL GRADUATION
+# -------------------------------------------------------------
+@app.route('/student/update_years', methods=['POST'])
+def update_years():
+    if session.get('role') != 'student':
+        return {"status": "error", "message": "Unauthorized"}, 403
+
+    user = get_user_data_by_username(session.get('username'))
+    student_id = user['data'][0]
+
+    data = request.get_json()
+    years = int(data.get("years", 4))
+
+    if years < 1 or years > 10:
+        return {"status": "error", "message": "Invalid range"}, 400
+
+    conn = Functions.get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE Student
+        SET NumYears = ?
+        WHERE student_id = ?;
+    """, (years, student_id))
+
+    conn.commit()
+    conn.close()
+
+    return {"status": "success"}
+
+# -------------------------------------------------------------
 # GENERATE SCHEDULE FOR STUDENT
 # -------------------------------------------------------------
 @app.route('/generate-schedule', methods=['POST'])
