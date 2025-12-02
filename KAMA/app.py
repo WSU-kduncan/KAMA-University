@@ -284,10 +284,25 @@ def faculty_dashboard():
         "office_num": advisor_record[6]
     }
 
-    students = get_students_for_advisor(advisor["id"])
+    students_raw = get_students_for_advisor(advisor["id"])
+    students = []
+
+    for row in students_raw:
+        # Calculate expected graduation
+        years = row.get("years")
+        if years is not None:
+            row["expected_grad"] = 2026 + years
+        else:
+            row["expected_grad"] = None
+
+        # Everything else is already correct in row
+        students.append(row)
 
     return render_template("faculty.html", name=name, advisor=advisor, students=students)
 
+# -------------------------------------------------------------
+# SHOW STUDENT SCHEDULE
+# -------------------------------------------------------------
 @app.route('/faculty/student/<int:student_id>/schedule')
 def faculty_view_schedule(student_id):
     if session.get('role') != 'faculty':
