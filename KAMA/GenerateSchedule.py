@@ -67,21 +67,22 @@ class GenerateSchedule:
         for asl_course in asl_courses:
             courses_to_add.insert(0, Course(asl_course[0]))
 
-        
+        seminars = []
         for program in self.programs:
 
-            seminars = []
+            
             if program[0] == 1:
                  # first year seminar for pysch
                 seminars.insert(0, Course(6))
             if program[0] == 2:
                 # first year seminar for criminal justice
                 seminars.insert(0, Course(7))
-            returnValue = self.add_course_to_schedule(seminars)
-
-
+        returnValue = self.add_course_to_schedule(seminars)
 
         returnValue = self.add_course_to_schedule(courses_to_add)
+
+        if returnValue != 0:
+            return returnValue
 
         # --- Requirements per program ---
         for program in self.programs:
@@ -129,6 +130,7 @@ class GenerateSchedule:
 
             i = 0
             while i < self.num_coops:
+                self.schedule.get_or_create_semester(self.current_semester, self.current_year)
 
                 if self.schedule.credit_hours_in_current_semester(self.current_semester, self.current_year) == 0:
                     courses_to_add = self.create_courses_to_add(Course(self.COOP_COURSE_ID))
@@ -190,6 +192,11 @@ class GenerateSchedule:
 
         if len(courses) == 1:
             course = courses[0]
+
+            if course.id == self.COOP_COURSE_ID:
+                #coops get added without checking
+                self.schedule.add_course(course, self.current_year, self.current_semester)
+                return 0
 
             if not self.schedule.course_in_schedule(course):
                 time = self.find_available_semester(self.current_semester, self.current_year, course)
@@ -275,7 +282,7 @@ class GenerateSchedule:
 
 # # not generating
 # print("Student 4")
-# student4 = GenerateSchedule(4)
+# student4 = GenerateSchedule(2)
 # value = student4.begin_generation()
 # print(value)
 # student4.schedule.to_string()
