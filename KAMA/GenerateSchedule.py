@@ -18,7 +18,7 @@ class GenerateSchedule:
         self.credit_hours_per_semester = student[5]
 
         # allow one extra overflow year
-        self.max_year = self.years            # year 0..years allowed
+        self.max_year = self.years - 1           # year 0..years allowed
 
         self.total_credit_hours = 0
         self.current_semester = 0
@@ -280,9 +280,43 @@ class GenerateSchedule:
 
             i += 1
 
-# # not generating
-# print("Student 4")
-# student4 = GenerateSchedule(2)
-# value = student4.begin_generation()
+# #test values for student
+# #1 major 1 minor
+# #not generating
+# print("Student 1")
+# student1 = GenerateSchedule(1)
+# value = student1.begin_generation()
 # print(value)
-# student4.schedule.to_string()
+# student1.schedule.to_string()
+
+# #1 major 2 minors
+# # not generating
+# print("Student 2")
+# student2 = GenerateSchedule(2)
+# value = student2.begin_generation()
+# print(value)
+# student2.schedule.to_string()
+
+# #2 majors 1 minor
+# # not generating
+# print("Student 3")
+# student3 = GenerateSchedule(3)
+# value = student3.begin_generation()
+# print(value)
+# student3.schedule.to_string()
+
+#2 majors
+# not generating
+print("Student 4")
+student4 = GenerateSchedule(4)
+value = student4.begin_generation()
+print(value)
+student4.schedule.to_string()
+
+# # 2 majors 2 minors
+# # not generating
+# print("Student 5")
+# student5 = GenerateSchedule(5)
+# value = student5.begin_generation()
+# print(value)
+# student5.schedule.to_string()

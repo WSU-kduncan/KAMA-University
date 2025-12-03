@@ -64,12 +64,12 @@ class Schedule:
         temp_semester : Semester = self.years[current_year][current_term]
         return temp_semester.creditHourCount
     
-    # def to_string(self) -> str:
-    #     for year, terms in self.years.items():
-    #         for term, semester in terms.items():
-    #             print(f"Year {year}, Semester {term}:")
-    #             for course in semester.courses:
-    #                 print(f"    {course.code} ({course.credits} credits)")
+    def to_string(self) -> str:
+        for year, terms in self.years.items():
+            for term, semester in terms.items():
+                print(f"Year {year}, Semester {term}:")
+                for course in semester.courses:
+                    print(f"    {course.code} ({course.credits} credits)")
 
     def find_course_in_schedule(self, current_term, current_year, course: Course):
         for year, terms in self.years.items():
