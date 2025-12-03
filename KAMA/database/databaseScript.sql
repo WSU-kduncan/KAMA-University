@@ -167,9 +167,8 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (10, 'EC 2900', 'FSQ', 'Global Economic, Business and Social Issues', 3, NULL),
 (11, 'BIO 1150/L', 'FSQ', 'Biology of Food', 4, NULL),
 (12, 'PHY 1110/L,R', 'FSQ', 'Principles of Physics', 5, NULL),
-(13, 'PHY 2400', 'FSQ', 'General Physics 1', 4, 16),
-(14, 'PHY 2400L', 'FSQ', 'General Physics Lab', 0, 13),
-(15, 'PHY 2400R', 'FSQ', 'General Physics Recitation', 0, 13),
+(13, 'PHY 2400', 'FSQ', 'General Physics 1/L/R', 4, 16),
+
 (16, 'MTH 2300', 'FSQ', 'Calculus I', 4, NULL),
 (17, 'SOC 3410', 'FQ', 'Research Methods', 3, NULL),
 (18, 'URS 4280', 'F', 'CJ Organization and Management', 3, NULL),
@@ -261,8 +260,7 @@ INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
 (6, 9),
 (6, 10),
 (7, 13),
-(7, 14),
-(7, 15),
+
 (7, 16), 
 (34, 11),
 (34, 12),

@@ -17,14 +17,12 @@ from Functions import (
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-
 # -------------------------------------------------------------
 # HOME ROUTE
 # -------------------------------------------------------------
 @app.route('/')
 def home():
     return render_template("index.html")
-
 
 # -------------------------------------------------------------
 # LOGIN ROUTE
@@ -50,7 +48,6 @@ def login():
 
     return render_template("login.html")
 
-
 # -------------------------------------------------------------
 # LOADING ROUTE
 # -------------------------------------------------------------
@@ -63,7 +60,6 @@ def loading():
         return redirect(url_for('login'))
 
     return render_template('loading.html', name=name, role=role)
-
 
 # -------------------------------------------------------------
 # STUDENT DASHBOARD
@@ -102,7 +98,10 @@ def student_dashboard():
     major_name = ", ".join(major_names) if major_names else "N/A"
     minor_name = ", ".join(minor_names) if minor_names else "N/A"
 
-    grad_date = "TBD"
+    years_remaining = student[4]
+    
+    grad_year = 2026 + years_remaining
+    grad_date = str(grad_year)
 
     # Requirements + course lists
     program_data = []
@@ -196,7 +195,36 @@ def update_coops():
 
     return {"status": "success"}
 
+# -------------------------------------------------------------
+# UPDATE YEARS UNTIL GRADUATION
+# -------------------------------------------------------------
+@app.route('/student/update_years', methods=['POST'])
+def update_years():
+    if session.get('role') != 'student':
+        return {"status": "error", "message": "Unauthorized"}, 403
 
+    user = get_user_data_by_username(session.get('username'))
+    student_id = user['data'][0]
+
+    data = request.get_json()
+    years = int(data.get("years", 4))
+
+    if years < 1 or years > 10:
+        return {"status": "error", "message": "Invalid range"}, 400
+
+    conn = Functions.get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE Student
+        SET NumYears = ?
+        WHERE student_id = ?;
+    """, (years, student_id))
+
+    conn.commit()
+    conn.close()
+
+    return {"status": "success"}
 
 # -------------------------------------------------------------
 # GENERATE SCHEDULE FOR STUDENT
@@ -204,33 +232,30 @@ def update_coops():
 @app.route('/generate-schedule', methods=['POST'])
 def generate_schedule():
     if session.get('role') != 'student':
-        return redirect(url_for('login'))
+        return {"status": "error", "message": "Unauthorized"}, 403
 
-    # Get student ID from session username
+    # Get student ID
     user_data = get_user_data_by_username(session.get('username'))
     student_id = user_data['data'][0]
 
-    # 1. Check if a schedule already exists and delete it
+    # Delete existing schedule
     existing = get_student_schedule(student_id)
     if existing:
         schedule_id = existing[0][0]
         from Functions import delete_schedule
         delete_schedule(schedule_id)
 
-    # 2. Generate new schedule (THIS RUNS your debug-enabled GenerateSchedule.py)
+    # Run generator
     scheduler = GenerateSchedule(student_id)
     result = scheduler.begin_generation()
 
-    # 3. If generation failed, report it
+    # FAIL
     if result != 0:
-        return "Schedule generation failed", 500
+        return {"status": "failed"}, 500
 
-    # 4. Save to the database
+    # SUCCESS
     scheduler.schedule.add_schedule_to_database()
-
-    return redirect(url_for('student_dashboard'))
-
-
+    return {"status": "success"}, 200
 
 # -------------------------------------------------------------
 # FACULTY DASHBOARD
@@ -259,10 +284,25 @@ def faculty_dashboard():
         "office_num": advisor_record[6]
     }
 
-    students = get_students_for_advisor(advisor["id"])
+    students_raw = get_students_for_advisor(advisor["id"])
+    students = []
+
+    for row in students_raw:
+        # Calculate expected graduation
+        years = row.get("years")
+        if years is not None:
+            row["expected_grad"] = 2026 + years
+        else:
+            row["expected_grad"] = None
+
+        # Everything else is already correct in row
+        students.append(row)
 
     return render_template("faculty.html", name=name, advisor=advisor, students=students)
 
+# -------------------------------------------------------------
+# SHOW STUDENT SCHEDULE
+# -------------------------------------------------------------
 @app.route('/faculty/student/<int:student_id>/schedule')
 def faculty_view_schedule(student_id):
     if session.get('role') != 'faculty':
@@ -281,7 +321,6 @@ def faculty_view_schedule(student_id):
     return render_template("faculty_schedule.html",
                            student=user,
                            schedule=schedule)
-
 
 # -------------------------------------------------------------
 # ADMIN DASHBOARD
@@ -372,7 +411,6 @@ def all_courses():
     courses = get_courses_for_display()
     return render_template("allCourses.html", courses=courses)
 
-
 # -------------------------------------------------------------
 # LOGOUT
 # -------------------------------------------------------------
@@ -380,7 +418,6 @@ def all_courses():
 def logout():
     session.clear()
     return redirect(url_for('login'))
-
 
 # -------------------------------------------------------------
 # MAIN ENTRY POINT

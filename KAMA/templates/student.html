@@ -28,7 +28,6 @@
     </div>
   </header>
 
-
   <!-- ====== info panel ====== -->
   <div class="student-info-box" id="studentInfo">
     <div class="student-info-header">Student Info</div>
@@ -75,7 +74,6 @@
     </div>
   </div>
 
-
   <!-- ====== main dashboard ====== -->
   <main class="student-content">
 
@@ -95,26 +93,12 @@
 
         <div style="display:flex; justify-content:flex-start; align-items:center; gap:15px; margin-top:15px;">
 
-          {% if schedule %}
-              <!-- Regenerate button -->
-              <form action="{{ url_for('generate_schedule') }}" method="POST"
-                    style="display:inline-block;"
-                    onsubmit="return confirm('This will overwrite your existing schedule. Continue?');">
-                  <button class="schedule-btn generate-btn">
-                      Regenerate Schedule
-                  </button>
-              </form>
-          {% else %}
-              <!-- Generate button -->
-              <form action="{{ url_for('generate_schedule') }}" method="POST"
-                    style="display:inline-block;">
-                  <button class="schedule-btn generate-btn">
-                      Generate Schedule
-                  </button>
-              </form>
-          {% endif %}
+          <!-- JS-controlled button -->
+          <button class="schedule-btn generate-btn">
+            {% if schedule %} Regenerate Schedule {% else %} Generate Schedule {% endif %}
+          </button>
 
-          <!--Edit Preferences Button -->
+          <!-- Edit Preferences Button -->
           <button id="open-pref-modal" class="schedule-btn"
               style="background:#3AA655; color:white; margin-left:200px;">
             Edit Preferences
@@ -136,8 +120,6 @@
     © 2025 KAMA University
   </footer>
 
-
-
   <!-- Summer flag for JS -->
   <script>
     const hasSummer = "{{ student[6]|lower }}" === "yes";
@@ -148,8 +130,7 @@
     const scheduleData = {{ schedule|tojson }};
   </script>
 
-
-  <!--PREFERENCES MODAL-->
+  <!-- ====== PREFERENCES MODAL ====== -->
   <div id="preferences-modal" class="modal hidden">
     <div class="modal-content">
 
@@ -167,6 +148,12 @@
             value="{{ student[3] }}"
             style="width: 100%; padding: 8px; margin-bottom: 20px;">
 
+      <label><strong>Years Until Graduation</strong></label>
+      <input id="modal-years-input" type="number" min="1" max="10"
+              value="{{ student[4] }}"  
+              style="width: 100%; padding: 8px; margin-bottom: 20px;">
+            
+
       <div style="display:flex; justify-content: space-between; gap:10px;">
         <button id="save-pref-modal" class="btn" style="flex:1;">Save</button>
         <button id="close-pref-modal" class="btn" style="flex:1; background-color:#888;">Cancel</button>
@@ -175,6 +162,19 @@
     </div>
   </div>
 
+  <!-- ===== GENERATION FAILED POPUP ===== -->
+  <div id="genFailModal" class="modal hidden">
+    <div class="modal-content">
+        <h2 style="color:#3AA655; margin-top:0;">Generation Failed</h2>
+        <p>Your schedule could not be generated.<br>
+           Please adjust your preferences and try again.</p>
+
+        <button id="closeGenFail" class="btn" 
+                style="background:#3AA655; color:white; margin-top:15px; width:100%;">
+          OK
+        </button>
+    </div>
+  </div>
 
   <!-- Main JS -->
   <script src="{{ url_for('static', filename='student.js') }}"></script>

@@ -81,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         semesterDisplay.textContent = "No Schedule";
     }
   
-  
     /* ============================================================
        PREFERENCES MODAL
     ============================================================ */
@@ -114,6 +113,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const summer = document.getElementById("modal-summer-select").value;
             const coops = parseInt(document.getElementById("modal-coop-input").value);
+            const years = parseInt(document.getElementById("modal-years-input").value);
+
+            if (years < 1 || years > 10) {
+                alert("Years must be between 1 and 10.");
+                return;
+            }
+
 
             if (coops < 0 || coops > 3) {
                 alert("Co-Ops must be between 0 and 3.");
@@ -134,6 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ coops })
             });
 
+            // Update years until graduation
+            await fetch("/student/update_years", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ years })
+            });
+
             alert("Preferences saved! Please regenerate your schedule.");
 
             modal.classList.add("hidden");
@@ -147,5 +160,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+
+/* ============================================================
+GENERATE SCHEDULE WITH POPUP ON FAILURE
+============================================================ */
+
+const generateBtn = document.querySelector(".generate-btn");
+
+if (generateBtn) {
+    generateBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const res = await fetch("/generate-schedule", {
+            method: "POST"
+        });
+
+        if (!res.ok) {
+            // Show failure popup
+            document.getElementById("genFailModal").classList.remove("hidden");
+            return;
+        }
+
+        // Success → reload dashboard
+        location.reload();
+    });
+}
+
+// Close popup
+const closeFail = document.getElementById("closeGenFail");
+if (closeFail) {
+    closeFail.addEventListener("click", () => {
+        document.getElementById("genFailModal").classList.add("hidden");
+    });
+}
 
 });
