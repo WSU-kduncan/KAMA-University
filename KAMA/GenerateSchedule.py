@@ -114,6 +114,9 @@ class GenerateSchedule:
         # --- Fill remaining credits ---
         all_courses = Functions.get_courses()
 
+        # Reversing order because courses with stricter requirements for semesters are at the end
+        all_courses.reverse()
+
         for course in all_courses:
             if self.total_credit_hours < self.MIN_CREDIT_HOURS:
                 if not self.schedule.course_in_schdule_id(course[0]):
@@ -136,6 +139,8 @@ class GenerateSchedule:
                     courses_to_add = self.create_courses_to_add(Course(self.COOP_COURSE_ID))
                     self.add_course_to_schedule(courses_to_add)
                     i += 1
+                    if ( i == self.num_coops):
+                        break
                 
                 if self.current_semester == (self.semesters_per_year - 1):
                     self.current_year += 1
@@ -281,13 +286,13 @@ class GenerateSchedule:
             i += 1
 
 # #test values for student
-# #1 major 1 minor
-# #not generating
-# print("Student 1")
-# student1 = GenerateSchedule(1)
-# value = student1.begin_generation()
-# print(value)
-# student1.schedule.to_string()
+#1 major 1 minor
+#not generating
+print("Student 1")
+student1 = GenerateSchedule(1)
+value = student1.begin_generation()
+print(value)
+student1.schedule.to_string()
 
 # #1 major 2 minors
 # # not generating
