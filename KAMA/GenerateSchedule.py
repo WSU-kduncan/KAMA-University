@@ -305,13 +305,13 @@ class GenerateSchedule:
 # print(value)
 # student3.schedule.to_string()
 
-#2 majors
-# not generating
-print("Student 4")
-student4 = GenerateSchedule(4)
-value = student4.begin_generation()
-print(value)
-student4.schedule.to_string()
+# #2 majors
+# # not generating
+# print("Student 4")
+# student4 = GenerateSchedule(4)
+# value = student4.begin_generation()
+# print(value)
+# student4.schedule.to_string()
 
 # # 2 majors 2 minors
 # # not generating
