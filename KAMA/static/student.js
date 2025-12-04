@@ -107,51 +107,64 @@ document.addEventListener("DOMContentLoaded", () => {
         if (e.target === modal) modal.classList.add("hidden");
     });
 
-    // Save preferences
+    // Save preferences (PATCHED WITH MAX CREDITS)
     if (savePrefBtn) {
         savePrefBtn.addEventListener("click", async () => {
 
             const summer = document.getElementById("modal-summer-select").value;
             const coops = parseInt(document.getElementById("modal-coop-input").value);
             const years = parseInt(document.getElementById("modal-years-input").value);
+            const maxcredits = parseInt(document.getElementById("modal-maxcredits-input").value);
 
+            // ---- VALIDATION ----
             if (years < 1 || years > 10) {
                 alert("Years must be between 1 and 10.");
                 return;
             }
-
 
             if (coops < 0 || coops > 3) {
                 alert("Co-Ops must be between 0 and 3.");
                 return;
             }
 
-            // Update summer
+            if (maxcredits < 6 || maxcredits > 25) {
+                alert("Max credit hours must be between 6 and 25.");
+                return;
+            }
+
+            // ---- UPDATE SUMMER ----
             await fetch("/student/update_summer", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ summer })
             });
 
-            // Update co-ops
+            // ---- UPDATE CO-OPS ----
             await fetch("/student/update_coops", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ coops })
             });
 
-            // Update years until graduation
+            // ---- UPDATE YEARS ----
             await fetch("/student/update_years", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ years })
             });
 
+            // ---- UPDATE MAX CREDIT HOURS (NEW) ----
+            await fetch("/student/update_maxcredits", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ maxcredits })
+            });
+
             alert("Preferences saved! Please regenerate your schedule.");
 
             modal.classList.add("hidden");
 
-            // Force student to regenerate
+            // Force user to regenerate schedule visually
             const scheduleBox = document.getElementById("scheduleDisplay");
             const semName = document.getElementById("semesterName");
 
@@ -161,37 +174,38 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-/* ============================================================
-GENERATE SCHEDULE WITH POPUP ON FAILURE
-============================================================ */
 
-const generateBtn = document.querySelector(".generate-btn");
+    /* ============================================================
+       GENERATE SCHEDULE WITH POPUP ON FAILURE
+    ============================================================ */
 
-if (generateBtn) {
-    generateBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
+    const generateBtn = document.querySelector(".generate-btn");
 
-        const res = await fetch("/generate-schedule", {
-            method: "POST"
+    if (generateBtn) {
+        generateBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            const res = await fetch("/generate-schedule", {
+                method: "POST"
+            });
+
+            if (!res.ok) {
+                // Show failure popup
+                document.getElementById("genFailModal").classList.remove("hidden");
+                return;
+            }
+
+            // Success → reload dashboard
+            location.reload();
         });
+    }
 
-        if (!res.ok) {
-            // Show failure popup
-            document.getElementById("genFailModal").classList.remove("hidden");
-            return;
-        }
-
-        // Success → reload dashboard
-        location.reload();
-    });
-}
-
-// Close popup
-const closeFail = document.getElementById("closeGenFail");
-if (closeFail) {
-    closeFail.addEventListener("click", () => {
-        document.getElementById("genFailModal").classList.add("hidden");
-    });
-}
+    // Close popup
+    const closeFail = document.getElementById("closeGenFail");
+    if (closeFail) {
+        closeFail.addEventListener("click", () => {
+            document.getElementById("genFailModal").classList.add("hidden");
+        });
+    }
 
 });

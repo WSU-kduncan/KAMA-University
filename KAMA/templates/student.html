@@ -153,6 +153,11 @@
               value="{{ student[4] }}"  
               style="width: 100%; padding: 8px; margin-bottom: 20px;">
             
+      <label><strong>Max Credit Hours Per Semester</strong></label>
+      <input id="modal-maxcredits-input" type="number"
+                min="6" max="25"
+                value="{{ student[5] }}"
+                style="width: 100%; padding: 8px; margin-bottom: 20px;">
 
       <div style="display:flex; justify-content: space-between; gap:10px;">
         <button id="save-pref-modal" class="btn" style="flex:1;">Save</button>

@@ -227,6 +227,37 @@ def update_years():
     return {"status": "success"}
 
 # -------------------------------------------------------------
+# UPDATE MAX CREDIT HOURS PER SEMESTER
+# -------------------------------------------------------------
+@app.route('/student/update_maxcredits', methods=['POST'])
+def update_maxcredits():
+    if session.get('role') != 'student':
+        return {"status": "error", "message": "Unauthorized"}, 403
+
+    user = get_user_data_by_username(session.get('username'))
+    student_id = user['data'][0]
+
+    data = request.get_json()
+    maxcredits = int(data.get("maxcredits", 18))
+
+    if maxcredits < 6 or maxcredits > 25:
+        return {"status": "error", "message": "Invalid range"}, 400
+
+    conn = Functions.get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE Student
+        SET CrdtHrsPrSem = ?
+        WHERE student_id = ?;
+    """, (maxcredits, student_id))
+
+    conn.commit()
+    conn.close()
+
+    return {"status": "success"}
+
+# -------------------------------------------------------------
 # GENERATE SCHEDULE FOR STUDENT
 # -------------------------------------------------------------
 @app.route('/generate-schedule', methods=['POST'])
