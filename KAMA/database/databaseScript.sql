@@ -162,8 +162,8 @@ INSERT IGNORE INTO Course (course_id, course_code, semester, course_name, credit
 (5, 'STT 1600', 'FSQ', 'Statistical Concepts', 4, NULL),
 (6, 'UVC 1010', 'FS', 'First Year Seminar', 3, NULL),
 (7, 'LA 1020', 'FSQ', 'First-Year Seminar: College of Liberal Arts', 3, NULL),
-(8, 'PSY 1010', 'FSQ', 'Intro to Psychology', 4, NULL),
-(9, 'PSY 1010L', 'FSQ', 'Intro to Psychology/L', 0, 8),
+(8, 'PSY 1010', 'FSQ', 'Intro to Psychology/L', 4, NULL),
+
 (10, 'EC 2900', 'FSQ', 'Global Economic, Business and Social Issues', 3, NULL),
 (11, 'BIO 1150/L', 'FSQ', 'Biology of Food', 4, NULL),
 (12, 'PHY 1110/L,R', 'FSQ', 'Principles of Physics', 5, NULL),
@@ -257,7 +257,7 @@ INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
 (4, 4),
 (5, 5),
 (6, 8),
-(6, 9),
+
 (6, 10),
 (7, 13),
 
@@ -282,7 +282,7 @@ INSERT IGNORE INTO Requirement_Course(requirement_id, course_id)VALUES
 (26, 1),
 (26, 5),
 (26, 8),
-(26, 9),
+
 (26, 38),
 (26, 39),
 (26, 45),
