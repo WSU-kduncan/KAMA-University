@@ -94,10 +94,18 @@ KAMA-University/
 
 ---
 
-### Clone the Repository
+### Clone the Repository & Get All Files
+
+**HTTPS**
 ```bash
-git clone https://github.com/<your-username>/degree-admin.git
-cd degree-admin
+git clone https://github.com/WSU-kduncan/KAMA-University.git
+cd KAMA-University/KAMA
+```
+
+**SSH**
+```bash
+git clone git@github.com:WSU-kduncan/KAMA-University.git
+cd KAMA-University/KAMA
 ```
 
 ### Create Virtual Python Environment
