@@ -33,7 +33,7 @@ Built using **Flask (Python)**, **JavaScript**, **HTML/CSS**, and **MariaDB**, t
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 | Component | Technology |
 |------------|-------------|
 | **Frontend** | HTML, CSS, JavaScript |
