@@ -100,7 +100,7 @@ git clone https://github.com/<your-username>/degree-admin.git
 cd degree-admin
 ```
 
-### Create Virtual Enviorment
+### Create Virtual Python Environment
 
 **macOS/Linux**
 ```bash
