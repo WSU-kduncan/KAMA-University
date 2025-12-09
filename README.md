@@ -1,18 +1,10 @@
-
-a KAMA University - Degree Admin
+# KAMA University - Degree Admin
 ## Overview
-rs/minors)
-- Modify Schedule preferences (Co-Ops, Summer Semesters, Amount of Semesters)
-- Access course lists and semester information
-- Display student data (credits, years, preferences, etc.)
 
-### Faculty Dashboard
-- Update course details or grades  
-- Display name dynamically based on login  
+**KAMA University** is a multi-role, full-stack academic management system designed for students, faculty, and administrators.
+It incorporates authentication, personalized dashboards, automated schedule generation, and database-driven student program and information tracking.
 
-### Admin Dashboard
-- Manage programs, users, and course data  
-- Add, update, or remove courses
+Built using **Flask (Python)**, **JavaScript**, **HTML/CSS**, and **MariaDB**, this project demonstrates full-stack development, database design, UI/UX collaboration, and modular code architecture.
 
 ---
 
