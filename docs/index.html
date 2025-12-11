@@ -22,6 +22,7 @@
     <section id="overview">
       <h2>Project Overview</h2>
 
+      <!-- summary -->
       <div class="overview-card summary-card">
         <h3 class="overview-subheader">Summary</h3>
         <p>
@@ -30,17 +31,18 @@
           It provides a clear overview of majors, minors, and course requirements,
           ensuring students stay on track for graduation while also meeting their
           long-term academic goals. The system allows both students
-          and faculty to interact with the requirements for the student and
+          and faculty to interact with the requirements for the student and 
           System Administrators will have access to the course catalog for adding and 
           removal of courses.
         </p>
       </div>
 
+      <!-- team roles -->
       <div class="overview-grid">
         <div class="overview-item">
           <h3 class="overview-subheader">🎯 Goal</h3>
           <p>Develop a fully interactive web platform that connects students, advisors,
-            and administrators within a unified degree management system, which provides real-time
+            and administrators within a unified degree management system which provides real-time
             visibility of course progress, prerequisites, and degree requirements.</p>
         </div>
 
@@ -49,34 +51,33 @@
           <ul>
             <li>Frontend: HTML, CSS</li>
             <li>Backend: Python (Flask)</li>
-            <li>Database: MariaDB</li>
+            <li> Database: MariaDB
             <li>Version Control: GitHub + GitHub Pages</li>
           </ul>
         </div>
 
         <div class="overview-item">
           <h3 class="overview-subheader">📋 Requirements</h3>
-        
+
           <h4>🧩 Functional Requirements</h4>
           <ul>
             <li>When a student logs in, they shall open the student page.</li>
             <li>The student shall be able to select preferences for how their schedule will be generated.</li>
             <li>The student shall generate a schedule based on their preferences by pressing the “Generate Schedule” button.</li>
-            <li> The student shall page through semesters and years using left/right arrows and view their courses per semester</li>
+            <li>The student shall page through semesters and years using left/right arrows and view their courses per semester</li>
             <li>The student shall modify preferences and regenerate schedules as needed.</li>
           </ul>
-        
+
           <h4>⚙️ Technical Requirements</h4>
           <ul>
-            <li>Students shall only access their user page after successful login validation.</li>
-            <li>Students shall not access any user pages if their login information is invalid.</li>
-            <li>Login authentication shall verify valid credentials before redirection.</li>
-            <li>Schedule data shall update dynamically when preferences are changed.</li>
-            <li>The system shall maintain consistent data integrity between generated schedules and user settings.</li>
+            <li><strong>Students</strong> shall only access their user page after successful login validation.</li>
+            <li><strong>Students</strong> shall not access any user pages if their login information is invalid.</li>
+            <li><strong>Login authentication</strong> shall verify valid credentials before redirection..</li>
+            <li><strong>Schedule data</strong> shall update dynamically when preferences are changed.</li>
+            <li><strong>The system</strong> shall maintain consistent data integrity between generated schedules and user settings.</li>
           </ul>
         </div>
 
-        
         <div class="overview-item">
           <h3 class="overview-subheader">🧪 Software Test Plan</h3>
           <ul>
@@ -86,8 +87,25 @@
             <li><strong>User Acceptance Testing (UAT):</strong> Verify usability, clarity of dashboards, and accuracy of generated schedules.</li>
             <li><strong>Regression Testing:</strong> Re-test critical features whenever new updates are introduced to prevent breaking existing functionality.</li>
             <li><strong>Error & Security Testing:</strong> Validate input handling, secure authentication, and protection against unauthorized access.</li>
+
           </ul>
-        </div>
+
+          <div class="overview-item">
+            <h3 class="overview-subheader">📄 Project Documentation</h3>
+            <ul>
+              <li>
+                <strong>Project PDF:</strong> View the full documentation below.
+              </li>
+            </ul>
+
+            <embed 
+              src="KAMA_Project.pdf"
+              type="application/pdf"
+              width="100%" 
+              height="600px"
+              style="border: 1px solid #ccc; border-radius: 6px; margin-top: 10px;"
+            />
+
       </div>
     </section>
 
